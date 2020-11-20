@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="icon"
+	href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico">
+
+<title>B3 Financial</title>
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+
+<!-- Custom styles for this template -->
+<link href="../static/css/home.css" th:href="@{/css/home.css}"
+	rel="stylesheet" />
+</head>
+
+<body>
+
+	<!-- Begin page content -->
+	<main role="main" class="container">
+	<div class="grid">
+		<div class="row mt-4">
+			<h1>B3 Financial</h1>
+		</div>
+		<div class="row mt-3">
+			<h3>Endpoints.</h3>
+		</div>
+		<div class="row">
+			<p>Todos os endpoints que a API disponibiliza para você usar :).
+				Faça bom proveito!</p>
+		</div>
+		<div class="row">
+			<table class="table table-bordered table-hover">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Tipo</th>
+						<th scope="col">Endpoint</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">1</th>
+						<td>Ação</td>
+						<td>/statusinvest/acoes/{ticket}</td>
+					</tr>
+					<tr>
+						<th scope="row">2</th>
+						<td>Ação</td>
+						<td>/statusinvest/acoes/{ticket}/{indicador}</td>
+					</tr>
+					<tr>
+						<th scope="row">3</th>
+						<td>FII</td>
+						<td>/statusinvest/fundos-imobiliarios/{ticket}</td>
+					</tr>
+					<tr>
+						<th scope="row">4</th>
+						<td>FII</td>
+						<td>/statusinvest/fundos-imobiliarios/{ticket}/{indicador}</td>
+					</tr>
+					<tr>
+						<th scope="row">5</th>
+						<td>ETF</td>
+						<td>/statusinvest/etfs/{ticket}</td>
+					</tr>
+					<tr>
+						<th scope="row">6</th>
+						<td>Todos</td>
+						<td>/statusinvest/?tickets=X,Y,Z</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="row mt-3">
+			<h3>Indicadores disponíveis</h3>
+		</div>
+		<div class="row">
+			<p>São todos os indicadores que a aplicação recupera da
+				StatusInvest.</p>
+			<p>Você também pode utilizar nos serviços acima, mas somente para
+				os endpoints que possuem parâmetro {indicador}.</p>
+		</div>
+		<div class="row">
+			<table class="table table-bordered table-hover">
+				<thead class="thead-light">
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Chave</th>
+						<th scope="col">Indicador</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">1</th>
+						<td>VALUE</td>
+						<td>Valor por ação atualizado de Mercado</td>
+					</tr>
+					<tr>
+						<th scope="row">2</th>
+						<td>PL</td>
+						<td>P/L - Preço atual / Lucro por ação (LPA)</td>
+					</tr>
+					<tr>
+						<th scope="row">3</th>
+						<td>LPA</td>
+						<td>Lucro líquido / Nº de ações</td>
+					</tr>
+					<tr>
+						<th scope="row">4</th>
+						<td>PVP</td>
+						<td>P/VP - Preço atual / Valor patrimonial por ação (VPA)</td>
+					</tr>
+					<tr>
+						<th scope="row">5</th>
+						<td>VPA</td>
+						<td>Patrimônio líquido / Nº de ações</td>
+					</tr>
+					<tr>
+						<th scope="row">6</th>
+						<td>DY</td>
+						<td>Dividend Yield - % dos últimos 12 meses.</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>
+				<em>*O Valor não é um indicador, é mais caso você precise
+					somente do valor mesmo :)</em>
+			</p>
+		</div>
+		<div class="row mt-3">
+			<h3>Dicas</h3>
+		</div>
+		<div class="row">
+			<ul>
+				<li>Todos os tickets são validados com os existentes na B3, mas
+					isso foi inserido manualmente. Portanto, caso esteja utilizando a
+					API para algum ticket muito novo, você deve me avisar para
+					incluí-lo na aplicação, pois pode retornar erro de ticket inválido.
+				</li>
+				<li>Indicadores que não forem encontrados na página da
+					StatusInvest serão retornados com valor 0,00.</li>
+				<li>O uso incorreto de um endpoint poderá retornar 404 ou 500
+					como erro.</li>
+				<li>O volume excessivo de chamadas para a API pode retornar em
+					um delay na resposta de até 15 segundos, conforme bloqueio da
+					StatusInvest</li>
+			</ul>
+		</div>
+		<div class="row mt-3">
+			<h3>Exemplos</h3>
+		</div>
+
+		<div class="row mb-4">
+			<div class="container-fluid mt-4">
+				<div class="row justify-content-center">
+					<div class="col-auto mb-3">
+						<div class="card h-100" style="width: 30rem;">
+							<div class="card-header font-weight-bold">
+								/statusinvest/acoes/ITSA4</div>
+							<div class="card-body">
+								<p class="card-text">Retorna todos os indicadores
+									disponíveis do ticket da Itaúsa</p>
+							</div>
+							<div class="card-footer">
+								<a href="/statusinvest/acoes/ITSA4" target="_blank"
+									class="btn btn-primary">Testar</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-auto mb-3">
+						<div class="card h-100" style="width: 30rem;">
+							<div class="card-header font-weight-bold">
+								/statusinvest/acoes/ITSA4/PL</div>
+							<div class="card-body">
+								<p class="card-text">Retorna o valor de PL para a ação da
+									Itaúsa</p>
+							</div>
+							<div class="card-footer">
+								<a href="/statusinvest/acoes/ITSA4/PL" target="_blank"
+									class="btn btn-primary">Testar</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-auto mb-3">
+						<div class="card h-100" style="width: 30rem;">
+							<div class="card-header font-weight-bold">
+								/statusinvest/fundos-imobiliarios/XPLG11</div>
+							<div class="card-body">
+								<p class="card-text">Retorna todos os indicadores
+									disponíveis para FII do ticket da XP LOG</p>
+							</div>
+							<div class="card-footer">
+								<a href="/statusinvest/fundos-imobiliarios/XPLG11"
+									target="_blank" class="btn btn-primary">Testar</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-auto mb-3">
+						<div class="card h-100" style="width: 30rem;">
+							<div class="card-header font-weight-bold">
+								/statusinvest/fundos-imobiliarios/XPLG11/PVP</div>
+							<div class="card-body">
+								<p class="card-text">Retorna o valor de P/VP para o FII da
+									XP LOG</p>
+							</div>
+							<div class="card-footer">
+								<a href="/statusinvest/fundos-imobiliarios/XPLG11/PVP"
+									target="_blank" class="btn btn-primary">Testar</a>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-auto mb-3">
+						<div class="card h-100" style="width: 30rem;">
+							<div class="card-header font-weight-bold">
+								/statusinvest/etfs/IVVB11</div>
+							<div class="card-body">
+								<p class="card-text">Retorna todos os indicadores
+									disponíveis para o ETF do fundo de cotas do índice ISHARES S&P 500</p>
+							</div>
+							<div class="card-footer">
+								<a href="/statusinvest/etfs/IVVB11"
+									target="_blank" class="btn btn-primary">Testar</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-auto mb-3">
+						<div class="card h-100" style="width: 30rem;">
+							<div class="card-header font-weight-bold">
+									/statusinvest/?tickets=ITSA4,XPLG11,IVVB11</div>
+							<div class="card-body">
+								<p class="card-text">Retornará todos os valores e indicadores dos tickets informados</p>
+							</div>
+							<div class="card-footer">
+								<a href="/statusinvest/?tickets=ITSA4,XPLG11,IVVB11"
+									target="_blank" class="btn btn-primary">Testar</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</main>
+</body>
+</html>

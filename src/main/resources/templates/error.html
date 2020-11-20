@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>B3 Financial</title>
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col"></div>
+			<div class="col-12">
+				<main class="col-12 py-md-3 bd-content" role="main">
+					<h1>Algo deu errado!</h1>
+					<h4>Não vamos fazer nadinha por você :/</h4>
+					<a class="btn btn-primary" href="/">Página Inicial</a>
+					<table class="table table-striped table-bordered mt-4">
+					<tr>
+						<th scope="row">Date:</th>
+						<td th:text="${timestamp}" />
+					</tr>
+					<tr>
+						<th scope="row">Path:</th>
+						<td th:text="${path}" />
+					</tr>
+					<tr>
+						<th scope="row">Error:</th>
+						<td th:text="${error}" />
+					</tr>
+					<tr>
+						<th scope="row">Status:</th>
+						<td th:text="${status}" />
+					</tr>
+					<tr>
+						<th scope="row">Trace:</th>
+						<td><pre th:text="${trace}" /></td>
+					</tr>
+				</table>
+				</main>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
