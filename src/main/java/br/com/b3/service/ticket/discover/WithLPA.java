@@ -7,7 +7,7 @@ public class WithLPA implements DocumentDiscoveryRule {
 	@Override
 	public String getContentOf(Document document) {
 		return document.body()
-				.getElementsContainingOwnText("LPA").get(2).parents().get(1)
+				.getElementsContainingOwnText("LPA").get(3).parents().get(1)
 				.getElementsByClass("value").get(0)
 				.text();
 	}
