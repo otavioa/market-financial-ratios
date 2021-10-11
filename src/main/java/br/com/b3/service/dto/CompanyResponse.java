@@ -7,6 +7,8 @@ public class CompanyResponse implements ResponseBody {
 	private Long companyId;
 	private String companyName;
 	private String ticker;
+	private String gestao;
+	private Double dy;
 	private Double dividaLiquidaEbit;
 	private Double dividaliquidaPatrimonioLiquido;
 	private Double eV_Ebit;
@@ -34,6 +36,14 @@ public class CompanyResponse implements ResponseBody {
 	private Double roic;
 	private Double valorMercado;
 	private Double vpa;
+	
+	private Double cota_cagr;
+	private Double dividend_cagr;
+	private Double liquidezmediadiaria;
+	private Double numerocotistas;
+	private Double p_vp;
+	private Double patrimonio;
+	private Double percentualcaixa;
 
 	public CompanyResponse() {}
 	
@@ -277,4 +287,76 @@ public class CompanyResponse implements ResponseBody {
 		this.vpa = vpa;
 	}
 
+	public String getGestao() {
+		return gestao;
+	}
+
+	public void setGestao(String gestao) {
+		this.gestao = gestao;
+	}
+
+	public Double getDy() {
+		return dy;
+	}
+
+	public void setDy(Double dy) {
+		this.dy = dy;
+	}
+
+	public Double getCota_cagr() {
+		return cota_cagr;
+	}
+
+	public void setCota_cagr(Double cota_cagr) {
+		this.cota_cagr = cota_cagr;
+	}
+
+	public Double getDividend_cagr() {
+		return dividend_cagr;
+	}
+
+	public void setDividend_cagr(Double dividend_cagr) {
+		this.dividend_cagr = dividend_cagr;
+	}
+
+	public Double getLiquidezmediadiaria() {
+		return liquidezmediadiaria;
+	}
+
+	public void setLiquidezmediadiaria(Double liquidezmediadiaria) {
+		this.liquidezmediadiaria = liquidezmediadiaria;
+	}
+
+	public Double getNumerocotistas() {
+		return numerocotistas;
+	}
+
+	public void setNumerocotistas(Double numerocotistas) {
+		this.numerocotistas = numerocotistas;
+	}
+
+	public Double getP_vp() {
+		return p_vp;
+	}
+
+	public void setP_vp(Double p_vp) {
+		this.p_vp = p_vp;
+	}
+
+	public Double getPatrimonio() {
+		return patrimonio;
+	}
+
+	public void setPatrimonio(Double patrimonio) {
+		this.patrimonio = patrimonio;
+	}
+
+	public Double getPercentualcaixa() {
+		return percentualcaixa;
+	}
+
+	public void setPercentualcaixa(Double percentualcaixa) {
+		this.percentualcaixa = percentualcaixa;
+	}
+	
 }

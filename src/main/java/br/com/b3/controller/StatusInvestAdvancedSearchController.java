@@ -20,10 +20,30 @@ public class StatusInvestAdvancedSearchController {
 
 	@Autowired private StatusInvestAdvancedSearchService service;
 	
+	@GetMapping("/all")
+	public ResponseEntity<AdvanceSearchResponse> getAllAvailable(){
+		
+		AdvanceSearchResponse acoes = service.getAllAvailable();
+		
+		return ResponseEntity.ok(acoes);
+		
+	}
+	
+	@GetMapping("")
+	public ResponseEntity<AdvanceSearchResponse> getAllAvailableByTickers(
+			@RequestParam(value="tickers", required=true) String[] tickers,
+			@RequestParam(value="indicadores", required=false) String[] indicadores){
+		
+		AdvanceSearchResponse acoes = service.getAllAvailable(asList(tickers));
+		
+		return ResponseEntity.ok(acoes);
+		
+	}
+	
 	@GetMapping("/acoes/all")
 	public ResponseEntity<AdvanceSearchResponse> getAllAcoes(){
 		
-		AdvanceSearchResponse acoes = service.getAllAcoes();
+		AdvanceSearchResponse acoes = service.getTodasAcoes();
 		
 		return ResponseEntity.ok(acoes);
 	}
@@ -41,7 +61,7 @@ public class StatusInvestAdvancedSearchController {
 			@RequestParam(value="tickers", required=true) String[] tickers,
 			@RequestParam(value="indicadores", required=false) String[] indicadores){
 		
-		AdvanceSearchResponse acoes = service.getAcaoByTicker(asList(tickers));
+		AdvanceSearchResponse acoes = service.getAcaoByTickers(asList(tickers));
 		
 		return ResponseEntity.ok(acoes);
 		

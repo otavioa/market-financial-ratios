@@ -1,5 +1,7 @@
 package br.com.b3.service;
 
+import static java.util.Arrays.asList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import br.com.b3.external.url.ExternalURLAccess;
 import br.com.b3.external.url.Get;
@@ -22,19 +22,42 @@ public class StatusInvestAdvancedSearchService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StatusInvestAdvancedSearchService.class);
 
-	private static final String URL = "https://statusinvest.com.br/category/advancedsearchresult?search=";
+	private static final String URL = "https://statusinvest.com.br/category/advancedsearchresult?search={search}&CategoryType={categoryType}";
 
 	@Autowired
 	private ExternalURLAccess externalAccess;
 
-	public AdvanceSearchResponse getAllAcoes() {
-		String preparedURL = URL + queryParameterFilters();
+	public AdvanceSearchResponse getAllAvailable(List<String> tickers) {
+		AdvanceSearchResponse allAvailable = getAllAvailable();
+		
+		return new AdvanceSearchResponse(allAvailable.stream()
+				.filter(t -> tickers.contains(t.getTicker()))
+				.collect(Collectors.toList()));
+	}
+	
+	public AdvanceSearchResponse getAllAvailable() {
+		AdvanceSearchResponse result = new AdvanceSearchResponse();
+		
+		asList(StatusInvestResource.values()).stream().map(resource -> {
+			String preparedURL = URL
+					.replace("{categoryType}", resource.getCategoryType().toString())
+					.replace("{search}", resource.getFilter().asQueryParameter());
+
+			return doGet(preparedURL, AdvanceSearchResponse.class);
+			
+		}).forEach(response -> result.addAll(response));
+
+		return result;
+	}
+	
+	public AdvanceSearchResponse getTodasAcoes() {
+		String preparedURL = prepareURLBasedOnResource(URL, StatusInvestResource.ACOES);
 
 		return doGet(preparedURL, AdvanceSearchResponse.class);
 	}
 
 	public CompanyResponse getAcaoByTicker(String ticker) {
-		String preparedURL = URL + queryParameterFilters(); 
+		String preparedURL = prepareURLBasedOnResource(URL, StatusInvestResource.ACOES); 
 		
 		AdvanceSearchResponse response = doGet(preparedURL, AdvanceSearchResponse.class);
 		
@@ -44,24 +67,20 @@ public class StatusInvestAdvancedSearchService {
 			.orElseThrow(() -> new IllegalArgumentException("Ticker informado inválido!"));
 	}
 	
-	public AdvanceSearchResponse getAcaoByTicker(List<String> tickers) {
-		String preparedURL = URL + queryParameterFilters(); 
+	public AdvanceSearchResponse getAcaoByTickers(List<String> tickers) {
+		AdvanceSearchResponse todasAcoes = getTodasAcoes();
 		
-		AdvanceSearchResponse response = doGet(preparedURL, AdvanceSearchResponse.class);
-		
-		return new AdvanceSearchResponse(response.stream()
+		return new AdvanceSearchResponse(todasAcoes.stream()
 			.filter(acao -> tickers.contains(acao.getTicker()))
 			.collect(Collectors.toList()));
 	}
 
-	private String queryParameterFilters() {
-		AdvancedFilterRequest filters = new AdvancedFilterRequest();
-		try {
-			return filters.asQueryParameter();
-		} catch (JsonProcessingException e) {
-			LOGGER.error("Falhou ao preparar request", e);
-			throw new RuntimeException(e);
-		}
+	private String prepareURLBasedOnResource(String url, StatusInvestResource resource) {
+		String preparedURL = url
+				.replace("{categoryType}", resource.getCategoryType().toString())
+				.replace("{search}", resource.getFilter().asQueryParameter());
+		
+		return preparedURL;
 	}
 
 	protected <T extends ResponseBody> T doGet(String url, Class<T> responseBodyClass) {
