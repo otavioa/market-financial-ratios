@@ -1,6 +1,8 @@
 package br.com.b3.service.dto;
 
-public class CompanyResponse {
+import br.com.b3.external.url.ResponseBody;
+
+public class CompanyResponse implements ResponseBody {
 
 	private Long companyId;
 	private String companyName;
