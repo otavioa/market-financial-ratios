@@ -31,20 +31,21 @@ public class ExternalURLInterceptor implements ClientHttpRequestInterceptor {
         log.info("Request body  : {}", new String(body, "UTF-8"));
     }
 
+    //TODO - Corrigir o buffer
     private void traceResponse(ClientHttpResponse response) throws IOException {
-        StringBuilder inputStringBuilder = new StringBuilder();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
-        String line = bufferedReader.readLine();
-        while (line != null) {
-            inputStringBuilder.append(line);
-            inputStringBuilder.append('\n');
-            line = bufferedReader.readLine();
-        }
+//        StringBuilder inputStringBuilder = new StringBuilder();
+//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
+//        String line = bufferedReader.readLine();
+//        while (line != null) {
+//            inputStringBuilder.append(line);
+//            inputStringBuilder.append('\n');
+//            line = bufferedReader.readLine();
+//        }
         
         log.info("Response code : {}", response.getStatusCode());
         log.info("Response text : {}", response.getStatusText());
         log.info("Headers       : {}", response.getHeaders());
-        log.info("Response body : {}", inputStringBuilder.toString());
+        log.info("Response body : {}", "Omitido");
         log.info("============================ EXTERNAL REQUEST - END ====================");
     }
 }
