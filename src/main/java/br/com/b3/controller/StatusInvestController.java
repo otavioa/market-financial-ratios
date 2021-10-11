@@ -66,11 +66,11 @@ public class StatusInvestController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<TicketResponse>> getAllTicketsInfo(@RequestParam(value="tickets", required=true) String[] tickets){
+	public ResponseEntity<List<TicketResponse>> getAllTickersInfo(@RequestParam(value="tickers", required=true) String[] tickers){
 		
-		List<TicketResponse> allTickets = service.getAllTicketsInfo(asList(tickets));
+		List<TicketResponse> allTickers = service.getAllTickersInfo(asList(tickers));
 		
-		return ResponseEntity.ok(allTickets);
+		return ResponseEntity.ok(allTickers);
 	}
 	
 }

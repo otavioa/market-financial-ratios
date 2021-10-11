@@ -3,7 +3,7 @@ package br.com.b3.controller;
 import java.util.Arrays;
 import java.util.List;
 
-public interface AllTickets {
+public interface AllTickers {
 
 	public static final List<String> ACOES = Arrays.asList("AALR3", "ABCB4", "ABEV3", "ADHM3", "AFLT3", "AGRO3",
 			"AHEB3", "AHEB5", "AHEB6", "ALPA3", "ALPA4", "ALPK3", "ALSC3", "ALSO3", "ALUP11", "ALUP3", "ALUP4", "AMAR3",

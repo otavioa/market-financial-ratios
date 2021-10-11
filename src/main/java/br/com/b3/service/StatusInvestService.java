@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
-import br.com.b3.controller.AllTickets;
+import br.com.b3.controller.AllTickers;
 import br.com.b3.service.ticket.TicketResponse;
 import br.com.b3.util.HTMLReader;
 
@@ -85,13 +85,13 @@ public class StatusInvestService {
 		return response;
 	}
 	
-	public List<TicketResponse> getAllTicketsInfo(List<String> tickets) {
-		return tickets.stream()
+	public List<TicketResponse> getAllTickersInfo(List<String> tickers) {
+		return tickers.stream()
 				.filter(t -> ticketExiste(t))
 				.map(t -> {
 					
 					Document document = fetchDocumentFromTicketOr(t, 
-							"Não conseguiu acessar a página do ticket: " + t + ":(");
+							"Não conseguiu acessar a página do ticker: " + t + ":(");
 					
 					return TicketResponse.builder()
 							.setDocument(document)
@@ -142,9 +142,9 @@ public class StatusInvestService {
 	}
 
 	private String getCategoriaBy(String ticket) {
-		return AllTickets.ACOES.contains(ticket) ? "acoes"
-				: AllTickets.FIIS.contains(ticket) ? "fundos-imobiliarios"
-						: AllTickets.ETFS.contains(ticket) ? "etfs" : null;
+		return AllTickers.ACOES.contains(ticket) ? "acoes"
+				: AllTickers.FIIS.contains(ticket) ? "fundos-imobiliarios"
+						: AllTickers.ETFS.contains(ticket) ? "etfs" : null;
 	}
 
 	private void validaTicket(String ticket) {
@@ -154,9 +154,9 @@ public class StatusInvestService {
 
 	private boolean ticketExiste(String ticket) {
 		String finalTicket = normalizaTicket(ticket);
-		return AllTickets.ACOES.contains(finalTicket) || 
-				AllTickets.FIIS.contains(finalTicket) || 
-				AllTickets.ETFS.contains(finalTicket);
+		return AllTickers.ACOES.contains(finalTicket) || 
+				AllTickers.FIIS.contains(finalTicket) || 
+				AllTickers.ETFS.contains(finalTicket);
 	}
 	
 	private String normalizaTicket(String ticket) {

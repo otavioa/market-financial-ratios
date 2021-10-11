@@ -53,32 +53,32 @@
 					<tr>
 						<th scope="row">1</th>
 						<td>Ação</td>
-						<td>/statusinvest/acoes/{ticket}</td>
+						<td>/statusinvest/acoes/{ticker}</td>
 					</tr>
 					<tr>
 						<th scope="row">2</th>
 						<td>Ação</td>
-						<td>/statusinvest/acoes/{ticket}/{indicador}</td>
+						<td>/statusinvest/acoes/{ticker}/{indicador}</td>
 					</tr>
 					<tr>
 						<th scope="row">3</th>
 						<td>FII</td>
-						<td>/statusinvest/fundos-imobiliarios/{ticket}</td>
+						<td>/statusinvest/fundos-imobiliarios/{ticker}</td>
 					</tr>
 					<tr>
 						<th scope="row">4</th>
 						<td>FII</td>
-						<td>/statusinvest/fundos-imobiliarios/{ticket}/{indicador}</td>
+						<td>/statusinvest/fundos-imobiliarios/{ticker}/{indicador}</td>
 					</tr>
 					<tr>
 						<th scope="row">5</th>
 						<td>ETF</td>
-						<td>/statusinvest/etfs/{ticket}</td>
+						<td>/statusinvest/etfs/{ticker}</td>
 					</tr>
 					<tr>
 						<th scope="row">6</th>
 						<td>Todos</td>
-						<td>/statusinvest/?tickets=X,Y,Z</td>
+						<td>/statusinvest/?tickers=X,Y,Z</td>
 					</tr>
 				</tbody>
 			</table>
@@ -144,10 +144,10 @@
 		</div>
 		<div class="row">
 			<ul>
-				<li>Todos os tickets são validados com os existentes na B3, mas
+				<li>Todos os tickers são validados com os existentes na B3, mas
 					isso foi inserido manualmente. Portanto, caso esteja utilizando a
-					API para algum ticket muito novo, você deve me avisar para
-					incluí-lo na aplicação, pois pode retornar erro de ticket inválido.
+					API para algum ticker muito novo, você deve me avisar para
+					incluí-lo na aplicação, pois pode retornar erro de ticker inválido.
 				</li>
 				<li>Indicadores que não forem encontrados na página da
 					StatusInvest serão retornados com valor 0,00.</li>
@@ -171,7 +171,7 @@
 								/statusinvest/acoes/ITSA4</div>
 							<div class="card-body">
 								<p class="card-text">Retorna todos os indicadores
-									disponíveis do ticket da Itaúsa</p>
+									disponíveis do ticker da Itaúsa</p>
 							</div>
 							<div class="card-footer">
 								<a href="/statusinvest/acoes/ITSA4" target="_blank"
@@ -199,7 +199,7 @@
 								/statusinvest/fundos-imobiliarios/XPLG11</div>
 							<div class="card-body">
 								<p class="card-text">Retorna todos os indicadores
-									disponíveis para FII do ticket da XP LOG</p>
+									disponíveis para FII do ticker da XP LOG</p>
 							</div>
 							<div class="card-footer">
 								<a href="/statusinvest/fundos-imobiliarios/XPLG11"
@@ -239,12 +239,12 @@
 					<div class="col-auto mb-3">
 						<div class="card h-100" style="width: 30rem;">
 							<div class="card-header font-weight-bold">
-									/statusinvest/?tickets=ITSA4,XPLG11,IVVB11</div>
+									/statusinvest/?tickers=ITSA4,XPLG11,IVVB11</div>
 							<div class="card-body">
-								<p class="card-text">Retornará todos os valores e indicadores dos tickets informados</p>
+								<p class="card-text">Retornará todos os valores e indicadores dos tickers informados</p>
 							</div>
 							<div class="card-footer">
-								<a href="/statusinvest/?tickets=ITSA4,XPLG11,IVVB11"
+								<a href="/statusinvest/?tickers=ITSA4,XPLG11,IVVB11"
 									target="_blank" class="btn btn-primary">Testar</a>
 							</div>
 						</div>
