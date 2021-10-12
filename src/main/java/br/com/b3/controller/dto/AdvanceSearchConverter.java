@@ -10,13 +10,13 @@ import br.com.b3.util.NumberUtils;
 public class AdvanceSearchConverter {
 
 	public static AdvancedSearchDTO convert(AdvanceSearchResponse acoes) {
-		List<CompanyDTO> convertedCompanies = acoes.stream().map(company -> convertCompany(company))
+		List<CompanyDTO> convertedCompanies = acoes.stream().map(company -> convert(company))
 				.collect(Collectors.toList());
 
 		return new AdvancedSearchDTO(convertedCompanies);
 	}
 
-	private static CompanyDTO convertCompany(CompanyResponse company) {
+	public static CompanyDTO convert(CompanyResponse company) {
 		CompanyDTO dto = new CompanyDTO();
 
 		dto.setNome(company.getCompanyName());
