@@ -1,14 +1,16 @@
 package br.com.b3.util;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 public class NumberUtils {
 
+	static public final Locale BRAZIL = new Locale("pt","BR"); 
 	private static final int SCALE_NUMBER = 2;
 
 	public static String format(Double value) {
 		try {
-			NumberFormat instance = NumberFormat.getInstance();
+			NumberFormat instance = NumberFormat.getInstance(BRAZIL);
 			instance.setMaximumFractionDigits(SCALE_NUMBER);
 			instance.setMinimumFractionDigits(SCALE_NUMBER);
 			return instance.format(value);
