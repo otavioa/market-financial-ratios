@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.b3.controller.dto.AdvanceSearchConverter;
+import br.com.b3.controller.dto.AdvancedSearchDTO;
 import br.com.b3.service.StatusInvestAdvancedSearchService;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
@@ -21,11 +23,11 @@ public class StatusInvestAdvancedSearchController {
 	@Autowired private StatusInvestAdvancedSearchService service;
 	
 	@GetMapping("/all")
-	public ResponseEntity<AdvanceSearchResponse> getAllAvailable(){
+	public ResponseEntity<AdvancedSearchDTO> getAllAvailable(){
 		
 		AdvanceSearchResponse acoes = service.getAllAvailable();
 		
-		return ResponseEntity.ok(acoes);
+		return ResponseEntity.ok(AdvanceSearchConverter.convert(acoes));
 		
 	}
 	
