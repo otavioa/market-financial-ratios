@@ -15,12 +15,41 @@ public class AdvanceSearchConverter {
 
 		return new AdvancedSearchDTO(convertedCompanies);
 	}
+	
+	public static AdvancedSearchDTO convert(AdvanceSearchResponse acoes, List<String> indicadores) {
+		if(indicadores.isEmpty())
+			return convert(acoes);
+		
+		List<CompanyDTO> convertedCompanies = acoes.stream()
+				.map(company -> convertWithIndicator(company, indicadores))
+				.collect(Collectors.toList());
+		
+		return new AdvancedSearchDTO(convertedCompanies);
+	}
+	
+	private static CompanyDTO convertWithIndicator(CompanyResponse company, List<String> indicadores) {
+		CompanyDTO dto = new CompanyDTO();
+		
+		dto.setNome(company.getCompanyName());
+		dto.setTicker(company.getTicker());
+		dto.setPrice(NumberUtils.format(company.getPrice()));
+		
+		indicadores.forEach(i -> 
+			CompanyIndicatorConverter.valueOf(normaliza(i)).convert(dto, company));
+		
+		return dto;
+	}
+
+	private static String normaliza(String indicador) {
+		return indicador.trim().toUpperCase();
+	}
 
 	public static CompanyDTO convert(CompanyResponse company) {
 		CompanyDTO dto = new CompanyDTO();
 
 		dto.setNome(company.getCompanyName());
 		dto.setTicker(company.getTicker());
+		dto.setPrice(NumberUtils.format(company.getPrice()));
 		dto.setGestao(company.getGestao());
 		dto.setDy(NumberUtils.format(company.getDy()));
 		dto.setDividaLiquidaEbit(NumberUtils.format(company.getDividaLiquidaEbit()));
@@ -43,7 +72,6 @@ public class AdvanceSearchConverter {
 		dto.setPassivo_Ativo(NumberUtils.format(company.getPassivo_Ativo()));
 		dto.setPeg_Ratio(NumberUtils.format(company.getPeg_Ratio()));
 		dto.setPl_Ativo(NumberUtils.format(company.getPl_Ativo()));
-		dto.setPrice(NumberUtils.format(company.getDy()));
 		dto.setReceitas_Cagr5(NumberUtils.format(company.getReceitas_Cagr5()));
 		dto.setRoa(NumberUtils.format(company.getRoa()));
 		dto.setRoe(NumberUtils.format(company.getRoe()));
@@ -58,7 +86,6 @@ public class AdvanceSearchConverter {
 		dto.setP_vp(NumberUtils.format(company.getP_vp()));
 		dto.setPatrimonio(NumberUtils.formatCompact(company.getPatrimonio()));
 		dto.setPercentualcaixa(NumberUtils.format(company.getPercentualcaixa()));
-		dto.setDy(NumberUtils.format(company.getDy()));
 			
 		return dto;
 	}

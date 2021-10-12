@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.b3.controller.dto.AdvanceSearchConverter;
 import br.com.b3.controller.dto.AdvancedSearchDTO;
 import br.com.b3.controller.dto.CompanyDTO;
 import br.com.b3.service.StatusInvestAdvancedSearchService;
@@ -39,7 +40,7 @@ public class StatusInvestAdvancedSearchController {
 		
 		AdvanceSearchResponse acoes = service.getAllAvailable(asList(tickers));
 		
-		return ResponseEntity.ok(convert(acoes));
+		return ResponseEntity.ok(AdvanceSearchConverter.convert(acoes, asList(indicadores)));
 		
 	}
 	

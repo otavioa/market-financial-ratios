@@ -15,7 +15,7 @@ public class NumberUtils {
 			instance.setMinimumFractionDigits(SCALE_NUMBER);
 			return instance.format(value);
 		} catch (Exception e) {
-			return null;
+			return "-";
 		}
 	}
 
