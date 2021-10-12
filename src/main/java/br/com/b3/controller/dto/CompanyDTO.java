@@ -1,10 +1,15 @@
 package br.com.b3.controller.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class CompanyDTO {
 
-	private String nome;
 	private String ticker;
+	private String nome;
 	private String gestao;
+	private String price;
 	private String dy;
 	private String dividaLiquidaEbit;
 	private String dividaliquidaPatrimonioLiquido;
@@ -26,7 +31,6 @@ public class CompanyDTO {
 	private String passivo_Ativo;
 	private String peg_Ratio;
 	private String pl_Ativo;
-	private String price;
 	private String receitas_Cagr5;
 	private String roa;
 	private String roe;
