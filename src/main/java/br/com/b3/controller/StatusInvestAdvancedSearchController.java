@@ -18,7 +18,7 @@ import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
 
 @RestController
-@RequestMapping("/statusinvest-advancedsearch")
+@RequestMapping("/statusinvest/advanced-search")
 public class StatusInvestAdvancedSearchController {
 
 	@Autowired
