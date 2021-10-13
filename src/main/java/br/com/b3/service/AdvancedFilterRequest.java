@@ -34,6 +34,7 @@ public abstract class AdvancedFilterRequest {
 	private SubFilter p_CapitalGiro = SubFilter.EMPTY;
 	private SubFilter p_AtivoCirculante = SubFilter.EMPTY;
 	private SubFilter roe = SubFilter.EMPTY;
+	private SubFilter roic = SubFilter.EMPTY;
 	private SubFilter roa = SubFilter.EMPTY;
 	private SubFilter liquidezCorrente = SubFilter.EMPTY;
 	private SubFilter pl_Ativo = SubFilter.EMPTY;
@@ -45,6 +46,7 @@ public abstract class AdvancedFilterRequest {
 	private SubFilter vpa = SubFilter.EMPTY;
 	private SubFilter lpa = SubFilter.EMPTY;
 	private SubFilter valorMercado = SubFilter.EMPTY;
+	
 	
 	public AdvancedFilterRequest(String my_range) {
 		this.my_range = my_range;
@@ -200,6 +202,14 @@ public abstract class AdvancedFilterRequest {
 
 	public SubFilter getRoe() {
 		return roe;
+	}
+
+	public SubFilter getRoic() {
+		return roic;
+	}
+
+	public void setRoic(SubFilter roic) {
+		this.roic = roic;
 	}
 
 	public void setRoe(SubFilter roe) {
