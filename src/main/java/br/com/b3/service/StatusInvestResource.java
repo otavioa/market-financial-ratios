@@ -4,9 +4,9 @@ package br.com.b3.service;
 public enum StatusInvestResource {
 	
 	ACOES(1, new AcoesFilter()),
-	FIIS(2, new FiisFilter());
-	//STOCKS(12, new AcoesFilter()),
-	//REITS(13, new AcoesFilter());
+	FIIS(2, new FiisFilter()),
+	STOCKS(12, new StocksFilter()),
+	REITS(13, new ReitsFilter());
 
 	private Integer categoryType;
 	private AdvancedFilterRequest filter;

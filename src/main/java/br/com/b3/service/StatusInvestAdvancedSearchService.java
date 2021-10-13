@@ -15,7 +15,6 @@ import br.com.b3.external.url.Get;
 import br.com.b3.external.url.HeaderArguments;
 import br.com.b3.external.url.ResponseBody;
 import br.com.b3.service.dto.AdvanceSearchResponse;
-import br.com.b3.service.dto.CompanyResponse;
 
 @Service
 public class StatusInvestAdvancedSearchService {
@@ -50,29 +49,49 @@ public class StatusInvestAdvancedSearchService {
 		return result;
 	}
 	
-	public AdvanceSearchResponse getTodasAcoes() {
-		String preparedURL = prepareURLBasedOnResource(URL, StatusInvestResource.ACOES);
-
-		return doGet(preparedURL, AdvanceSearchResponse.class);
-	}
-
-	public CompanyResponse getAcaoByTicker(String ticker) {
-		String preparedURL = prepareURLBasedOnResource(URL, StatusInvestResource.ACOES); 
-		
-		AdvanceSearchResponse response = doGet(preparedURL, AdvanceSearchResponse.class);
-		
-		return response.stream()
-			.filter(acao -> ticker.equals(acao.getTicker()))
-			.findFirst()
-			.orElseThrow(() -> new IllegalArgumentException("Ticker informado inválido!"));
+	public AdvanceSearchResponse getAllAcoes() {
+		return getFromResource(StatusInvestResource.ACOES);
 	}
 	
-	public AdvanceSearchResponse getAcaoByTickers(List<String> tickers) {
-		AdvanceSearchResponse todasAcoes = getTodasAcoes();
+	public AdvanceSearchResponse getAllFiis() {
+		return getFromResource(StatusInvestResource.FIIS);
+	}
+	
+	public AdvanceSearchResponse getAllStocks() {
+		return getFromResource(StatusInvestResource.STOCKS);
+	}
+	
+	public AdvanceSearchResponse getAllReits() {
+		return getFromResource(StatusInvestResource.REITS);
+	}
+
+	public AdvanceSearchResponse getFiiByTicker(String... tickers) {
+		return getByTickers(StatusInvestResource.FIIS, tickers);
+	}
+	
+	public AdvanceSearchResponse getAcaoByTickers(String... tickers) {
+		return getByTickers(StatusInvestResource.ACOES, tickers);
+	}
+	
+	public AdvanceSearchResponse getStockByTickers(String... tickers) {
+		return getByTickers(StatusInvestResource.STOCKS, tickers);
+	}
+	
+	public AdvanceSearchResponse getReitByTickers(String... tickers) {
+		return getByTickers(StatusInvestResource.REITS, tickers);
+	}
+
+	private AdvanceSearchResponse getByTickers(StatusInvestResource resource, String... tickers) {
+		AdvanceSearchResponse response = getFromResource(resource);
 		
-		return new AdvanceSearchResponse(todasAcoes.stream()
-			.filter(acao -> tickers.contains(acao.getTicker()))
+		return new AdvanceSearchResponse(response.stream()
+			.filter(t -> asList(tickers).contains(t.getTicker()))
 			.collect(Collectors.toList()));
+	}
+	
+	private AdvanceSearchResponse getFromResource(StatusInvestResource acoes) {
+		String preparedURL = prepareURLBasedOnResource(URL, acoes);
+		return doGet(preparedURL, AdvanceSearchResponse.class);
 	}
 
 	private String prepareURLBasedOnResource(String url, StatusInvestResource resource) {
