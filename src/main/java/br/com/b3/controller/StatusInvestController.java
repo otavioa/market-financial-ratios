@@ -21,7 +21,7 @@ import br.com.b3.service.ticket.TicketResponse;
 
 @RestController
 @RequestMapping("/statusinvest")
-public class StatusInvestAdvancedSearchController {
+public class StatusInvestController {
 
 	@Autowired
 	private StatusInvestAdvancedSearchService service;
