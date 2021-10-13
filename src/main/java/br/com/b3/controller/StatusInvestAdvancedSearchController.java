@@ -14,15 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.b3.controller.dto.AdvancedSearchDTO;
 import br.com.b3.controller.dto.CompanyDTO;
 import br.com.b3.service.StatusInvestAdvancedSearchService;
+import br.com.b3.service.StatusInvestService;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
+import br.com.b3.service.ticket.TicketResponse;
 
 @RestController
-@RequestMapping("/statusinvest/advanced-search")
+@RequestMapping("/statusinvest")
 public class StatusInvestAdvancedSearchController {
 
 	@Autowired
 	private StatusInvestAdvancedSearchService service;
+	
+	@Autowired
+	private StatusInvestService simpleService;
 
 	@GetMapping("/all")
 	public ResponseEntity<AdvancedSearchDTO> getAllAvailable() {
@@ -39,7 +44,7 @@ public class StatusInvestAdvancedSearchController {
 
 		AdvanceSearchResponse response = service.getAllAvailable(asList(tickers));
 
-		return ResponseEntity.ok(convert(response, asList(indicadores)));
+		return ResponseEntity.ok(convert(response, indicadores));
 
 	}
 
@@ -70,7 +75,7 @@ public class StatusInvestAdvancedSearchController {
 
 		AdvanceSearchResponse acoes = service.getAcaoByTickers(tickers);
 
-		return ResponseEntity.ok(convert(acoes, asList(indicadores)));
+		return ResponseEntity.ok(convert(acoes, indicadores));
 	}
 
 //---------
@@ -102,7 +107,7 @@ public class StatusInvestAdvancedSearchController {
 
 		AdvanceSearchResponse fiis = service.getFiiByTicker(tickers);
 
-		return ResponseEntity.ok(convert(fiis, asList(indicadores)));
+		return ResponseEntity.ok(convert(fiis, indicadores));
 	}
 
 //---------
@@ -134,7 +139,7 @@ public class StatusInvestAdvancedSearchController {
 
 		AdvanceSearchResponse stocks = service.getStockByTickers(tickers);
 
-		return ResponseEntity.ok(convert(stocks, asList(indicadores)));
+		return ResponseEntity.ok(convert(stocks, indicadores));
 	}
 
 //---------
@@ -166,6 +171,16 @@ public class StatusInvestAdvancedSearchController {
 
 		AdvanceSearchResponse reits = service.getReitByTickers(tickers);
 
-		return ResponseEntity.ok(convert(reits, asList(indicadores)));
+		return ResponseEntity.ok(convert(reits, indicadores));
+	}
+	
+	//---------
+	
+	@GetMapping("/etfs/{ticket}")
+	public ResponseEntity<TicketResponse> getEtfTicketInfo(@PathVariable(value="ticket", required=true) String ticket){
+		
+		TicketResponse ticketInfo = simpleService.getEtfInfo(ticket);
+		
+		return ResponseEntity.ok(ticketInfo);
 	}
 }

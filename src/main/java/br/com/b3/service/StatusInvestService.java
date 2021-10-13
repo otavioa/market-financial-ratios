@@ -10,6 +10,7 @@ import br.com.b3.controller.AllTickers;
 import br.com.b3.service.ticket.TicketResponse;
 import br.com.b3.util.HTMLReader;
 
+@Deprecated
 @Service
 public class StatusInvestService {
 

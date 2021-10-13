@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.b3.service.StatusInvestService;
 import br.com.b3.service.ticket.TicketResponse;
 
-@RestController
-@RequestMapping("/statusinvest")
+//@RestController
+//@RequestMapping("/statusinvest")
 public class StatusInvestController {
 
 	@Autowired private StatusInvestService service;

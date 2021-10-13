@@ -1,5 +1,6 @@
 package br.com.b3.controller.dto;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,15 +17,19 @@ public class AdvanceSearchConverter {
 		return new AdvancedSearchDTO(convertedCompanies);
 	}
 	
-	public static AdvancedSearchDTO convert(AdvanceSearchResponse acoes, List<String> indicadores) {
-		if(indicadores.isEmpty())
+	public static AdvancedSearchDTO convert(AdvanceSearchResponse acoes, String[] indicadores) {
+		if(!contains(indicadores))
 			return convert(acoes);
 		
 		List<CompanyDTO> convertedCompanies = acoes.stream()
-				.map(company -> convertWithIndicator(company, indicadores))
+				.map(company -> convertWithIndicator(company, Arrays.asList(indicadores)))
 				.collect(Collectors.toList());
 		
 		return new AdvancedSearchDTO(convertedCompanies);
+	}
+
+	private static boolean contains(String[] indicadores) {
+		return indicadores != null && indicadores.length > 0;
 	}
 	
 	private static CompanyDTO convertWithIndicator(CompanyResponse company, List<String> indicadores) {

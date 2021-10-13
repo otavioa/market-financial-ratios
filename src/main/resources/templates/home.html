@@ -33,54 +33,13 @@
 				<main class="py-md-3 bd-content" role="main">
 				<h1>B3 Financial</h1>
 				<h3>Endpoints.</h3>
-				<p>Todos os endpoints que a API disponibiliza para você usar :).
+				<p>Todos os endpoints disponíveis você encontra <a th:href="@{/swagger-ui/}" >aqui</a> :).
 					Faça bom proveito!</p>
-				<table class="table table-bordered table-hover">
-					<thead class="thead-dark">
-						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Tipo</th>
-							<th scope="col">Endpoint</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Ação</td>
-							<td>/statusinvest/acoes/{ticker}</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Ação</td>
-							<td>/statusinvest/acoes/{ticker}/{indicador}</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>FII</td>
-							<td>/statusinvest/fundos-imobiliarios/{ticker}</td>
-						</tr>
-						<tr>
-							<th scope="row">4</th>
-							<td>FII</td>
-							<td>/statusinvest/fundos-imobiliarios/{ticker}/{indicador}</td>
-						</tr>
-						<tr>
-							<th scope="row">5</th>
-							<td>ETF</td>
-							<td>/statusinvest/etfs/{ticker}</td>
-						</tr>
-						<tr>
-							<th scope="row">6</th>
-							<td>Todos</td>
-							<td>/statusinvest/?tickers=X,Y,Z</td>
-						</tr>
-					</tbody>
-				</table>
-				<h3>Indicadores disponíveis</h3>
+				
+				<h3>Indicadores disponíveis.</h3>
 				<p>São todos os indicadores que a aplicação recupera da
 					StatusInvest.</p>
-				<p>Você também pode utilizar nos serviços acima, mas somente
-					para os endpoints que possuem parâmetro {indicador}.</p>
+				<p>Os indicadores são aplicáveis aos serviços que dispõem do <i>query parameter</i> <b>indicadores</b>. Veja Exemplos*</p>
 				<table class="table table-bordered table-hover">
 					<thead class="thead-light">
 						<tr>
@@ -90,11 +49,6 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>VALUE</td>
-							<td>Valor por ação atualizado de Mercado</td>
-						</tr>
 						<tr>
 							<th scope="row">2</th>
 							<td>PL</td>
@@ -122,24 +76,12 @@
 						</tr>
 					</tbody>
 				</table>
-				<p>
-					<em>*O Valor não é um indicador, é mais caso você precise
-						somente do valor mesmo :)</em>
-				</p>
-				<h3>Dicas</h3>
+				<h3>Dicas.</h3>
 				<ul>
-					<li>Todos os tickers são validados com os existentes na B3,
-						mas isso foi inserido manualmente. Portanto, caso esteja
-						utilizando a API para algum ticker muito novo, você deve me avisar
-						para incluí-lo na aplicação, pois pode retornar erro de ticker
-						inválido.</li>
 					<li>Indicadores que não forem encontrados na página da
-						StatusInvest serão retornados com valor 0,00.</li>
+						StatusInvest serão retornados com valor "-".</li>
 					<li>O uso incorreto de um endpoint poderá retornar 404 ou 500
 						como erro.</li>
-					<li>O volume excessivo de chamadas para a API pode retornar em
-						um delay na resposta de até 15 segundos, conforme bloqueio da
-						StatusInvest</li>
 					<li>Exemplo de Planilha do GDocs que utiliza os recursos da
 						ferramenta <a
 						href="https://docs.google.com/spreadsheets/d/1Hd9jAoOieAhRbnWY2y4JoxHnaeEq7iaerGiX5jERGXw/edit?usp=sharing"
@@ -147,7 +89,7 @@
 					</li>
 
 				</ul>
-				<h3>Exemplos</h3>
+				<h3>Exemplos.</h3>
 				<div class="row justify-content-center">
 					<div class="col-auto mb-3">
 						<div class="card h-100" style="width: 26rem;">
@@ -166,13 +108,13 @@
 					<div class="col-auto mb-3">
 						<div class="card h-100" style="width: 26rem;">
 							<div class="card-header font-weight-bold">
-								/statusinvest/acoes/ITSA4/PL</div>
+								/statusinvest/acoes?tickers=ITSA4&indicadores=PL</div>
 							<div class="card-body">
 								<p class="card-text">Retorna o valor de PL para a ação da
 									Itaúsa</p>
 							</div>
 							<div class="card-footer">
-								<a href="/statusinvest/acoes/ITSA4/PL" target="_blank"
+								<a href="/statusinvest/acoes?tickers=ITSA4&indicadores=PL" target="_blank"
 									class="btn btn-primary">Testar</a>
 							</div>
 						</div>
@@ -180,13 +122,27 @@
 					<div class="col-auto mb-3">
 						<div class="card h-100" style="width: 26rem;">
 							<div class="card-header font-weight-bold">
-								/statusinvest/fundos-imobiliarios/XPLG11</div>
+								/statusinvest/acoes/all</div>
+							<div class="card-body">
+								<p class="card-text">Retorna todas as ações disponíveis no mercado</p>
+							</div>
+							<div class="card-footer">
+								<a href="/statusinvest/acoes/all" target="_blank"
+									class="btn btn-primary">Testar</a>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-auto mb-3">
+						<div class="card h-100" style="width: 26rem;">
+							<div class="card-header font-weight-bold">
+								/statusinvest/fiis/XPLG11</div>
 							<div class="card-body">
 								<p class="card-text">Retorna todos os indicadores
 									disponíveis para FII do ticker da XP LOG</p>
 							</div>
 							<div class="card-footer">
-								<a href="/statusinvest/fundos-imobiliarios/XPLG11"
+								<a href="/statusinvest/fiis/XPLG11"
 									target="_blank" class="btn btn-primary">Testar</a>
 							</div>
 						</div>
@@ -194,18 +150,31 @@
 					<div class="col-auto mb-3">
 						<div class="card h-100" style="width: 26rem;">
 							<div class="card-header font-weight-bold">
-								/statusinvest/fundos-imobiliarios/XPLG11/PVP</div>
+								/statusinvest/fiis?tickers=XPLG11&indicadores=PVP</div>
 							<div class="card-body">
 								<p class="card-text">Retorna o valor de P/VP para o FII da
 									XP LOG</p>
 							</div>
 							<div class="card-footer">
-								<a href="/statusinvest/fundos-imobiliarios/XPLG11/PVP"
+								<a href="/statusinvest/fiis?tickers=XPLG11&indicadores=PVP"
 									target="_blank" class="btn btn-primary">Testar</a>
 							</div>
 						</div>
 					</div>
-
+					<div class="col-auto mb-3">
+						<div class="card h-100" style="width: 26rem;">
+							<div class="card-header font-weight-bold">
+								/statusinvest/fiis/all</div>
+							<div class="card-body">
+								<p class="card-text">Retorna todas os fundos imobíliarios disponíveis no mercado</p>
+							</div>
+							<div class="card-footer">
+								<a href="/statusinvest/fiis/all" target="_blank"
+									class="btn btn-primary">Testar</a>
+							</div>
+						</div>
+					</div>
+					
 					<div class="col-auto mb-3">
 						<div class="card h-100" style="width: 26rem;">
 							<div class="card-header font-weight-bold">
@@ -221,20 +190,35 @@
 							</div>
 						</div>
 					</div>
+					
 					<div class="col-auto mb-3">
 						<div class="card h-100" style="width: 26rem;">
 							<div class="card-header font-weight-bold">
-								/statusinvest/?tickers=ITSA4,XPLG11,IVVB11</div>
+								/statusinvest?tickers=ITSA4,XPLG11,WPD,DOC,AMZN,NEE</div>
 							<div class="card-body">
 								<p class="card-text">Retornará todos os valores e
-									indicadores dos tickers informados</p>
+									indicadores dos tickers informados. (Não funciona para ETF's)</p>
 							</div>
 							<div class="card-footer">
-								<a href="/statusinvest/?tickers=ITSA4,XPLG11,IVVB11"
+								<a href="/statusinvest?tickers=ITSA4,XPLG11,WPD,DOC,AMZN,NEE"
 									target="_blank" class="btn btn-primary">Testar</a>
 							</div>
 						</div>
 					</div>
+					<div class="col-auto mb-3">
+						<div class="card h-100" style="width: 26rem;">
+							<div class="card-header font-weight-bold">
+								/statusinvest/all</div>
+							<div class="card-body">
+								<p class="card-text">Retornará todos os ativos para Ações / FII's / Stocks / REIT's</p>
+							</div>
+							<div class="card-footer">
+								<a href="/statusinvest/all"
+									target="_blank" class="btn btn-primary">Testar</a>
+							</div>
+						</div>
+					</div>
+					
 				</div>
 			</div>
 			<div class="col-12 col-md-2 col-xl-2"></div>

@@ -12,9 +12,4 @@ public class PagesController {
 		return "home";
 	}
 	
-	@RequestMapping("/json")
-	public String importarJson() {
-		return "importar-json";
-	}
-	
 }
