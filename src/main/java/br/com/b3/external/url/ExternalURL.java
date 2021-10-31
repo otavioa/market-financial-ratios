@@ -12,6 +12,10 @@ public class ExternalURL {
 	
 	@Autowired private ExternalURLAccess externalAccess;
 	
+	public ExternalURL(ExternalURLAccess externalAccess) {
+		this.externalAccess = externalAccess;
+	}
+	
 	public <T extends ResponseBody> T doGet(String url, Class<T> responseBodyClass) {
 		return tryToRequest(new Get<T>(externalAccess, url, responseBodyClass));
 	}
