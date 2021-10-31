@@ -16,7 +16,7 @@ import br.com.b3.external.url.client.ExternalURLClient;
 import br.com.b3.external.url.client.ExternalURLClientException;
 
 @Service
-public class ExternalURLAccess {
+class ExternalURLAccess {
 
 	private HttpHeaders headers = new HttpHeaders();
 	
@@ -63,4 +63,5 @@ public class ExternalURLAccess {
 		
 		return client.call(url, HttpMethod.PATCH, headers, request, responseClass);
 	}
+	
 }
