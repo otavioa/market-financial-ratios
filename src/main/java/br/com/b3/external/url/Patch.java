@@ -2,7 +2,7 @@ package br.com.b3.external.url;
 
 import br.com.b3.external.url.client.ExternalURLClientException;
 
-public class Patch<T extends ResponseBody> extends Get<T> {
+class Patch<T extends ResponseBody> extends Get<T> {
 
 	private Request request;
 

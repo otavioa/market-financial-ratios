@@ -3,8 +3,6 @@ package br.com.b3.external.url;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -16,14 +14,14 @@ import br.com.b3.external.url.client.ExternalURLClient;
 import br.com.b3.external.url.client.ExternalURLClientException;
 
 @Service
-public class ExternalURLAccess {
+class ExternalURLAccess {
 
 	private HttpHeaders headers = new HttpHeaders();
-	
+
 	@Autowired
 	@Qualifier("ExternalURLRestClient")
 	private ExternalURLClient client;
-	
+
 	protected ExternalURLAccess(ExternalURLClient client) {
 		this.client = client;
 	}
@@ -32,12 +30,9 @@ public class ExternalURLAccess {
 		headerArguments.forEach((key, value) -> addToHeader(key, value));
 		return this;
 	}
-	
+
 	public ExternalURLAccess addToHeader(String key, String value) {
-		List<String> headerProperty = headers.get(key);
-		if(headerProperty == null || !headerProperty.contains(value))
-			headers.set(key, value);
-		
+		headers.set(key, value);
 		return this;
 	}
 
@@ -46,21 +41,22 @@ public class ExternalURLAccess {
 		return this;
 	}
 
-	public <R extends ResponseBody> ResponseEntity<R> postObject(String url, Request request, Class<R> responseClass) 
+	public <R extends ResponseBody> ResponseEntity<R> postObject(String url, Request request, Class<R> responseClass)
 			throws ExternalURLClientException {
-		
+
 		return client.call(url, HttpMethod.POST, headers, request, responseClass);
 	}
 
-	public <R extends ResponseBody> ResponseEntity<R> getObject(String url, Class<R> responseClass) 
+	public <R extends ResponseBody> ResponseEntity<R> getObject(String url, Class<R> responseClass)
 			throws ExternalURLClientException {
-		
+
 		return client.call(url, HttpMethod.GET, headers, responseClass);
 	}
-	
-	public <R extends ResponseBody> ResponseEntity<R> patchObject(String url, Request request, Class<R> responseClass) 
+
+	public <R extends ResponseBody> ResponseEntity<R> patchObject(String url, Request request, Class<R> responseClass)
 			throws ExternalURLClientException {
-		
+
 		return client.call(url, HttpMethod.PATCH, headers, request, responseClass);
 	}
+
 }

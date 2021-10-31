@@ -2,7 +2,7 @@ package br.com.b3.external.url;
 
 import java.util.HashMap;
 
-public class HeaderArguments extends HashMap<String, String> {
+class HeaderArguments extends HashMap<String, String> {
 
 	private static final long serialVersionUID = 1L;
 	

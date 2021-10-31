@@ -5,26 +5,18 @@ import static java.util.Arrays.asList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.b3.external.url.ExternalURLAccess;
-import br.com.b3.external.url.Get;
-import br.com.b3.external.url.HeaderArguments;
-import br.com.b3.external.url.ResponseBody;
+import br.com.b3.external.url.ExternalURL;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 
 @Service
 public class StatusInvestAdvancedSearchService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(StatusInvestAdvancedSearchService.class);
-
 	private static final String URL = "https://statusinvest.com.br/category/advancedsearchresult?search={search}&CategoryType={categoryType}";
 
-	@Autowired
-	private ExternalURLAccess externalAccess;
+	@Autowired private ExternalURL externalUrl;
 
 	public AdvanceSearchResponse getAllAvailable(List<String> tickers) {
 		AdvanceSearchResponse allAvailable = getAllAvailable();
@@ -42,7 +34,7 @@ public class StatusInvestAdvancedSearchService {
 					.replace("{categoryType}", resource.getCategoryType().toString())
 					.replace("{search}", resource.getFilter().asQueryParameter());
 
-			return doGet(preparedURL, AdvanceSearchResponse.class);
+			return externalUrl.doGet(preparedURL, AdvanceSearchResponse.class);
 			
 		}).forEach(response -> result.addAll(response));
 
@@ -91,7 +83,7 @@ public class StatusInvestAdvancedSearchService {
 	
 	private AdvanceSearchResponse getFromResource(StatusInvestResource acoes) {
 		String preparedURL = prepareURLBasedOnResource(URL, acoes);
-		return doGet(preparedURL, AdvanceSearchResponse.class);
+		return externalUrl.doGet(preparedURL, AdvanceSearchResponse.class);
 	}
 
 	private String prepareURLBasedOnResource(String url, StatusInvestResource resource) {
@@ -101,21 +93,4 @@ public class StatusInvestAdvancedSearchService {
 		
 		return preparedURL;
 	}
-
-	protected <T extends ResponseBody> T doGet(String url, Class<T> responseBodyClass) {
-		return tryToRequest(new Get<T>(externalAccess, url, responseBodyClass));
-	}
-
-	private <T extends ResponseBody> T tryToRequest(Get<T> request) {
-		HeaderArguments headers = HeaderArguments.init();
-
-		try {
-			return request.execute(headers);
-		} catch (Exception e) {
-			LOGGER.error("Erro ao tentar reautenticar", e);
-
-			throw new RuntimeException(e);
-		}
-	}
-
 }

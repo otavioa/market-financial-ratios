@@ -2,7 +2,7 @@ package br.com.b3.external.url;
 
 import br.com.b3.external.url.client.ExternalURLClientException;
 
-public class Get<T extends ResponseBody> {
+class Get<T extends ResponseBody> {
 
 	protected String url;
 	protected Class<T> responseBodyClass;
@@ -19,10 +19,6 @@ public class Get<T extends ResponseBody> {
 				.addToHeaderJSONContent()
 				.addToHeader(headerArguments)
 				.getObject(url, responseBodyClass).getBody();
-	}
-
-	public String getUrl() {
-		return url;
 	}
 
 }
