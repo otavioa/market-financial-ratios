@@ -21,8 +21,4 @@ class Get<T extends ResponseBody> {
 				.getObject(url, responseBodyClass).getBody();
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
 }
