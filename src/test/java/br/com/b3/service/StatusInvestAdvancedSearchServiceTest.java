@@ -35,6 +35,19 @@ class StatusInvestAdvancedSearchServiceTest {
 	}
 	
 	@Test
+	void getAllAvailable() {
+		AdvanceSearchResponse mockResponse = newResponse(1L, "GENERICA", "GGG");
+		mockExternalUrlGet(mockResponse);
+		
+		subject.getAllAvailable();
+		
+		assertAcaoCallToURL();
+		assertFiiCallToURL();
+		assertStockCallToURL();
+		assertReitCallToURL();
+	}
+	
+	@Test
 	void getAllAcoes() {
 		mockExternalUrlGet();
 		
