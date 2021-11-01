@@ -41,15 +41,6 @@ class ExternalURLTest {
 		subject = new ExternalURL(urlAccess);
 	}
 
-	private void mockRequestCall() throws ExternalURLClientException {
-		Mockito.when(client.call(eq(URL), any(HttpMethod.class), any(HttpHeaders.class), any(Request.class), any()))
-				.thenReturn(response);
-	}
-
-	private void mockCall() throws ExternalURLClientException {
-		Mockito.when(client.call(eq(URL), any(HttpMethod.class), any(HttpHeaders.class), any())).thenReturn(response);
-	}
-	
 	@Test
 	void getFromURL() throws ExternalURLClientException {
 		mockCall();
@@ -138,6 +129,15 @@ class ExternalURLTest {
 		} catch (Exception e) {
 			fail("Não deveria ter lançado Exception, mas sim RuntimeException");
 		}
+	}
+	
+	private void mockRequestCall() throws ExternalURLClientException {
+		Mockito.when(client.call(eq(URL), any(HttpMethod.class), any(HttpHeaders.class), any(Request.class), any()))
+				.thenReturn(response);
+	}
+
+	private void mockCall() throws ExternalURLClientException {
+		Mockito.when(client.call(eq(URL), any(HttpMethod.class), any(HttpHeaders.class), any())).thenReturn(response);
 	}
 
 	private void mockWithException(String errorMessage) throws ExternalURLClientException {
