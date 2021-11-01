@@ -88,6 +88,10 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.7</version>
+				<configuration>
+					<destFile>${sonar.coverage.jacoco.xmlReportPaths}</destFile>
+					<append>true</append>
+				</configuration>
 				<executions>
 					<execution>
 						<id>jacoco-initialize</id>
