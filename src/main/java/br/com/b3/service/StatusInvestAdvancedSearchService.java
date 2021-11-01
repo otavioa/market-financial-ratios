@@ -14,8 +14,6 @@ import br.com.b3.service.dto.AdvanceSearchResponse;
 @Service
 public class StatusInvestAdvancedSearchService {
 
-	private static final String URL = "https://statusinvest.com.br/category/advancedsearchresult?search={search}&CategoryType={categoryType}";
-
 	@Autowired private ExternalURL externalUrl;
 
 	public AdvanceSearchResponse getAllAvailable(List<String> tickers) {
@@ -30,7 +28,7 @@ public class StatusInvestAdvancedSearchService {
 		AdvanceSearchResponse result = new AdvanceSearchResponse();
 		
 		asList(StatusInvestResource.values()).stream().map(resource -> {
-			String preparedURL = URL
+			String preparedURL = getStatusInvestUrl()
 					.replace("{categoryType}", resource.getCategoryType().toString())
 					.replace("{search}", resource.getFilter().asQueryParameter());
 
@@ -40,7 +38,7 @@ public class StatusInvestAdvancedSearchService {
 
 		return result;
 	}
-	
+
 	public AdvanceSearchResponse getAllAcoes() {
 		return getFromResource(StatusInvestResource.ACOES);
 	}
@@ -81,8 +79,8 @@ public class StatusInvestAdvancedSearchService {
 			.collect(Collectors.toList()));
 	}
 	
-	private AdvanceSearchResponse getFromResource(StatusInvestResource acoes) {
-		String preparedURL = prepareURLBasedOnResource(URL, acoes);
+	private AdvanceSearchResponse getFromResource(StatusInvestResource resource) {
+		String preparedURL = prepareURLBasedOnResource(getStatusInvestUrl(), resource);
 		return externalUrl.doGet(preparedURL, AdvanceSearchResponse.class);
 	}
 
@@ -92,5 +90,9 @@ public class StatusInvestAdvancedSearchService {
 				.replace("{search}", resource.getFilter().asQueryParameter());
 		
 		return preparedURL;
+	}
+	
+	private String getStatusInvestUrl() {
+		return StatusInvestURL.getUrl();
 	}
 }
