@@ -63,6 +63,19 @@ class StatusInvestControllerTest {
 		.andExpect(jsonPath("$[1].ticker", Matchers.is("TST2")));
 	}
 	
+	@Test
+	void getAcaoByTicker() throws Exception {
+		mockResponseTo(
+				company(1L, "TESTE", "TST"),
+				company(2L, "TESTE2", "TST2"));
+		
+		performRequest(ApiEndpoints.ACOES, 
+				new Parameter("tickers", "TST2"))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$[0].nome", Matchers.is("TESTE2")))
+		.andExpect(jsonPath("$[0].ticker", Matchers.is("TST2")));
+	}
+	
 	private void mockResponseTo(CompanyResponse... companies) {
 		AdvanceSearchResponse response = 
 				new AdvanceSearchResponse(asList(companies));
@@ -71,7 +84,7 @@ class StatusInvestControllerTest {
 			.andRespond(withSuccess(JSONUtils.toJSON(response), APPLICATION_JSON));
 	}
 
-	private CompanyResponse company(long id, String name, String ticker) {
+	private static CompanyResponse company(long id, String name, String ticker) {
 		return new CompanyResponse(id, name, ticker);
 	}
 
