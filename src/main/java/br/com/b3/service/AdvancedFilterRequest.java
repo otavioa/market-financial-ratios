@@ -1,15 +1,12 @@
 package br.com.b3.service;
 
-import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHABETICALLY;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import br.com.b3.util.JSONUtils;
 
 public abstract class AdvancedFilterRequest {
 
@@ -310,9 +307,9 @@ public abstract class AdvancedFilterRequest {
 
 	public String asQueryParameter() {
 		try {
-			String json = convertToJson();
+			String json = JSONUtils.toJSON(this);
 			return encodeJson(json);
-		} catch (JsonProcessingException | UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException e) {
 			LOGGER.error("Falhou ao preparar request", e);
 			throw new RuntimeException(e);
 		}
@@ -322,9 +319,4 @@ public abstract class AdvancedFilterRequest {
 		return URLEncoder.encode(json, CHARSET);
 	}
 
-	private String convertToJson() throws JsonProcessingException {
-		return new ObjectMapper()
-				.configure(SORT_PROPERTIES_ALPHABETICALLY, true)
-				.writeValueAsString(this);
-	}
 }
