@@ -45,8 +45,9 @@ public class StatusInvestController {
 		AdvanceSearchResponse response = service.getAllAvailable(asList(tickers));
 
 		return ResponseEntity.ok(convert(response, indicadores));
-
 	}
+	
+//---------
 
 	@GetMapping("/acoes/all")
 	public ResponseEntity<AdvancedSearchDTO> getAllAcoes() {
@@ -54,18 +55,6 @@ public class StatusInvestController {
 		AdvanceSearchResponse acoes = service.getAllAcoes();
 
 		return ResponseEntity.ok(convert(acoes));
-	}
-
-	@GetMapping("/acoes/{ticket}")
-	public ResponseEntity<CompanyDTO> getAcaoInfo(
-			@PathVariable(value = "ticket", required = true) String ticker) {
-
-		AdvanceSearchResponse response = service.getAcaoByTickers(ticker);
-
-		CompanyResponse company = response.stream().findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("Ticker informado inválido!"));
-
-		return ResponseEntity.ok(convert(company));
 	}
 
 	@GetMapping("/acoes")
