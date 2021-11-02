@@ -1,23 +1,25 @@
 package br.com.b3.controller;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.startsWith;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.hamcrest.Matchers;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.b3.service.StatusInvestURL;
@@ -27,17 +29,17 @@ import br.com.b3.util.JSONUtils;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-
 class StatusInvestControllerTest {
 
-	private static final String URL_TEST = "http://url?search={search}&CategoryType={categoryType}";
+	private static final String URL_TEST_STARTS = "http://url";
+	private static final String URL_TEST = URL_TEST_STARTS + "?search={search}&CategoryType={categoryType}";
 	
 	@Autowired private MockMvc mvc;
 	@Autowired private RestTemplate restTemplate;
 	
 	private MockRestServiceServer mockServer;
 	
-	@BeforeClass
+	@BeforeAll
     public static void setUpEnvironment() {
 		StatusInvestURL.setUrl(URL_TEST);
     }
@@ -49,22 +51,30 @@ class StatusInvestControllerTest {
 	
 	@Test
 	void getAllAcoes() throws Exception {
-		AdvanceSearchResponse advanceSearchResponse = new AdvanceSearchResponse();
-		CompanyResponse companyResponse = new CompanyResponse(1L, "TESTE", "TST");
-		advanceSearchResponse.add(companyResponse);
+		mockResponseTo(
+				company(1L, "TESTE", "TST"),
+				company(2L, "TESTE2", "TST2"));
 		
-		mockServer.expect(requestTo(startsWith("http://url")))
-			.andRespond(withSuccess(JSONUtils.toJSON(advanceSearchResponse), MediaType.APPLICATION_JSON));
-		
-		String url = "/statusinvest/acoes/all";
-		
-		ResultActions result = performRequest(url);
-		
-		result.andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(MockMvcResultMatchers.jsonPath("$[0].nome", Matchers.is("TESTE")))
-		.andExpect(MockMvcResultMatchers.jsonPath("$[0].ticker", Matchers.is("TST")));
+		performRequest(ApiEndpoints.ACOES_ALL)
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$[0].nome", Matchers.is("TESTE")))
+		.andExpect(jsonPath("$[0].ticker", Matchers.is("TST")))
+		.andExpect(jsonPath("$[1].nome", Matchers.is("TESTE2")))
+		.andExpect(jsonPath("$[1].ticker", Matchers.is("TST2")));
 	}
 	
+	private void mockResponseTo(CompanyResponse... companies) {
+		AdvanceSearchResponse response = 
+				new AdvanceSearchResponse(asList(companies));
+		
+		mockServer.expect(requestTo(startsWith(URL_TEST_STARTS)))
+			.andRespond(withSuccess(JSONUtils.toJSON(response), APPLICATION_JSON));
+	}
+
+	private CompanyResponse company(long id, String name, String ticker) {
+		return new CompanyResponse(id, name, ticker);
+	}
+
 	private ResultActions performRequest(String endPoint, Parameter... parameters) throws Exception {
 		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(endPoint);
 		for(Parameter parameter : parameters)
