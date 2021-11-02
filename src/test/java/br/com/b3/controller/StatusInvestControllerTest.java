@@ -5,6 +5,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import org.hamcrest.Matchers;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.client.RestTemplate;
 
+import br.com.b3.service.StatusInvestURL;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.util.JSONUtils;
@@ -28,10 +30,17 @@ import br.com.b3.util.JSONUtils;
 
 class StatusInvestControllerTest {
 
+	private static final String URL_TEST = "http://url?search={search}&CategoryType={categoryType}";
+	
 	@Autowired private MockMvc mvc;
 	@Autowired private RestTemplate restTemplate;
 	
 	private MockRestServiceServer mockServer;
+	
+	@BeforeClass
+    public static void setUpEnvironment() {
+		StatusInvestURL.setUrl(URL_TEST);
+    }
 	
 	@BeforeEach
     public void setUp() {
@@ -44,7 +53,7 @@ class StatusInvestControllerTest {
 		CompanyResponse companyResponse = new CompanyResponse(1L, "TESTE", "TST");
 		advanceSearchResponse.add(companyResponse);
 		
-		mockServer.expect(requestTo(startsWith("https://statusinvest.com.br")))
+		mockServer.expect(requestTo(startsWith("http://url")))
 			.andRespond(withSuccess(JSONUtils.toJSON(advanceSearchResponse), MediaType.APPLICATION_JSON));
 		
 		String url = "/statusinvest/acoes/all";
