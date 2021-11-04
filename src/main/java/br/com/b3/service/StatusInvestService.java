@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.b3.controller.AllTickers;
+import br.com.b3.service.htmlreader.HtmlReaderService;
 import br.com.b3.service.ticket.TicketResponse;
-import br.com.b3.util.HTMLReader;
 import br.com.b3.util.exception.GenericException;
 
 @Deprecated
@@ -17,6 +18,10 @@ public class StatusInvestService {
 
 	private static final String STATUS_INVEST_URL = "https://statusinvest.com.br/{categoria}/{ticket}";
 
+	@Autowired private HtmlReaderService readerService;
+	
+	public StatusInvestService() {}
+	
 	public TicketResponse getAcaoInfo(String ticket) {
 		Document document = fetchDocumentFromTicketOr(ticket, 
 				"Não conseguiu acessar a página da ação: " + ticket + ":(");
@@ -132,7 +137,7 @@ public class StatusInvestService {
 
 	private Document getDocument(String url) {
 		try {
-			return HTMLReader.getHTMLDocument(url);
+			return readerService.getHTMLDocument(url);
 		} catch (Exception e) {
 			throw new GenericException("Falhou ao ler documento da URL " + url, e);
 		}
