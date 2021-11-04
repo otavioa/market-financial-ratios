@@ -3,17 +3,13 @@ package br.com.b3.service;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import br.com.b3.util.JSONUtils;
+import br.com.b3.util.exception.GenericException;
 
 public abstract class AdvancedFilterRequest {
 
 	private static final String CHARSET = "UTF-8";
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(StatusInvestAdvancedSearchService.class);
-	
 	private String my_range;
 	
 	private String Sector = "";
@@ -310,8 +306,7 @@ public abstract class AdvancedFilterRequest {
 			String json = JSONUtils.toJSON(this);
 			return encodeJson(json);
 		} catch (UnsupportedEncodingException e) {
-			LOGGER.error("Falhou ao preparar request", e);
-			throw new RuntimeException(e);
+			throw new GenericException("Não conseguiu aplicar encode ao Objeto", e);
 		}
 	}
 
