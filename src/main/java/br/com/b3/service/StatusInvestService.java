@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.b3.controller.AllTickers;
 import br.com.b3.service.ticket.TicketResponse;
 import br.com.b3.util.HTMLReader;
+import br.com.b3.util.exception.GenericException;
 
 @Deprecated
 @Service
@@ -117,9 +118,6 @@ public class StatusInvestService {
 		String urlFinal = getFinalURL(finalTicket);
 		Document document = getDocument(urlFinal);
 
-		if (document == null)
-			throw new RuntimeException(errorMessage);
-		
 		return document;
 	}
 
@@ -136,10 +134,8 @@ public class StatusInvestService {
 		try {
 			return HTMLReader.getHTMLDocument(url);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new GenericException("Falhou ao ler documento da URL " + url, e);
 		}
-
-		return null;
 	}
 
 	private String getCategoriaBy(String ticket) {
