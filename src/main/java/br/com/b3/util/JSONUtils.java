@@ -9,16 +9,27 @@ import br.com.b3.util.exception.GenericException;
 
 public class JSONUtils {
 
+	private static ObjectMapper mapper;
+
 	private JSONUtils() {}
-	
+
 	public static String toJSON(Object object) {
 		try {
-			return new ObjectMapper()
+			return getMapper()
 					.configure(SORT_PROPERTIES_ALPHABETICALLY, true)
 					.writeValueAsString(object);
-		} catch (JsonProcessingException e) {
+		} catch (Exception e) {
 			throw new GenericException("Falhou ao converter objeto", e);
 		}
 	}
-	
+
+	public static ObjectMapper getMapper() {
+		return mapper != null ? mapper : new ObjectMapper();
+	}
+
+
+	public static void setMapper(ObjectMapper mapper) {
+		JSONUtils.mapper = mapper;
+	}
+
 }
