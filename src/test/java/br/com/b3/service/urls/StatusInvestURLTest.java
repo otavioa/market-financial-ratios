@@ -16,6 +16,15 @@ class StatusInvestURLTest {
 	}
 	
 	@Test
+	void newInstances() {
+		StatusInvestURL defaultInstace = new StatusInvestURL();
+		StatusInvestAdvanceSearchURL advancedInstace = new StatusInvestAdvanceSearchURL();
+		
+		Assertions.assertThat(defaultInstace).isNotNull();
+		Assertions.assertThat(advancedInstace).isNotNull();
+	}
+	
+	@Test
 	void getDefaultURL() {
 		String url = StatusInvestURL.getUrl();
 		

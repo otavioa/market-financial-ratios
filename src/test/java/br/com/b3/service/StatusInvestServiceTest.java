@@ -84,10 +84,30 @@ class StatusInvestServiceTest {
 	void getAcaoInfoWithIndicador() throws Exception {
 		mockReaderService("https://teste.com.br/acoes/WEGE3", "wege3_page.html");
 
-		TickerResponse response = subject.getAcaoInfo("WEGE3", "LPA");
+		TickerResponse response = subject.getAcaoInfo("WEGE3", "VALUE");
+
+		Assertions.assertThat(response.toString()).isEqualTo(
+				"{\"codigo\":\"WEGE3\",\"indicador\":\"VALUE\",\"value\":\"35,65\"}");
+		
+		response = subject.getAcaoInfo("WEGE3", "PL");
+
+		Assertions.assertThat(response.toString()).isEqualTo(
+				"{\"codigo\":\"WEGE3\",\"indicador\":\"PL\",\"value\":\"43,32\"}");
+		
+		response = subject.getAcaoInfo("WEGE3", "LPA");
 
 		Assertions.assertThat(response.toString()).isEqualTo(
 				"{\"codigo\":\"WEGE3\",\"indicador\":\"LPA\",\"value\":\"0,82\"}");
+		
+		response = subject.getAcaoInfo("WEGE3", "VPA");
+
+		Assertions.assertThat(response.toString()).isEqualTo(
+				"{\"codigo\":\"WEGE3\",\"indicador\":\"VPA\",\"value\":\"3,04\"}");
+		
+		response = subject.getAcaoInfo("WEGE3", "DY");
+
+		Assertions.assertThat(response.toString()).isEqualTo(
+				"{\"codigo\":\"WEGE3\",\"indicador\":\"DY\",\"value\":\"1,15\"}");
 	}
 	
 	@Test
@@ -98,6 +118,11 @@ class StatusInvestServiceTest {
 
 		Assertions.assertThat(response.toString()).isEqualTo(
 				"{\"codigo\":\"FIIB11\",\"indicador\":\"DY\",\"value\":\"8,72\"}");
+		
+		response = subject.getFiiInfo("FIIB11", "PVP");
+
+		Assertions.assertThat(response.toString()).isEqualTo(
+				"{\"codigo\":\"FIIB11\",\"indicador\":\"PVP\",\"value\":\"0,98\"}");
 	}
 	
 	@Test
