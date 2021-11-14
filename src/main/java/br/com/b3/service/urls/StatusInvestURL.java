@@ -1,8 +1,8 @@
-package br.com.b3.service;
+package br.com.b3.service.urls;
 
 public class StatusInvestURL {
 	
-	private static final String PROD_URL = "https://statusinvest.com.br/category/advancedsearchresult?search={search}&CategoryType={categoryType}";
+	private static final String PROD_URL = "https://statusinvest.com.br/{categoria}/{ticket}";
 
 	private static String url;
 	

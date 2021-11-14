@@ -22,9 +22,9 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.client.RestTemplate;
 
-import br.com.b3.service.StatusInvestURL;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
+import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
 import br.com.b3.util.JSONUtils;
 
 @SpringBootTest
@@ -41,7 +41,7 @@ class StatusInvestControllerTest {
 	
 	@BeforeAll
     public static void setUpEnvironment() {
-		StatusInvestURL.setUrl(URL_TEST);
+		StatusInvestAdvanceSearchURL.setUrl(URL_TEST);
     }
 	
 	@BeforeEach

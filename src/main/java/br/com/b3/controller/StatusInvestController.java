@@ -17,7 +17,7 @@ import br.com.b3.service.StatusInvestAdvancedSearchService;
 import br.com.b3.service.StatusInvestService;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
-import br.com.b3.service.ticket.TicketResponse;
+import br.com.b3.service.ticket.TickerResponse;
 
 @RestController
 @RequestMapping("/statusinvest")
@@ -166,9 +166,9 @@ public class StatusInvestController {
 	//---------
 	
 	@GetMapping("/etfs/{ticket}")
-	public ResponseEntity<TicketResponse> getEtfTicketInfo(@PathVariable(value="ticket", required=true) String ticket){
+	public ResponseEntity<TickerResponse> getEtfTicketInfo(@PathVariable(value="ticket", required=true) String ticket){
 		
-		TicketResponse ticketInfo = simpleService.getEtfInfo(ticket);
+		TickerResponse ticketInfo = simpleService.getEtfInfo(ticket);
 		
 		return ResponseEntity.ok(ticketInfo);
 	}
