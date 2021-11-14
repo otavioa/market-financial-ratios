@@ -9,26 +9,24 @@ import org.springframework.stereotype.Service;
 
 import br.com.b3.controller.AllTickers;
 import br.com.b3.service.htmlreader.HtmlReaderService;
-import br.com.b3.service.ticket.TicketResponse;
+import br.com.b3.service.ticket.TickerResponse;
+import br.com.b3.service.urls.StatusInvestURL;
 import br.com.b3.util.exception.GenericException;
 
-@Deprecated
 @Service
 public class StatusInvestService {
-
-	private static final String STATUS_INVEST_URL = "https://statusinvest.com.br/{categoria}/{ticket}";
 
 	@Autowired private HtmlReaderService readerService;
 	
 	public StatusInvestService() {}
 	
-	public TicketResponse getAcaoInfo(String ticket) {
-		Document document = fetchDocumentFromTicketOr(ticket, 
-				"Não conseguiu acessar a página da ação: " + ticket + ":(");
+	public TickerResponse getAcaoInfo(String ticker) {
+		Document document = fetchDocumentFromTickerOr(ticker, 
+				"Não conseguiu acessar a página da ação: " + ticker + ":(");
 
-		TicketResponse response = TicketResponse.builder()
+		TickerResponse response = TickerResponse.builder()
 				.setDocument(document)
-				.setCodigo(normalizaTicket(ticket))
+				.setCodigo(normalizaTicker(ticker))
 				.withValue()
 				.withPL()
 				.withLPA()
@@ -38,26 +36,26 @@ public class StatusInvestService {
 		return response;
 	}
 	
-	public TicketResponse getAcaoInfo(String ticket, String indicador) {
-		Document document = fetchDocumentFromTicketOr(ticket, 
-				"Não conseguiu acessar a página da ação: " + ticket + ":(");
+	public TickerResponse getAcaoInfo(String ticker, String indicador) {
+		Document document = fetchDocumentFromTickerOr(ticker, 
+				"Não conseguiu acessar a página da ação: " + ticker + ":(");
 
-		TicketResponse response = TicketResponse.builder()
+		TickerResponse response = TickerResponse.builder()
 				.setDocument(document)
-				.setCodigo(normalizaTicket(ticket))
+				.setCodigo(normalizaTicker(ticker))
 				.withIndicador(indicador)
 				.build();
 
 		return response;
 	}
 
-	public TicketResponse getFiiInfo(String ticket) {
-		Document document = fetchDocumentFromTicketOr(ticket, 
-				"Não conseguiu acessar a página do fii: " + ticket + ":(");
+	public TickerResponse getFiiInfo(String ticker) {
+		Document document = fetchDocumentFromTickerOr(ticker, 
+				"Não conseguiu acessar a página do fii: " + ticker + ":(");
 		
-		TicketResponse response = TicketResponse.builder()
+		TickerResponse response = TickerResponse.builder()
 				.setDocument(document)
-				.setCodigo(normalizaTicket(ticket))
+				.setCodigo(normalizaTicker(ticker))
 				.withValue()
 				.withDY()
 				.withPVP()
@@ -66,43 +64,43 @@ public class StatusInvestService {
 		return response;
 	}
 
-	public TicketResponse getFiiInfo(String ticket, String indicador) {
-		Document document = fetchDocumentFromTicketOr(ticket, 
-				"Não conseguiu acessar a página do fii: " + ticket + ":(");
+	public TickerResponse getFiiInfo(String ticker, String indicador) {
+		Document document = fetchDocumentFromTickerOr(ticker, 
+				"Não conseguiu acessar a página do fii: " + ticker + ":(");
 
-		TicketResponse response = TicketResponse.builder()
+		TickerResponse response = TickerResponse.builder()
 				.setDocument(document)
-				.setCodigo(normalizaTicket(ticket))
+				.setCodigo(normalizaTicker(ticker))
 				.withIndicador(indicador)
 				.build();
 
 		return response;
 	}
 
-	public TicketResponse getEtfInfo(String ticket) {
-		Document document = fetchDocumentFromTicketOr(ticket, 
-				"Não conseguiu acessar a página do etf: " + ticket + ":(");
+	public TickerResponse getEtfInfo(String ticker) {
+		Document document = fetchDocumentFromTickerOr(ticker, 
+				"Não conseguiu acessar a página do etf: " + ticker + ":(");
 		
-		TicketResponse response = TicketResponse.builder()
+		TickerResponse response = TickerResponse.builder()
 				.setDocument(document)
-				.setCodigo(normalizaTicket(ticket))
+				.setCodigo(normalizaTicker(ticker))
 				.withValue()
 				.build();
 
 		return response;
 	}
 	
-	public List<TicketResponse> getAllTickersInfo(List<String> tickers) {
+	public List<TickerResponse> getAllTickersInfo(List<String> tickers) {
 		return tickers.stream()
-				.filter(t -> ticketExiste(t))
+				.filter(t -> tickerExists(t))
 				.map(t -> {
 					
-					Document document = fetchDocumentFromTicketOr(t, 
+					Document document = fetchDocumentFromTickerOr(t, 
 							"Não conseguiu acessar a página do ticker: " + t + ":(");
 					
-					return TicketResponse.builder()
+					return TickerResponse.builder()
 							.setDocument(document)
-							.setCodigo(normalizaTicket(t))
+							.setCodigo(normalizaTicker(t))
 							.setUseZero(true)
 							.withValue()
 							.withPL()
@@ -115,10 +113,10 @@ public class StatusInvestService {
 		}).collect(Collectors.toList());
 	}
 	
-	private Document fetchDocumentFromTicketOr(String ticket, String errorMessage) {
-		String finalTicket = normalizaTicket(ticket);
+	private Document fetchDocumentFromTickerOr(String ticket, String errorMessage) {
+		String finalTicket = normalizaTicker(ticket);
 		
-		validaTicket(finalTicket);
+		checkTicker(finalTicket);
 		
 		String urlFinal = getFinalURL(finalTicket);
 		Document document = getDocument(urlFinal);
@@ -129,10 +127,13 @@ public class StatusInvestService {
 	private String getFinalURL(String ticket) {
 		String categoria = getCategoriaBy(ticket);
 
-		if (categoria == null)
-			throw new RuntimeException("Não foi possível identificar a categoria através do ticket: " + ticket + ".");
-
-		return STATUS_INVEST_URL.replace("{categoria}", categoria).replace("{ticket}", ticket);
+		return getStatusInvestUrl()
+				.replace("{categoria}", categoria)
+				.replace("{ticket}", ticket);
+	}
+	
+	private String getStatusInvestUrl() {
+		return StatusInvestURL.getUrl();
 	}
 
 	private Document getDocument(String url) {
@@ -143,26 +144,25 @@ public class StatusInvestService {
 		}
 	}
 
-	private String getCategoriaBy(String ticket) {
-		return AllTickers.ACOES.contains(ticket) ? "acoes"
-				: AllTickers.FIIS.contains(ticket) ? "fundos-imobiliarios"
-						: AllTickers.ETFS.contains(ticket) ? "etfs" : null;
+	private String getCategoriaBy(String ticker) {
+		return AllTickers.ACOES.contains(ticker) ? "acoes"
+				: AllTickers.FIIS.contains(ticker) ? "fundos-imobiliarios": "etfs";
 	}
 
-	private void validaTicket(String ticket) {
-		if(!ticketExiste(ticket))
-			throw new IllegalArgumentException("Ticket informado é invalido. Ticket: " + ticket);
+	private void checkTicker(String ticker) {
+		if(!tickerExists(ticker))
+			throw new IllegalArgumentException("Ticker informado é invalido. Ticker: " + ticker);
 	}
 
-	private boolean ticketExiste(String ticket) {
-		String finalTicket = normalizaTicket(ticket);
-		return AllTickers.ACOES.contains(finalTicket) || 
-				AllTickers.FIIS.contains(finalTicket) || 
-				AllTickers.ETFS.contains(finalTicket);
+	private boolean tickerExists(String ticker) {
+		String finalTicker = normalizaTicker(ticker);
+		return AllTickers.ACOES.contains(finalTicker) || 
+				AllTickers.FIIS.contains(finalTicker) || 
+				AllTickers.ETFS.contains(finalTicker);
 	}
 	
-	private String normalizaTicket(String ticket) {
-		return ticket.trim().toUpperCase();
+	private String normalizaTicker(String ticker) {
+		return ticker.trim().toUpperCase();
 	}
 	
 }

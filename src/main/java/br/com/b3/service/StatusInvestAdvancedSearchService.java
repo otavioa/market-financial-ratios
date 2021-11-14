@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.b3.external.url.ExternalURL;
 import br.com.b3.service.dto.AdvanceSearchResponse;
+import br.com.b3.service.urls.StatusInvestURL;
 
 @Service
 public class StatusInvestAdvancedSearchService {

@@ -84,8 +84,8 @@ public class TicketResponseBuilder {
 		return this;
 	}
 
-	public TicketResponse build() {
-		TicketResponse ticket = new TicketResponse();
+	public TickerResponse build() {
+		TickerResponse ticket = new TickerResponse();
 		
 		ticket.setCodigo(codigo);
 		ticket.setValue(valueOrZero(value));

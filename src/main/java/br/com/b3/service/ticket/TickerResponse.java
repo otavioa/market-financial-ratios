@@ -3,8 +3,10 @@ package br.com.b3.service.ticket;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import br.com.b3.util.JSONUtils;
+
 @JsonInclude(Include.NON_NULL)
-public class TicketResponse {
+public class TickerResponse {
 
 	private String codigo;
 	private String indicador;
@@ -95,5 +97,8 @@ public class TicketResponse {
 		this.indicador = indicador;
 	}
 	
-
+	@Override
+	public String toString() {
+		return JSONUtils.toJSON(this);
+	}
 }
