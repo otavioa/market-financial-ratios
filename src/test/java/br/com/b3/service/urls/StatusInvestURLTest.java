@@ -12,6 +12,7 @@ class StatusInvestURLTest {
 	@BeforeEach
 	public void setUpEnvironment() {
 		StatusInvestURL.setUrl(null);
+		StatusInvestAdvanceSearchURL.setUrl(null);
 	}
 	
 	@Test

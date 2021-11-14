@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import br.com.b3.external.url.ExternalURL;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
+import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
 import br.com.b3.service.urls.StatusInvestURL;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,7 +33,7 @@ class StatusInvestAdvancedSearchServiceTest {
 	
 	@BeforeAll
 	public static void setUpEnvironment() {
-		StatusInvestURL.setUrl(URL_TEST);
+		StatusInvestAdvanceSearchURL.setUrl(URL_TEST);
 	}
 	
 	@Test

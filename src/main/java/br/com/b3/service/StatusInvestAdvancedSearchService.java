@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.b3.external.url.ExternalURL;
 import br.com.b3.service.dto.AdvanceSearchResponse;
-import br.com.b3.service.urls.StatusInvestURL;
+import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
 
 @Service
 public class StatusInvestAdvancedSearchService {
@@ -94,6 +94,6 @@ public class StatusInvestAdvancedSearchService {
 	}
 	
 	private String getStatusInvestUrl() {
-		return StatusInvestURL.getUrl();
+		return StatusInvestAdvanceSearchURL.getUrl();
 	}
 }
