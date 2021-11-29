@@ -8,6 +8,14 @@ public class NumberUtils {
 	static public final Locale BRAZIL = new Locale("pt","BR"); 
 	private static final int SCALE_NUMBER = 2;
 
+	public static Double format(String value) {
+		try {
+			return Double.parseDouble(value);
+		} catch (Exception e) {
+			return 0.0;
+		}
+	}
+	
 	public static String format(Double value) {
 		try {
 			NumberFormat instance = NumberFormat.getInstance(BRAZIL);

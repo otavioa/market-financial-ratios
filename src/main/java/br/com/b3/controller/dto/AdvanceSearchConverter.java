@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.util.NumberUtils;
@@ -29,7 +31,7 @@ public class AdvanceSearchConverter {
 	}
 
 	private static boolean contains(String[] indicadores) {
-		return indicadores != null && indicadores.length > 0;
+		return !ArrayUtils.isEmpty(indicadores);
 	}
 	
 	private static CompanyDTO convertWithIndicator(CompanyResponse company, List<String> indicadores) {

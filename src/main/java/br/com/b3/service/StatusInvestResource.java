@@ -1,6 +1,5 @@
 package br.com.b3.service;
 
-//TODO - Terminar a implementação dos resources
 public enum StatusInvestResource {
 	
 	ACOES(1, new AcoesFilter()),
