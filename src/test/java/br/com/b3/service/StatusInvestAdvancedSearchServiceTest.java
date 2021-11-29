@@ -18,7 +18,6 @@ import br.com.b3.external.url.ExternalURL;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
-import br.com.b3.service.urls.StatusInvestURL;
 
 @ExtendWith(MockitoExtension.class)
 class StatusInvestAdvancedSearchServiceTest {
@@ -38,7 +37,7 @@ class StatusInvestAdvancedSearchServiceTest {
 	
 	@Test
 	void getAllAvailable() {
-		AdvanceSearchResponse mockResponse = newResponse(1L, "GENERICA", "GGG");
+		AdvanceSearchResponse mockResponse = newResponse(1L, "GENERICA", "GGG", 100.00);
 		mockExternalUrlGet(mockResponse);
 		
 		subject.getAllAvailable();
@@ -60,7 +59,7 @@ class StatusInvestAdvancedSearchServiceTest {
 	
 	@Test
 	void getAcoesByTicker() {
-		AdvanceSearchResponse mockResponse = newResponse(1L, "AMBEV", "ABEV3");
+		AdvanceSearchResponse mockResponse = newResponse(1L, "AMBEV", "ABEV3", 30.00);
 		mockExternalUrlGet(mockResponse);
 		
 		AdvanceSearchResponse response = subject.getAcaoByTickers("ABEV3");
@@ -80,7 +79,7 @@ class StatusInvestAdvancedSearchServiceTest {
 	
 	@Test
 	void getFiisByTicker() {
-		AdvanceSearchResponse mockResponse = newResponse(1L, "XP LOG", "XPML11");
+		AdvanceSearchResponse mockResponse = newResponse(1L, "XP LOG", "XPML11", 100.00);
 		mockExternalUrlGet(mockResponse);
 		
 		AdvanceSearchResponse response = subject.getFiiByTicker("XPML11");
@@ -100,7 +99,7 @@ class StatusInvestAdvancedSearchServiceTest {
 	
 	@Test
 	void getStockByTicker() {
-		AdvanceSearchResponse mockResponse = newResponse(1L, "AMAZON", "AMZN");
+		AdvanceSearchResponse mockResponse = newResponse(1L, "AMAZON", "AMZN", 3000.00);
 		mockExternalUrlGet(mockResponse);
 		
 		AdvanceSearchResponse response = subject.getStockByTickers("AMZN");
@@ -120,7 +119,7 @@ class StatusInvestAdvancedSearchServiceTest {
 	
 	@Test
 	void getReitByTicker() {
-		AdvanceSearchResponse mockResponse = newResponse(1L, "PHYSICIANS REALTY TRUST", "DOC");
+		AdvanceSearchResponse mockResponse = newResponse(1L, "PHYSICIANS REALTY TRUST", "DOC", 100.00);
 		mockExternalUrlGet(mockResponse);
 		
 		AdvanceSearchResponse response = subject.getReitByTickers("DOC");
@@ -138,9 +137,9 @@ class StatusInvestAdvancedSearchServiceTest {
 		assertThat(company.getTicker(), Matchers.is(ticker));
 	}
 
-	private AdvanceSearchResponse newResponse(long companyId, String companyName, String ticker) {
+	private AdvanceSearchResponse newResponse(long companyId, String companyName, String ticker, Double price) {
 		AdvanceSearchResponse advanceSearchResponse = new AdvanceSearchResponse();
-		CompanyResponse companyResponse = new CompanyResponse(companyId, companyName, ticker);
+		CompanyResponse companyResponse = new CompanyResponse(companyId, companyName, ticker, price);
 		advanceSearchResponse.add(companyResponse);
 		return advanceSearchResponse;
 	}

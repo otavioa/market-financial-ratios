@@ -77,18 +77,6 @@ public class StatusInvestController {
 		return ResponseEntity.ok(convert(fiis));
 	}
 
-	@GetMapping("/fiis/{ticket}")
-	public ResponseEntity<CompanyDTO> getFiiInfo(
-			@PathVariable(value = "ticket", required = true) String ticker) {
-
-		AdvanceSearchResponse response = service.getFiiByTicker(ticker);
-
-		CompanyResponse company = response.stream().findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("Ticker informado inválido!"));
-
-		return ResponseEntity.ok(convert(company));
-	}
-
 	@GetMapping("/fiis")
 	public ResponseEntity<AdvancedSearchDTO> getFiisByTickers(
 			@RequestParam(value = "tickers", required = true) String[] tickers,
@@ -109,18 +97,6 @@ public class StatusInvestController {
 		return ResponseEntity.ok(convert(stocks));
 	}
 
-	@GetMapping("/stocks/{ticket}")
-	public ResponseEntity<CompanyDTO> getStocksInfo(
-			@PathVariable(value = "ticket", required = true) String ticker) {
-
-		AdvanceSearchResponse response = service.getStockByTickers(ticker);
-
-		CompanyResponse company = response.stream().findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("Ticker informado inválido!"));
-
-		return ResponseEntity.ok(convert(company));
-	}
-
 	@GetMapping("/stocks")
 	public ResponseEntity<AdvancedSearchDTO> getStocksByTickers(
 			@RequestParam(value = "tickers", required = true) String[] tickers,
@@ -139,18 +115,6 @@ public class StatusInvestController {
 		AdvanceSearchResponse reits = service.getAllReits();
 
 		return ResponseEntity.ok(convert(reits));
-	}
-
-	@GetMapping("/reits/{ticket}")
-	public ResponseEntity<CompanyDTO> getReitsInfo(
-			@PathVariable(value = "ticket", required = true) String ticker) {
-
-		AdvanceSearchResponse response = service.getReitByTickers(ticker);
-
-		CompanyResponse company = response.stream().findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("Ticker informado inválido!"));
-
-		return ResponseEntity.ok(convert(company));
 	}
 
 	@GetMapping("/reits")

@@ -47,10 +47,11 @@ public class CompanyResponse implements ResponseBody {
 
 	public CompanyResponse() {}
 	
-	public CompanyResponse(Long companyId, String companyName, String ticker) {
+	public CompanyResponse(Long companyId, String companyName, String ticker, Double price) {
 		this.companyId = companyId;
 		this.companyName = companyName;
 		this.ticker = ticker;
+		this.price = price;
 	}
 	
 	public Long getCompanyId() {

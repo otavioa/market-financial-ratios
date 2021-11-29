@@ -75,6 +75,10 @@
 			<artifactId>jacoco-maven-plugin</artifactId>
 			<version>0.8.7</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

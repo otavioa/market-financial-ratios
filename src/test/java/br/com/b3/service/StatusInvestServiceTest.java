@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.jsoup.HttpStatusException;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import br.com.b3.service.htmlreader.HtmlReaderService;
 import br.com.b3.service.ticket.TickerResponse;
 import br.com.b3.service.urls.StatusInvestURL;
+import br.com.b3.test.support.URLMockServiceSupport;
 import br.com.b3.util.exception.GenericException;
 
 @ExtendWith(MockitoExtension.class)
@@ -168,15 +168,9 @@ class StatusInvestServiceTest {
 		Assertions.assertThat(thrown.getMessage()).isEqualTo("Falhou ao ler documento da URL https://teste.com.br/acoes/WEGE3");
 		Assertions.assertThat(thrown.getCause()).isInstanceOf(HttpStatusException.class);
 	}
-
-	private void mockReaderService(String urlTested, String name) throws IOException, Exception {
-		Document parse = getDocumentFrom(name, urlTested);
-		Mockito.when(readerService.getHTMLDocument(urlTested)).thenReturn(parse);
-	}
-
-	private Document getDocumentFrom(String name, String urlTest) throws IOException {
-		String html = new String(getClass().getClassLoader().getResourceAsStream(name).readAllBytes());
-		return Jsoup.parse(html, urlTest);
+	
+	private void mockReaderService(String url, String fileName) throws IOException, Exception {
+		URLMockServiceSupport.mockReaderService(readerService, url, fileName);
 	}
 
 }
