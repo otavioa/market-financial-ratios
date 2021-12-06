@@ -9,6 +9,8 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 public class AccessUtil {
 
+	private AccessUtil() {}
+	
 	private static final int TIMEOUT = 30000;
 	
 	public static URI getURI(String url) {

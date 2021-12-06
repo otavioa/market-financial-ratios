@@ -2,6 +2,7 @@ package br.com.b3.controller;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -27,7 +29,9 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
+import br.com.b3.service.htmlreader.HtmlReaderService;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
+import br.com.b3.service.urls.StatusInvestURL;
 import br.com.b3.test.support.URLMockServiceSupport;
 import br.com.b3.util.JSONUtils;
 
@@ -40,17 +44,22 @@ class StatusInvestControllerTest {
 	private static final String URL_PATCH_FOR_STOCK = "CategoryType=12";
 	private static final String URL_PATCH_FOR_REIT = "CategoryType=13";
 	
-	private static final String URL_TEST_STARTS = "http://url";
-	private static final String URL_TEST = URL_TEST_STARTS + "?search={search}&CategoryType={categoryType}";
+	private static final String URL_TEST_DOMAIN = "http://url";
+	private static final String ADVANCED_URL_TEST = URL_TEST_DOMAIN + "?search={search}&CategoryType={categoryType}";
+	private static final String SIMPLE_URL_TEST = URL_TEST_DOMAIN + "/{categoria}/{ticket}";
 	
 	@Autowired private MockMvc mvc;
 	@Autowired private RestTemplate restTemplate;
+	
+	@MockBean
+	private HtmlReaderService readerService;
 	
 	private MockRestServiceServer mockServer;
 	
 	@BeforeAll
     public static void setUpEnvironment() {
-		StatusInvestAdvanceSearchURL.setUrl(URL_TEST);
+		StatusInvestAdvanceSearchURL.setUrl(ADVANCED_URL_TEST);
+		StatusInvestURL.setUrl(SIMPLE_URL_TEST);
     }
 	
 	@BeforeEach
@@ -331,14 +340,23 @@ class StatusInvestControllerTest {
 	
 	@Test
 	void getEtfByTicker() throws Exception {
-		//TODO - Vai dar um trabalhinho.
+		mockReaderService(URL_TEST_DOMAIN + "/etfs/IVVB11", "ivvb11_page.html");
+
+		performRequest("/statusinvest/etfs/IVVB11")
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.codigo", is("IVVB11")))
+		.andExpect(jsonPath("$.value", is("278,12")));
+	}
+	
+	private void mockReaderService(String url, String fileName) throws IOException, Exception {
+		URLMockServiceSupport.mockReaderService(readerService, url, fileName);
 	}
 	
 	private void mockResponseTo(String urlPatch, CompanyResponse... companies) {
 		AdvanceSearchResponse response = 
 				new AdvanceSearchResponse(asList(companies));
 		
-		mockServer.expect(requestTo(Matchers.allOf(startsWith(URL_TEST_STARTS), containsString(urlPatch))))
+		mockServer.expect(requestTo(Matchers.allOf(startsWith(URL_TEST_DOMAIN), containsString(urlPatch))))
 			.andRespond(withSuccess(JSONUtils.toJSON(response), APPLICATION_JSON));
 	}
 

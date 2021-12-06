@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.b3.controller.dto.AdvancedSearchDTO;
-import br.com.b3.controller.dto.CompanyDTO;
 import br.com.b3.service.StatusInvestAdvancedSearchService;
 import br.com.b3.service.StatusInvestService;
 import br.com.b3.service.dto.AdvanceSearchResponse;
-import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.service.ticket.TickerResponse;
 
 @RestController
