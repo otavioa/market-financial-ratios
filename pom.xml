@@ -92,6 +92,11 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.7</version>
+				<configuration>
+					<excludes>
+						<exclude>**/B3Application.*</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<id>jacoco-initialize</id>

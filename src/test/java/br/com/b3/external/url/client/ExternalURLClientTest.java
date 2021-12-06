@@ -59,6 +59,17 @@ class ExternalURLClientTest {
 	}
 	
 	@Test
+	void callforBadURI() throws ExternalURLClientException {		
+		ExternalURLClientException thrown = assertThrows(ExternalURLClientException.class, () -> {
+			
+			subject.call("htp://", HttpMethod.GET, new HttpHeaders(), request, ResponseBody.class);
+			
+		}, "ExternalURLClientException was expected");
+		
+		assertThat(thrown.getMessage()).isEqualTo("URL mal formada. URL:htp://");
+	}
+	
+	@Test
 	void callWithRequest() throws ExternalURLClientException {
 		whenExchange().thenReturn(response);
 		
