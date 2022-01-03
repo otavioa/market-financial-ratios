@@ -1,5 +1,7 @@
 package br.com.b3.util;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -76,6 +78,30 @@ class NumberUtilsTest {
 		String result = NumberUtils.formatCompact(value);
 		
 		Assertions.assertEquals("-", result);
+	}
+	
+	@Test
+	void roundValue() {
+		Double result = NumberUtils.round(10.2345, 2);
+		
+		Assertions.assertEquals(10.23, result);
+	}
+	
+	@Test
+	void roundNullValue() {
+		Double value = null;
+		Double result = NumberUtils.round(value, 2);
+		
+		Assertions.assertNull(result);
+	}
+	
+	@Test
+	void roundWithInvalidScale() {
+		assertThrows(IllegalArgumentException.class, () -> {
+
+			NumberUtils.round(10.43, -1);
+
+		}, "IllegalArgumentException was expected");
 	}
 
 }
