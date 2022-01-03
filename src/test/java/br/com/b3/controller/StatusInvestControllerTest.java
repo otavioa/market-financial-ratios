@@ -9,8 +9,6 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.IOException;
-
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +26,6 @@ import org.springframework.web.client.RestTemplate;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
-import br.com.b3.test.support.URLMockServiceSupport;
 import br.com.b3.util.JSONUtils;
 
 @SpringBootTest
@@ -114,21 +111,21 @@ class StatusInvestControllerTest {
 		.andExpect(jsonPath("$", Matchers.hasSize(2)))
 		.andExpect(jsonPath("$[0].nome", Matchers.is("EMPRESA ACAO")))
 		.andExpect(jsonPath("$[0].ticker", Matchers.is("ACAO3")))
-		.andExpect(jsonPath("$[0].p_L", Matchers.is("11,00")))
-		.andExpect(jsonPath("$[0].lpa", Matchers.is("3,00")))
-		.andExpect(jsonPath("$[0].vpa", Matchers.is("4,00")))
-		.andExpect(jsonPath("$[0].dy", Matchers.is("-")))
-		.andExpect(jsonPath("$[0].p_VP", Matchers.is("-")))
-		.andExpect(jsonPath("$[0].p_vp", Matchers.is("-")))
+		.andExpect(jsonPath("$[0].p_L", Matchers.is(11.00)))
+		.andExpect(jsonPath("$[0].lpa", Matchers.is(3.00)))
+		.andExpect(jsonPath("$[0].vpa", Matchers.is(4.00)))
+		.andExpect(jsonPath("$[0].dy", Matchers.is(0.00)))
+		.andExpect(jsonPath("$[0].p_VP", Matchers.is(0.00)))
+		.andExpect(jsonPath("$[0].p_vp", Matchers.is(0.00)))
 		
 		.andExpect(jsonPath("$[1].nome", Matchers.is("FUNDO FII")))
 		.andExpect(jsonPath("$[1].ticker", Matchers.is("FII11")))
-		.andExpect(jsonPath("$[1].p_L", Matchers.is("-")))
-		.andExpect(jsonPath("$[1].lpa", Matchers.is("-")))
-		.andExpect(jsonPath("$[1].vpa", Matchers.is("-")))
-		.andExpect(jsonPath("$[1].dy", Matchers.is("5,00")))
-		.andExpect(jsonPath("$[1].p_VP", Matchers.is("1,10")))
-		.andExpect(jsonPath("$[1].p_vp", Matchers.is("1,10")));
+		.andExpect(jsonPath("$[1].p_L", Matchers.is(0.00)))
+		.andExpect(jsonPath("$[1].lpa", Matchers.is(0.00)))
+		.andExpect(jsonPath("$[1].vpa", Matchers.is(0.00)))
+		.andExpect(jsonPath("$[1].dy", Matchers.is(5.00)))
+		.andExpect(jsonPath("$[1].p_VP", Matchers.is(1.10)))
+		.andExpect(jsonPath("$[1].p_vp", Matchers.is(1.10)));
 	}
 	
 	@Test
@@ -176,9 +173,9 @@ class StatusInvestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$[0].nome", Matchers.is("EMPRESA TESTE2")))
 		.andExpect(jsonPath("$[0].ticker", Matchers.is("TST2")))
-		.andExpect(jsonPath("$[0].p_L", Matchers.is("11,00")))
-		.andExpect(jsonPath("$[0].lpa", Matchers.is("3,00")))
-		.andExpect(jsonPath("$[0].vpa", Matchers.is("4,00")));
+		.andExpect(jsonPath("$[0].p_L", Matchers.is(11.00)))
+		.andExpect(jsonPath("$[0].lpa", Matchers.is(3.00)))
+		.andExpect(jsonPath("$[0].vpa", Matchers.is(4.00)));
 	}
 	
 	@Test
@@ -225,9 +222,9 @@ class StatusInvestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$[0].nome", Matchers.is("FUNDO TESTE2")))
 		.andExpect(jsonPath("$[0].ticker", Matchers.is("FTST12")))
-		.andExpect(jsonPath("$[0].dy", Matchers.is("5,00")))
-		.andExpect(jsonPath("$[0].p_VP", Matchers.is("1,10")))
-		.andExpect(jsonPath("$[0].p_vp", Matchers.is("1,10")));
+		.andExpect(jsonPath("$[0].dy", Matchers.is(5.00)))
+		.andExpect(jsonPath("$[0].p_VP", Matchers.is(1.10)))
+		.andExpect(jsonPath("$[0].p_vp", Matchers.is(1.10)));
 	}
 
 	@Test
@@ -275,9 +272,9 @@ class StatusInvestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$[0].nome", Matchers.is("COMPANY TEST2")))
 		.andExpect(jsonPath("$[0].ticker", Matchers.is("CTST2")))
-		.andExpect(jsonPath("$[0].p_L", Matchers.is("11,00")))
-		.andExpect(jsonPath("$[0].lpa", Matchers.is("3,00")))
-		.andExpect(jsonPath("$[0].vpa", Matchers.is("4,00")));
+		.andExpect(jsonPath("$[0].p_L", Matchers.is(11.00)))
+		.andExpect(jsonPath("$[0].lpa", Matchers.is(3.00)))
+		.andExpect(jsonPath("$[0].vpa", Matchers.is(4.00)));
 	}
 	
 	@Test
@@ -324,14 +321,9 @@ class StatusInvestControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$[0].nome", Matchers.is("REIT TEST2")))
 		.andExpect(jsonPath("$[0].ticker", Matchers.is("RTST2")))
-		.andExpect(jsonPath("$[0].dy", Matchers.is("5,00")))
-		.andExpect(jsonPath("$[0].p_VP", Matchers.is("1,10")))
-		.andExpect(jsonPath("$[0].p_vp", Matchers.is("1,10")));
-	}
-	
-	@Test
-	void getEtfByTicker() throws Exception {
-		//TODO - Vai dar um trabalhinho.
+		.andExpect(jsonPath("$[0].dy", Matchers.is(5.00)))
+		.andExpect(jsonPath("$[0].p_VP", Matchers.is(1.10)))
+		.andExpect(jsonPath("$[0].p_vp", Matchers.is(1.10)));
 	}
 	
 	private void mockResponseTo(String urlPatch, CompanyResponse... companies) {

@@ -1,7 +1,10 @@
 package br.com.b3.controller.dto;
 
+import static br.com.b3.util.NumberUtils.DOUBLE_ZERO;
+import static br.com.b3.util.NumberUtils.ifNullDefault;
+import static br.com.b3.util.NumberUtils.round;
+
 import br.com.b3.service.dto.CompanyResponse;
-import br.com.b3.util.NumberUtils;
 
 enum CompanyIndicatorConverter {
 	
@@ -9,7 +12,7 @@ enum CompanyIndicatorConverter {
 
 		@Override
 		public void convert(CompanyDTO dto, CompanyResponse company) {
-			dto.setP_L(NumberUtils.format(company.getP_L()));
+			dto.setP_L(normalizeValue(company.getP_L()));
 		}
 
 	},
@@ -18,7 +21,7 @@ enum CompanyIndicatorConverter {
 
 		@Override
 		public void convert(CompanyDTO dto, CompanyResponse company) {
-			dto.setLpa(NumberUtils.format(company.getLpa()));
+			dto.setLpa(normalizeValue(company.getLpa()));
 		}
 
 	},
@@ -27,7 +30,7 @@ enum CompanyIndicatorConverter {
 
 		@Override
 		public void convert(CompanyDTO dto, CompanyResponse company) {
-			dto.setVpa(NumberUtils.format(company.getVpa()));
+			dto.setVpa(normalizeValue(company.getVpa()));
 		}
 
 	},
@@ -36,7 +39,7 @@ enum CompanyIndicatorConverter {
 
 		@Override
 		public void convert(CompanyDTO dto, CompanyResponse company) {
-			dto.setDy(NumberUtils.format(company.getDy()));
+			dto.setDy(normalizeValue(company.getDy()));
 		}
 
 	},
@@ -45,11 +48,16 @@ enum CompanyIndicatorConverter {
 
 		@Override
 		public void convert(CompanyDTO dto, CompanyResponse company) {
-			dto.setP_VP(NumberUtils.format(company.getP_VP()));
-			dto.setP_vp(NumberUtils.format(company.getP_vp()));
+			dto.setP_VP(normalizeValue(company.getP_VP()));
+			dto.setP_vp(normalizeValue(company.getP_vp()));
 		}
 
 	};
 	
 	public abstract void convert(CompanyDTO dto, CompanyResponse company);
+	
+	Double normalizeValue(Double value) {
+		return round(ifNullDefault(value, DOUBLE_ZERO), 2);
+	}
+
 }
