@@ -15,6 +15,8 @@ import br.com.b3.service.dto.CompanyResponse;
 
 public class AdvanceSearchConverter {
 
+	private AdvanceSearchConverter() {}
+	
 	public static AdvancedSearchDTO convert(AdvanceSearchResponse acoes) {
 		List<CompanyDTO> convertedCompanies = acoes.stream().map(company -> convert(company))
 				.collect(Collectors.toList());

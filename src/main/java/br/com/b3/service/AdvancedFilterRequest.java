@@ -1,17 +1,14 @@
 package br.com.b3.service;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import br.com.b3.util.JSONUtils;
-import br.com.b3.util.exception.GenericException;
 
 public abstract class AdvancedFilterRequest {
 
-	private static final String CHARSET = "UTF-8";
-
 	private String my_range;
-	
+
 	private String Sector = "";
 	private String SubSector = "";
 	private String Segment = "";
@@ -43,12 +40,11 @@ public abstract class AdvancedFilterRequest {
 	private SubFilter vpa = SubFilter.EMPTY;
 	private SubFilter lpa = SubFilter.EMPTY;
 	private SubFilter valorMercado = SubFilter.EMPTY;
-	
-	
+
 	public AdvancedFilterRequest(String my_range) {
 		this.my_range = my_range;
 	}
-	
+
 	public String getSector() {
 		return Sector;
 	}
@@ -302,16 +298,8 @@ public abstract class AdvancedFilterRequest {
 	}
 
 	public String asQueryParameter() {
-		try {
-			String json = JSONUtils.toJSON(this);
-			return encodeJson(json);
-		} catch (UnsupportedEncodingException e) {
-			throw new GenericException("Não conseguiu aplicar encode ao Objeto", e);
-		}
-	}
-
-	private String encodeJson(String json) throws UnsupportedEncodingException {
-		return URLEncoder.encode(json, CHARSET);
+		String json = JSONUtils.toJSON(this);
+		return URLEncoder.encode(json, StandardCharsets.UTF_8);
 	}
 
 }

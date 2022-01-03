@@ -15,7 +15,7 @@ public class URLMockServiceSupport {
 		Mockito.when(readerService.getHTMLDocument(urlTested)).thenReturn(parse);
 	}
 
-	private static Document getDocumentFrom(String name, String urlTest) throws IOException {
+	public static Document getDocumentFrom(String name, String urlTest) throws IOException {
 		String html = new String(URLMockServiceSupport.class.getClassLoader().getResourceAsStream(name).readAllBytes());
 		return Jsoup.parse(html, urlTest);
 	}
