@@ -79,6 +79,8 @@ class ExternalURLTest {
 		HttpHeaders header = new HttpHeaders();
 		header.add("key", "value");
 		header.add("Content-Type", "application/json");
+		header.add("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36");
+		header.add("Accept", "*/*");
 
 		Mockito.verify(client).call(eq(URL), eq(HttpMethod.GET), eq(header), eq(FakeResponse.class));
 	}
@@ -95,6 +97,8 @@ class ExternalURLTest {
 		HttpHeaders header = new HttpHeaders();
 		header.add("key", "value");
 		header.add("Content-Type", "application/json");
+		header.add("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36");
+		header.add("Accept", "*/*");
 
 		Mockito.verify(client).call(eq(URL), eq(HttpMethod.GET), eq(header), eq(FakeResponse.class));
 	}
@@ -111,6 +115,8 @@ class ExternalURLTest {
 		HttpHeaders header = new HttpHeaders();
 		header.add("key", "value2");
 		header.add("Content-Type", "application/json");
+		header.add("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36");
+		header.add("Accept", "*/*");
 
 		Mockito.verify(client).call(eq(URL), eq(HttpMethod.GET), eq(header), eq(FakeResponse.class));
 	}
