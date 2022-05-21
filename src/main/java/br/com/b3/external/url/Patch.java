@@ -15,6 +15,8 @@ class Patch<T extends ResponseBody> extends Get<T> {
 	public T execute(HeaderArguments headerArguments) throws ExternalURLClientException {
 		return externalAccess
 				.addToHeaderJSONContent()
+				.addToHeaderUserAgent()
+				.addToHeaderAccept()
 				.addToHeader(headerArguments)
 				.patchObject(url, request, responseBodyClass).getBody();
 	}
