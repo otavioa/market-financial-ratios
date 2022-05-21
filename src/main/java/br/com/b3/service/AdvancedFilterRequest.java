@@ -12,6 +12,9 @@ public abstract class AdvancedFilterRequest {
 	private String Sector = "";
 	private String SubSector = "";
 	private String Segment = "";
+	
+	private ForecastFilterRequest forecast = ForecastFilterRequest.EMPTY;
+
 	private SubFilter dy = SubFilter.EMPTY;
 	private SubFilter p_L = SubFilter.EMPTY;
 	private SubFilter peg_Ratio = SubFilter.EMPTY;
@@ -71,6 +74,15 @@ public abstract class AdvancedFilterRequest {
 
 	public String getMy_range() {
 		return my_range;
+	}
+	
+
+	public ForecastFilterRequest getForecast() {
+		return forecast;
+	}
+
+	public void setForecast(ForecastFilterRequest forecast) {
+		this.forecast = forecast;
 	}
 
 	public SubFilter getDy() {
