@@ -16,6 +16,8 @@ import br.com.b3.external.url.client.ExternalURLClientException;
 @Service
 class ExternalURLAccess {
 
+	private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36";
+
 	private HttpHeaders headers = new HttpHeaders();
 
 	@Autowired
@@ -38,6 +40,16 @@ class ExternalURLAccess {
 
 	public ExternalURLAccess addToHeaderJSONContent() {
 		addToHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE);
+		return this;
+	}
+	
+	public ExternalURLAccess addToHeaderUserAgent() {
+		addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT);
+		return this;
+	}
+	
+	public ExternalURLAccess addToHeaderAccept() {
+		addToHeader(HttpHeaders.ACCEPT, "*/*");
 		return this;
 	}
 
