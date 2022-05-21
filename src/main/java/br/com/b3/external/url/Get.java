@@ -17,6 +17,8 @@ class Get<T extends ResponseBody> {
 	public T execute(HeaderArguments headerArguments) throws ExternalURLClientException {
 		return externalAccess
 				.addToHeaderJSONContent()
+				.addToHeaderUserAgent()
+				.addToHeaderAccept()
 				.addToHeader(headerArguments)
 				.getObject(url, responseBodyClass).getBody();
 	}
