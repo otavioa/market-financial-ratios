@@ -31,6 +31,7 @@ public class StatusInvestService {
 				.withPL()
 				.withLPA()
 				.withVPA()
+				.withROE()
 				.build();
 
 		return response;
@@ -59,6 +60,7 @@ public class StatusInvestService {
 				.withValue()
 				.withDY()
 				.withPVP()
+				.withROE()
 				.build();
 
 		return response;
@@ -108,6 +110,7 @@ public class StatusInvestService {
 							.withVPA()
 							.withDY()
 							.withPVP()
+							.withROE()
 							.build();
 			
 		}).collect(Collectors.toList());

@@ -16,6 +16,13 @@ public enum Indicador {
 		}
 	},
 	
+	ROE {
+		@Override
+		public DocumentDiscoveryRule getRule() {
+			return new WithROE();
+		}
+	},
+	
 	LPA {
 		@Override
 		public DocumentDiscoveryRule getRule() {
