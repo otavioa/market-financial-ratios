@@ -17,6 +17,15 @@ enum CompanyIndicatorConverter {
 
 	},
 	
+	ROE {
+
+		@Override
+		public void convert(CompanyDTO dto, CompanyResponse company) {
+			dto.setRoe(normalizeValue(company.getRoe()));
+		}
+
+	},
+	
 	LPA {
 
 		@Override

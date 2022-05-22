@@ -20,6 +20,11 @@ public class CompanyResponseBuilder {
 		return this;
 	}
 	
+	public CompanyResponseBuilder withROE(String roe) {
+		companyResponse.setRoe(NumberUtils.format(roe));
+		return this;
+	}
+	
 	public CompanyResponseBuilder withLPA(String lpa) {
 		companyResponse.setLpa(NumberUtils.format(lpa));
 		return this;

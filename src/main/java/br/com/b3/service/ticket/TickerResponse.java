@@ -12,6 +12,7 @@ public class TickerResponse {
 	private String indicador;
 	private String value;
 	private String pl;
+	private String roe;
 	private String lpa;
 	private String vpa;
 	private String dy;
@@ -38,7 +39,14 @@ public class TickerResponse {
 	public void setPL(String pl) {
 		this.pl = pl;
 	}
+	
+	public String getRoe() {
+		return roe;
+	}
 
+	public void setRoe(String roe) {
+		this.roe = roe;
+	}
 
 	public String getLPA() {
 		return lpa;

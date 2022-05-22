@@ -105,7 +105,7 @@ class StatusInvestControllerTest {
 	
 	@Test
 	void getAllByTickerAndIndicadores() throws Exception {
-		mockResponseTo(URL_PATCH_FOR_ACAO, buildCompany(1L, "EMPRESA ACAO", "ACAO3", "40").withPL("11").withLPA("3").withVPA("4").build());
+		mockResponseTo(URL_PATCH_FOR_ACAO, buildCompany(1L, "EMPRESA ACAO", "ACAO3", "40").withPL("11").withLPA("3").withVPA("4").withROE("12").build());
 		mockResponseTo(URL_PATCH_FOR_FII, buildCompany(2L, "FUNDO FII", "FII11", "130").withDY("5").withPVP("1.10").build());
 		mockResponseTo(URL_PATCH_FOR_STOCK, buildCompany(3L, "COMPANY STOCK", "STK", "40").build());
 		mockResponseTo(URL_PATCH_FOR_REIT, buildCompany(4L, "REIT REIT", "RIT", "172").build());
@@ -117,7 +117,9 @@ class StatusInvestControllerTest {
 				new Parameter("indicadores", "LPA"),
 				new Parameter("indicadores", "VPA"),
 				new Parameter("indicadores", "DY"),
-				new Parameter("indicadores", "PVP"))
+				new Parameter("indicadores", "PVP"),
+				new Parameter("indicadores", "ROE"))
+		
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$").isArray())
 		.andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -129,6 +131,7 @@ class StatusInvestControllerTest {
 		.andExpect(jsonPath("$[0].dy", Matchers.is(0.00)))
 		.andExpect(jsonPath("$[0].p_VP", Matchers.is(0.00)))
 		.andExpect(jsonPath("$[0].p_vp", Matchers.is(0.00)))
+		.andExpect(jsonPath("$[0].roe", Matchers.is(12.00)))
 		
 		.andExpect(jsonPath("$[1].nome", Matchers.is("FUNDO FII")))
 		.andExpect(jsonPath("$[1].ticker", Matchers.is("FII11")))
@@ -174,20 +177,22 @@ class StatusInvestControllerTest {
 		mockResponseTo(URL_PATCH_FOR_ACAO,
 				buildCompany(1L, "EMPRESA TESTE", "TST", "12").build(),
 				buildCompany(2L, "EMPRESA TESTE2", "TST2", "32")
-					.withPL("11").withLPA("3").withVPA("4")
+					.withPL("11").withLPA("3").withVPA("4").withROE("12")
 					.build());
 		
 		performRequest(ApiEndpoints.ACOES, 
 				new Parameter("tickers", "TST2"),
 				new Parameter("indicadores", "PL"),
 				new Parameter("indicadores", "LPA"),
-				new Parameter("indicadores", "VPA"))
+				new Parameter("indicadores", "VPA"),
+				new Parameter("indicadores", "ROE"))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$[0].nome", Matchers.is("EMPRESA TESTE2")))
 		.andExpect(jsonPath("$[0].ticker", Matchers.is("TST2")))
 		.andExpect(jsonPath("$[0].p_L", Matchers.is(11.00)))
 		.andExpect(jsonPath("$[0].lpa", Matchers.is(3.00)))
-		.andExpect(jsonPath("$[0].vpa", Matchers.is(4.00)));
+		.andExpect(jsonPath("$[0].vpa", Matchers.is(4.00)))
+		.andExpect(jsonPath("$[0].roe", Matchers.is(12.00)));
 	}
 	
 	@Test
@@ -273,20 +278,22 @@ class StatusInvestControllerTest {
 		mockResponseTo(URL_PATCH_FOR_STOCK,
 				buildCompany(1L, "COMPANY TEST", "CTST", "12").build(),
 				buildCompany(2L, "COMPANY TEST2", "CTST2", "32")
-					.withPL("11").withLPA("3").withVPA("4")
+					.withPL("11").withLPA("3").withVPA("4").withROE("12")
 					.build());
 		
 		performRequest(ApiEndpoints.STOCKS, 
 				new Parameter("tickers", "CTST2"),
 				new Parameter("indicadores", "PL"),
 				new Parameter("indicadores", "LPA"),
-				new Parameter("indicadores", "VPA"))
+				new Parameter("indicadores", "VPA"),
+				new Parameter("indicadores", "ROE"))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$[0].nome", Matchers.is("COMPANY TEST2")))
 		.andExpect(jsonPath("$[0].ticker", Matchers.is("CTST2")))
 		.andExpect(jsonPath("$[0].p_L", Matchers.is(11.00)))
 		.andExpect(jsonPath("$[0].lpa", Matchers.is(3.00)))
-		.andExpect(jsonPath("$[0].vpa", Matchers.is(4.00)));
+		.andExpect(jsonPath("$[0].vpa", Matchers.is(4.00)))
+		.andExpect(jsonPath("$[0].roe", Matchers.is(12.00)));
 	}
 	
 	@Test

@@ -8,6 +8,7 @@ import br.com.b3.service.ticket.discover.WithIndicador;
 import br.com.b3.service.ticket.discover.WithLPA;
 import br.com.b3.service.ticket.discover.WithPL;
 import br.com.b3.service.ticket.discover.WithPVP;
+import br.com.b3.service.ticket.discover.WithROE;
 import br.com.b3.service.ticket.discover.WithVPA;
 import br.com.b3.service.ticket.discover.WithValue;
 
@@ -22,6 +23,7 @@ public class TicketResponseBuilder {
 	private String indicador;
 	private String value;
 	private String pl;
+	private String roe;
 	private String lpa;
 	private String vpa;
 	private String dy;
@@ -55,6 +57,11 @@ public class TicketResponseBuilder {
 	
 	public TicketResponseBuilder withPL() {
 		pl = documentDiscovery.find(document, new WithPL());
+		return this;
+	}
+	
+	public TicketResponseBuilder withROE() {
+		roe = documentDiscovery.find(document, new WithROE());
 		return this;
 	}
 
@@ -92,6 +99,7 @@ public class TicketResponseBuilder {
 		ticket.setIndicador(indicador);
 		ticket.setLPA(valueOrZero(lpa));
 		ticket.setPL(valueOrZero(pl));
+		ticket.setRoe(valueOrZero(roe));
 		ticket.setVPA(valueOrZero(vpa));
 		ticket.setDY(valueOrZero(dy));
 		ticket.setPVP(valueOrZero(pvp));

@@ -48,7 +48,7 @@ class StatusInvestServiceTest {
 		TickerResponse response = subject.getAcaoInfo("WEGE3");
 
 		Assertions.assertThat(response.toString()).isEqualTo(
-				"{\"codigo\":\"WEGE3\",\"lpa\":\"0,82\",\"pl\":\"43,32\",\"value\":\"35,65\",\"vpa\":\"3,04\"}");
+				"{\"codigo\":\"WEGE3\",\"lpa\":\"0,82\",\"pl\":\"43,32\",\"roe\":\"27,09\",\"value\":\"35,65\",\"vpa\":\"3,04\"}");
 	}
 
 	@Test
@@ -108,6 +108,11 @@ class StatusInvestServiceTest {
 
 		Assertions.assertThat(response.toString()).isEqualTo(
 				"{\"codigo\":\"WEGE3\",\"indicador\":\"DY\",\"value\":\"1,15\"}");
+		
+		response = subject.getAcaoInfo("WEGE3", "ROE");
+
+		Assertions.assertThat(response.toString()).isEqualTo(
+				"{\"codigo\":\"WEGE3\",\"indicador\":\"ROE\",\"value\":\"27,09\"}");
 	}
 	
 	@Test
@@ -135,11 +140,11 @@ class StatusInvestServiceTest {
 
 		Assertions.assertThat(response).hasSize(3);
 		Assertions.assertThat(response.get(0).toString())
-			.isEqualTo("{\"codigo\":\"WEGE3\",\"dy\":\"1,15\",\"lpa\":\"0,82\",\"pl\":\"43,32\",\"pvp\":\"0,00\",\"value\":\"35,65\",\"vpa\":\"3,04\"}");
+			.isEqualTo("{\"codigo\":\"WEGE3\",\"dy\":\"1,15\",\"lpa\":\"0,82\",\"pl\":\"43,32\",\"pvp\":\"0,00\",\"roe\":\"27,09\",\"value\":\"35,65\",\"vpa\":\"3,04\"}");
 		Assertions.assertThat(response.get(1).toString())
-			.isEqualTo("{\"codigo\":\"FIIB11\",\"dy\":\"8,72\",\"lpa\":\"0,00\",\"pl\":\"0,00\",\"pvp\":\"0,98\",\"value\":\"432,80\",\"vpa\":\"0,00\"}");
+			.isEqualTo("{\"codigo\":\"FIIB11\",\"dy\":\"8,72\",\"lpa\":\"0,00\",\"pl\":\"0,00\",\"pvp\":\"0,98\",\"roe\":\"0,00\",\"value\":\"432,80\",\"vpa\":\"0,00\"}");
 		Assertions.assertThat(response.get(2).toString())
-			.isEqualTo("{\"codigo\":\"IVVB11\",\"dy\":\"0,00\",\"lpa\":\"0,00\",\"pl\":\"0,00\",\"pvp\":\"0,00\",\"value\":\"278,12\",\"vpa\":\"0,00\"}");
+			.isEqualTo("{\"codigo\":\"IVVB11\",\"dy\":\"0,00\",\"lpa\":\"0,00\",\"pl\":\"0,00\",\"pvp\":\"0,00\",\"roe\":\"0,00\",\"value\":\"278,12\",\"vpa\":\"0,00\"}");
 	}
 
 	@Test
