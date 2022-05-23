@@ -1,11 +1,15 @@
 package br.com.b3.controller.dto;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
-public class CompanyDTO {
+public class CompanyDTO implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private String ticker;
 	private String nome;
 	private String gestao;
@@ -46,6 +50,8 @@ public class CompanyDTO {
 	private Double patrimonio;
 	private Double percentualcaixa;
 
+	public CompanyDTO() {}
+	
 	public String getNome() {
 		return nome;
 	}
