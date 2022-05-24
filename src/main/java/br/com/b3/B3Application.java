@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
+import com.fasterxml.classmate.TypeResolver;
+
+import br.com.b3.controller.dto.CompanyDTO;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -18,8 +21,9 @@ public class B3Application extends SpringBootServletInitializer {
 	}
 	
 	@Bean
-	public Docket api() {
+	public Docket api(TypeResolver typeResolver) {
 	    return new Docket(DocumentationType.SWAGGER_2)
+	      .additionalModels(typeResolver.resolve(CompanyDTO.class))
 	      .select()
 	      .apis(RequestHandlerSelectors.basePackage("br.com.b3.controller"))
 	      .paths(PathSelectors.ant("/statusinvest/**"))
