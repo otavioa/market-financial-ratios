@@ -3,6 +3,7 @@ package br.com.b3.controller;
 import static br.com.b3.controller.dto.AdvanceSearchConverter.convert;
 import static java.util.Arrays.asList;
 
+import br.com.b3.service.dto.CompanyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,8 @@ import br.com.b3.service.StatusInvestService;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.ticket.TickerResponse;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/statusinvest")
 public class StatusInvestController {
@@ -30,7 +33,7 @@ public class StatusInvestController {
 	@GetMapping("/all")
 	public ResponseEntity<AdvancedSearchDTO> getAllAvailable() {
 
-		AdvanceSearchResponse acoes = service.getAllAvailable();
+		List<CompanyResponse> acoes = service.getAllAvailableCompanies();
 
 		return ResponseEntity.ok(convert(acoes));
 	}
@@ -40,7 +43,7 @@ public class StatusInvestController {
 			@RequestParam(value = "tickers", required = true) String[] tickers,
 			@RequestParam(value = "indicadores", required = false) String[] indicadores) {
 
-		AdvanceSearchResponse response = service.getAllAvailable(asList(tickers));
+		List<CompanyResponse> response = service.getAllAvailableCompanies(asList(tickers));
 
 		return ResponseEntity.ok(convert(response, indicadores));
 	}
@@ -50,7 +53,7 @@ public class StatusInvestController {
 	@GetMapping("/acoes/all")
 	public ResponseEntity<AdvancedSearchDTO> getAllAcoes() {
 
-		AdvanceSearchResponse acoes = service.getAllAcoes();
+		List<CompanyResponse> acoes = service.getAllAcoes();
 
 		return ResponseEntity.ok(convert(acoes));
 	}
@@ -60,7 +63,7 @@ public class StatusInvestController {
 			@RequestParam(value = "tickers", required = true) String[] tickers,
 			@RequestParam(value = "indicadores", required = false) String[] indicadores) {
 
-		AdvanceSearchResponse acoes = service.getAcaoByTickers(tickers);
+		List<CompanyResponse> acoes = service.getAcaoByTickers(tickers);
 
 		return ResponseEntity.ok(convert(acoes, indicadores));
 	}
@@ -70,7 +73,7 @@ public class StatusInvestController {
 	@GetMapping("/fiis/all")
 	public ResponseEntity<AdvancedSearchDTO> getAllFiis() {
 
-		AdvanceSearchResponse fiis = service.getAllFiis();
+		List<CompanyResponse> fiis = service.getAllFiis();
 
 		return ResponseEntity.ok(convert(fiis));
 	}
@@ -80,7 +83,7 @@ public class StatusInvestController {
 			@RequestParam(value = "tickers", required = true) String[] tickers,
 			@RequestParam(value = "indicadores", required = false) String[] indicadores) {
 
-		AdvanceSearchResponse fiis = service.getFiiByTicker(tickers);
+		List<CompanyResponse> fiis = service.getFiiByTicker(tickers);
 
 		return ResponseEntity.ok(convert(fiis, indicadores));
 	}
@@ -90,7 +93,7 @@ public class StatusInvestController {
 	@GetMapping("/stocks/all")
 	public ResponseEntity<AdvancedSearchDTO> getAllStocks() {
 
-		AdvanceSearchResponse stocks = service.getAllStocks();
+		List<CompanyResponse> stocks = service.getAllStocks();
 
 		return ResponseEntity.ok(convert(stocks));
 	}
@@ -100,7 +103,7 @@ public class StatusInvestController {
 			@RequestParam(value = "tickers", required = true) String[] tickers,
 			@RequestParam(value = "indicadores", required = false) String[] indicadores) {
 
-		AdvanceSearchResponse stocks = service.getStockByTickers(tickers);
+		List<CompanyResponse> stocks = service.getStockByTickers(tickers);
 
 		return ResponseEntity.ok(convert(stocks, indicadores));
 	}
@@ -110,7 +113,7 @@ public class StatusInvestController {
 	@GetMapping("/reits/all")
 	public ResponseEntity<AdvancedSearchDTO> getAllReits() {
 
-		AdvanceSearchResponse reits = service.getAllReits();
+		List<CompanyResponse> reits = service.getAllReits();
 
 		return ResponseEntity.ok(convert(reits));
 	}
@@ -120,7 +123,7 @@ public class StatusInvestController {
 			@RequestParam(value = "tickers", required = true) String[] tickers,
 			@RequestParam(value = "indicadores", required = false) String[] indicadores) {
 
-		AdvanceSearchResponse reits = service.getReitByTickers(tickers);
+		List<CompanyResponse> reits = service.getReitByTickers(tickers);
 
 		return ResponseEntity.ok(convert(reits, indicadores));
 	}

@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,7 +46,7 @@ class StatusInvestControllerTest {
 	private static final String URL_PATCH_FOR_REIT = "CategoryType=13";
 	
 	private static final String URL_TEST_DOMAIN = "http://url";
-	private static final String ADVANCED_URL_TEST = URL_TEST_DOMAIN + "?search={search}&CategoryType={categoryType}";
+	private static final String ADVANCED_URL_TEST = URL_TEST_DOMAIN + "?search={search}&page=0&take=1000&CategoryType={categoryType}";
 	private static final String SIMPLE_URL_TEST = URL_TEST_DOMAIN + "/{categoria}/{ticket}";
 	
 	@Autowired private MockMvc mvc;
@@ -129,7 +130,6 @@ class StatusInvestControllerTest {
 		.andExpect(jsonPath("$[0].lpa", Matchers.is(3.00)))
 		.andExpect(jsonPath("$[0].vpa", Matchers.is(4.00)))
 		.andExpect(jsonPath("$[0].dy", Matchers.is(0.00)))
-		.andExpect(jsonPath("$[0].p_VP", Matchers.is(0.00)))
 		.andExpect(jsonPath("$[0].p_vp", Matchers.is(0.00)))
 		.andExpect(jsonPath("$[0].roe", Matchers.is(12.00)))
 		
@@ -139,7 +139,6 @@ class StatusInvestControllerTest {
 		.andExpect(jsonPath("$[1].lpa", Matchers.is(0.00)))
 		.andExpect(jsonPath("$[1].vpa", Matchers.is(0.00)))
 		.andExpect(jsonPath("$[1].dy", Matchers.is(5.00)))
-		.andExpect(jsonPath("$[1].p_VP", Matchers.is(1.10)))
 		.andExpect(jsonPath("$[1].p_vp", Matchers.is(1.10)));
 	}
 	
@@ -240,7 +239,6 @@ class StatusInvestControllerTest {
 		.andExpect(jsonPath("$[0].nome", Matchers.is("FUNDO TESTE2")))
 		.andExpect(jsonPath("$[0].ticker", Matchers.is("FTST12")))
 		.andExpect(jsonPath("$[0].dy", Matchers.is(5.00)))
-		.andExpect(jsonPath("$[0].p_VP", Matchers.is(1.10)))
 		.andExpect(jsonPath("$[0].p_vp", Matchers.is(1.10)));
 	}
 
@@ -341,7 +339,6 @@ class StatusInvestControllerTest {
 		.andExpect(jsonPath("$[0].nome", Matchers.is("REIT TEST2")))
 		.andExpect(jsonPath("$[0].ticker", Matchers.is("RTST2")))
 		.andExpect(jsonPath("$[0].dy", Matchers.is(5.00)))
-		.andExpect(jsonPath("$[0].p_VP", Matchers.is(1.10)))
 		.andExpect(jsonPath("$[0].p_vp", Matchers.is(1.10)));
 	}
 	
@@ -360,8 +357,7 @@ class StatusInvestControllerTest {
 	}
 	
 	private void mockResponseTo(String urlPatch, CompanyResponse... companies) {
-		AdvanceSearchResponse response = 
-				new AdvanceSearchResponse(asList(companies));
+		AdvanceSearchResponse response = new AdvanceSearchResponse(asList(companies));
 		
 		mockServer.expect(requestTo(Matchers.allOf(startsWith(URL_TEST_DOMAIN), containsString(urlPatch))))
 			.andRespond(withSuccess(JSONUtils.toJSON(response), APPLICATION_JSON));

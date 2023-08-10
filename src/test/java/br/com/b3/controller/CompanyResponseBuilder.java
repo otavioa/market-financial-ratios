@@ -16,7 +16,7 @@ public class CompanyResponseBuilder {
 	}
 
 	public CompanyResponseBuilder withPL(String pl) {
-		companyResponse.setP_L(NumberUtils.format(pl));
+		companyResponse.setP_l(NumberUtils.format(pl));
 		return this;
 	}
 	
@@ -41,7 +41,6 @@ public class CompanyResponseBuilder {
 	}
 	
 	public CompanyResponseBuilder withPVP(String pvp) {
-		companyResponse.setP_VP(NumberUtils.format(pvp));
 		companyResponse.setP_vp(NumberUtils.format(pvp));
 		return this;
 	}

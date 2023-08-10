@@ -12,7 +12,7 @@ enum CompanyIndicatorConverter {
 
 		@Override
 		public void convert(CompanyDTO dto, CompanyResponse company) {
-			dto.setP_L(normalizeValue(company.getP_L()));
+			dto.setP_L(normalizeValue(company.getP_l()));
 		}
 
 	},
@@ -57,7 +57,6 @@ enum CompanyIndicatorConverter {
 
 		@Override
 		public void convert(CompanyDTO dto, CompanyResponse company) {
-			dto.setP_VP(normalizeValue(company.getP_VP()));
 			dto.setP_vp(normalizeValue(company.getP_vp()));
 		}
 

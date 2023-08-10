@@ -31,7 +31,7 @@ public class CompanyDTO implements Serializable {
 	private Double p_Ebit;
 	private Double p_L;
 	private Double p_SR;
-	private Double p_VP;
+	private Double p_vp;
 	private Double passivo_Ativo;
 	private Double peg_Ratio;
 	private Double pl_Ativo;
@@ -46,7 +46,6 @@ public class CompanyDTO implements Serializable {
 	private Double dividend_cagr;
 	private Double liquidezmediadiaria;
 	private Double numerocotistas;
-	private Double p_vp;
 	private Double patrimonio;
 	private Double percentualcaixa;
 
@@ -218,14 +217,6 @@ public class CompanyDTO implements Serializable {
 
 	public void setP_SR(Double p_SR) {
 		this.p_SR = p_SR;
-	}
-
-	public Double getP_VP() {
-		return p_VP;
-	}
-
-	public void setP_VP(Double p_VP) {
-		this.p_VP = p_VP;
 	}
 
 	public Double getPassivo_Ativo() {

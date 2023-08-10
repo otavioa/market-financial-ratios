@@ -4,14 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.b3.external.url.ResponseBody;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class AdvanceSearchResponse extends ArrayList<CompanyResponse> implements ResponseBody {
-
+@Data
+@NoArgsConstructor
+public class AdvanceSearchResponse implements ResponseBody {
 	private static final long serialVersionUID = 1L;
 
-	public AdvanceSearchResponse() {}
+	private List<CompanyResponse> list;
+	private Integer totalResults;
+	private Boolean hasForecast;
 
-	public AdvanceSearchResponse(List<CompanyResponse> list) {
-		super(list);
+	public AdvanceSearchResponse(List<CompanyResponse> list){
+		this.list = list;
 	}
+
+
 }
