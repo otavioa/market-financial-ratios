@@ -1,10 +1,15 @@
 package br.com.b3.service;
 
 import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import br.com.b3.service.dto.CompanyResponse;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,76 +18,75 @@ import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
 
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class StatusInvestAdvancedSearchService {
 
 	@Autowired private ExternalURL externalUrl;
 
-	public AdvanceSearchResponse getAllAvailable(List<String> tickers) {
-		AdvanceSearchResponse allAvailable = getAllAvailable();
+	public List<CompanyResponse> getAllAvailableCompanies(List<String> tickers) {
+		List<CompanyResponse> allAvailable = getAllAvailableCompanies();
 		
-		return new AdvanceSearchResponse(allAvailable.stream()
+		return allAvailable.stream()
 				.filter(t -> tickers.contains(t.getTicker()))
-				.collect(Collectors.toList()));
+				.toList();
 	}
 	
-	public AdvanceSearchResponse getAllAvailable() {
-		AdvanceSearchResponse result = new AdvanceSearchResponse();
-		
-		asList(StatusInvestResource.values()).stream().map(resource -> {
+	public List<CompanyResponse> getAllAvailableCompanies() {
+		Stream<CompanyResponse> companies = stream(StatusInvestResource.values()).map(resource -> {
 			String preparedURL = getStatusInvestUrl()
 					.replace("{categoryType}", resource.getCategoryType().toString())
 					.replace("{search}", resource.getFilter().asQueryParameter());
 
-			return externalUrl.doGet(preparedURL, AdvanceSearchResponse.class);
-			
-		}).forEach(response -> result.addAll(response));
+			return externalUrl.doGet(preparedURL, AdvanceSearchResponse.class).getList();
+		}).flatMap(Collection::stream);
 
-		return result;
+		return companies.toList();
 	}
 
-	public AdvanceSearchResponse getAllAcoes() {
+	public List<CompanyResponse> getAllAcoes() {
 		return getFromResource(StatusInvestResource.ACOES);
 	}
 	
-	public AdvanceSearchResponse getAllFiis() {
+	public List<CompanyResponse> getAllFiis() {
 		return getFromResource(StatusInvestResource.FIIS);
 	}
 	
-	public AdvanceSearchResponse getAllStocks() {
+	public List<CompanyResponse> getAllStocks() {
 		return getFromResource(StatusInvestResource.STOCKS);
 	}
 	
-	public AdvanceSearchResponse getAllReits() {
+	public List<CompanyResponse> getAllReits() {
 		return getFromResource(StatusInvestResource.REITS);
 	}
 
-	public AdvanceSearchResponse getFiiByTicker(String... tickers) {
+	public List<CompanyResponse> getFiiByTicker(String... tickers) {
 		return getByTickers(StatusInvestResource.FIIS, tickers);
 	}
 	
-	public AdvanceSearchResponse getAcaoByTickers(String... tickers) {
+	public List<CompanyResponse> getAcaoByTickers(String... tickers) {
 		return getByTickers(StatusInvestResource.ACOES, tickers);
 	}
 	
-	public AdvanceSearchResponse getStockByTickers(String... tickers) {
+	public List<CompanyResponse> getStockByTickers(String... tickers) {
 		return getByTickers(StatusInvestResource.STOCKS, tickers);
 	}
 	
-	public AdvanceSearchResponse getReitByTickers(String... tickers) {
+	public List<CompanyResponse> getReitByTickers(String... tickers) {
 		return getByTickers(StatusInvestResource.REITS, tickers);
 	}
 
-	private AdvanceSearchResponse getByTickers(StatusInvestResource resource, String... tickers) {
-		AdvanceSearchResponse response = getFromResource(resource);
+	private List<CompanyResponse> getByTickers(StatusInvestResource resource, String... tickers) {
+		List<CompanyResponse> response = getFromResource(resource);
 		
-		return new AdvanceSearchResponse(response.stream()
+		return response.stream()
 			.filter(t -> asList(tickers).contains(t.getTicker()))
-			.collect(Collectors.toList()));
+				.toList();
 	}
 	
-	private AdvanceSearchResponse getFromResource(StatusInvestResource resource) {
+	private List<CompanyResponse> getFromResource(StatusInvestResource resource) {
 		String preparedURL = prepareURLBasedOnResource(getStatusInvestUrl(), resource);
-		return externalUrl.doGet(preparedURL, AdvanceSearchResponse.class);
+		return externalUrl.doGet(preparedURL, AdvanceSearchResponse.class).getList();
 	}
 
 	private String prepareURLBasedOnResource(String url, StatusInvestResource resource) {

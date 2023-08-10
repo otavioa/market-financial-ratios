@@ -1,369 +1,70 @@
 package br.com.b3.service.dto;
 
 import br.com.b3.external.url.ResponseBody;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 public class CompanyResponse implements ResponseBody {
 
-	private Long companyId;
-	private String companyName;
+	private Long companyid;
+	private String companyname;
 	private String ticker;
 	private String gestao;
+	private Double sectorid;
+	private String sectorname;
+	private Double segmentid;
+	private Double subsectorid;
+	private String subsectorname;
+	private String segmentname;
 	private Double dy;
-	private Double dividaLiquidaEbit;
-	private Double dividaliquidaPatrimonioLiquido;
-	private Double eV_Ebit;
-	private Double giroAtivos;
-	private Double liquidezCorrente;
-	private Double liquidezMediaDiaria;
+	private Double dividaliquidaebit;
+	private Double dividaliquidapatrimonioliquido;
+	private Double ev_ebit;
+	private Double giroativos;
+	private Double liquidezcorrente;
+	private Double liquidezmediadiaria;
 	private Double lpa;
-	private Double margemBruta;
-	private Double margemEbit;
-	private Double margemLiquida;
-	private Double p_Ativo;
-	private Double p_AtivoCirculante;
-	private Double p_CapitalGiro;
-	private Double p_Ebit;
-	private Double p_L;
-	private Double p_SR;
-	private Double p_VP;
-	private Double passivo_Ativo;
+	private Double margembruta;
+	private Double margemebit;
+	private Double margemliquida;
+	private Double p_ativo;
+	private Double p_ativocirculante;
+	private Double p_capitalgiro;
+	private Double p_ebit;
+	private Double p_l;
+	private Double p_sr;
+	private Double p_vp;
+	private Double passivo_ativo;
 	private Double peg_Ratio;
-	private Double pl_Ativo;
+	private Double pl_ativo;
 	private Double price;
-	private Double receitas_Cagr5;
+	private Double receitas_cagr5;
+	private Double lucros_cagr5;
 	private Double roa;
 	private Double roe;
 	private Double roic;
-	private Double valorMercado;
+	private Double valormercado;
 	private Double vpa;
-	
+
+	//fii
+	private String segment;
+	private String gestao_f;
+	private Double valorpatrimonialcota;
 	private Double cota_cagr;
 	private Double dividend_cagr;
-	private Double liquidezmediadiaria;
 	private Double numerocotistas;
-	private Double p_vp;
+	private Double numerocotas;
 	private Double patrimonio;
 	private Double percentualcaixa;
-
-	public CompanyResponse() {}
+	private Double lastdividend;
 	
 	public CompanyResponse(Long companyId, String companyName, String ticker, Double price) {
-		this.companyId = companyId;
-		this.companyName = companyName;
+		this.companyid = companyId;
+		this.companyname = companyName;
 		this.ticker = ticker;
 		this.price = price;
 	}
-	
-	public Long getCompanyId() {
-		return companyId;
-	}
 
-	public void setCompanyId(Long companyId) {
-		this.companyId = companyId;
-	}
-
-	public String getCompanyName() {
-		return companyName;
-	}
-
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-
-	public String getTicker() {
-		return ticker;
-	}
-
-	public void setTicker(String ticker) {
-		this.ticker = ticker;
-	}
-
-	public Double getDividaLiquidaEbit() {
-		return dividaLiquidaEbit;
-	}
-
-	public void setDividaLiquidaEbit(Double dividaLiquidaEbit) {
-		this.dividaLiquidaEbit = dividaLiquidaEbit;
-	}
-
-	public Double getDividaliquidaPatrimonioLiquido() {
-		return dividaliquidaPatrimonioLiquido;
-	}
-
-	public void setDividaliquidaPatrimonioLiquido(Double dividaliquidaPatrimonioLiquido) {
-		this.dividaliquidaPatrimonioLiquido = dividaliquidaPatrimonioLiquido;
-	}
-
-	public Double geteV_Ebit() {
-		return eV_Ebit;
-	}
-
-	public void seteV_Ebit(Double eV_Ebit) {
-		this.eV_Ebit = eV_Ebit;
-	}
-
-	public Double getGiroAtivos() {
-		return giroAtivos;
-	}
-
-	public void setGiroAtivos(Double giroAtivos) {
-		this.giroAtivos = giroAtivos;
-	}
-
-	public Double getLiquidezCorrente() {
-		return liquidezCorrente;
-	}
-
-	public void setLiquidezCorrente(Double liquidezCorrente) {
-		this.liquidezCorrente = liquidezCorrente;
-	}
-
-	public Double getLiquidezMediaDiaria() {
-		return liquidezMediaDiaria;
-	}
-
-	public void setLiquidezMediaDiaria(Double liquidezMediaDiaria) {
-		this.liquidezMediaDiaria = liquidezMediaDiaria;
-	}
-
-	public Double getLpa() {
-		return lpa;
-	}
-
-	public void setLpa(Double lpa) {
-		this.lpa = lpa;
-	}
-
-	public Double getMargemBruta() {
-		return margemBruta;
-	}
-
-	public void setMargemBruta(Double margemBruta) {
-		this.margemBruta = margemBruta;
-	}
-
-	public Double getMargemEbit() {
-		return margemEbit;
-	}
-
-	public void setMargemEbit(Double margemEbit) {
-		this.margemEbit = margemEbit;
-	}
-
-	public Double getMargemLiquida() {
-		return margemLiquida;
-	}
-
-	public void setMargemLiquida(Double margemLiquida) {
-		this.margemLiquida = margemLiquida;
-	}
-
-	public Double getP_Ativo() {
-		return p_Ativo;
-	}
-
-	public void setP_Ativo(Double p_Ativo) {
-		this.p_Ativo = p_Ativo;
-	}
-
-	public Double getP_AtivoCirculante() {
-		return p_AtivoCirculante;
-	}
-
-	public void setP_AtivoCirculante(Double p_AtivoCirculante) {
-		this.p_AtivoCirculante = p_AtivoCirculante;
-	}
-
-	public Double getP_CapitalGiro() {
-		return p_CapitalGiro;
-	}
-
-	public void setP_CapitalGiro(Double p_CapitalGiro) {
-		this.p_CapitalGiro = p_CapitalGiro;
-	}
-
-	public Double getP_Ebit() {
-		return p_Ebit;
-	}
-
-	public void setP_Ebit(Double p_Ebit) {
-		this.p_Ebit = p_Ebit;
-	}
-
-	public Double getP_L() {
-		return p_L;
-	}
-
-	public void setP_L(Double p_L) {
-		this.p_L = p_L;
-	}
-
-	public Double getP_SR() {
-		return p_SR;
-	}
-
-	public void setP_SR(Double p_SR) {
-		this.p_SR = p_SR;
-	}
-
-	public Double getP_VP() {
-		return p_VP;
-	}
-
-	public void setP_VP(Double p_VP) {
-		this.p_VP = p_VP;
-	}
-
-	public Double getPassivo_Ativo() {
-		return passivo_Ativo;
-	}
-
-	public void setPassivo_Ativo(Double passivo_Ativo) {
-		this.passivo_Ativo = passivo_Ativo;
-	}
-
-	public Double getPeg_Ratio() {
-		return peg_Ratio;
-	}
-
-	public void setPeg_Ratio(Double peg_Ratio) {
-		this.peg_Ratio = peg_Ratio;
-	}
-
-	public Double getPl_Ativo() {
-		return pl_Ativo;
-	}
-
-	public void setPl_Ativo(Double pl_Ativo) {
-		this.pl_Ativo = pl_Ativo;
-	}
-
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
-	public Double getReceitas_Cagr5() {
-		return receitas_Cagr5;
-	}
-
-	public void setReceitas_Cagr5(Double receitas_Cagr5) {
-		this.receitas_Cagr5 = receitas_Cagr5;
-	}
-
-	public Double getRoa() {
-		return roa;
-	}
-
-	public void setRoa(Double roa) {
-		this.roa = roa;
-	}
-
-	public Double getRoe() {
-		return roe;
-	}
-
-	public void setRoe(Double roe) {
-		this.roe = roe;
-	}
-
-	public Double getRoic() {
-		return roic;
-	}
-
-	public void setRoic(Double roic) {
-		this.roic = roic;
-	}
-
-	public Double getValorMercado() {
-		return valorMercado;
-	}
-
-	public void setValorMercado(Double valorMercado) {
-		this.valorMercado = valorMercado;
-	}
-
-	public Double getVpa() {
-		return vpa;
-	}
-
-	public void setVpa(Double vpa) {
-		this.vpa = vpa;
-	}
-
-	public String getGestao() {
-		return gestao;
-	}
-
-	public void setGestao(String gestao) {
-		this.gestao = gestao;
-	}
-
-	public Double getDy() {
-		return dy;
-	}
-
-	public void setDy(Double dy) {
-		this.dy = dy;
-	}
-
-	public Double getCota_cagr() {
-		return cota_cagr;
-	}
-
-	public void setCota_cagr(Double cota_cagr) {
-		this.cota_cagr = cota_cagr;
-	}
-
-	public Double getDividend_cagr() {
-		return dividend_cagr;
-	}
-
-	public void setDividend_cagr(Double dividend_cagr) {
-		this.dividend_cagr = dividend_cagr;
-	}
-
-	public Double getLiquidezmediadiaria() {
-		return liquidezmediadiaria;
-	}
-
-	public void setLiquidezmediadiaria(Double liquidezmediadiaria) {
-		this.liquidezmediadiaria = liquidezmediadiaria;
-	}
-
-	public Double getNumerocotistas() {
-		return numerocotistas;
-	}
-
-	public void setNumerocotistas(Double numerocotistas) {
-		this.numerocotistas = numerocotistas;
-	}
-
-	public Double getP_vp() {
-		return p_vp;
-	}
-
-	public void setP_vp(Double p_vp) {
-		this.p_vp = p_vp;
-	}
-
-	public Double getPatrimonio() {
-		return patrimonio;
-	}
-
-	public void setPatrimonio(Double patrimonio) {
-		this.patrimonio = patrimonio;
-	}
-
-	public Double getPercentualcaixa() {
-		return percentualcaixa;
-	}
-
-	public void setPercentualcaixa(Double percentualcaixa) {
-		this.percentualcaixa = percentualcaixa;
-	}
-	
 }

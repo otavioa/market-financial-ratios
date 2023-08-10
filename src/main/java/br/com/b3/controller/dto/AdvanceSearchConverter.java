@@ -17,14 +17,14 @@ public class AdvanceSearchConverter {
 
 	private AdvanceSearchConverter() {}
 	
-	public static AdvancedSearchDTO convert(AdvanceSearchResponse acoes) {
+	public static AdvancedSearchDTO convert(List<CompanyResponse> acoes) {
 		List<CompanyDTO> convertedCompanies = acoes.stream().map(company -> convert(company))
 				.collect(Collectors.toList());
 
 		return new AdvancedSearchDTO(convertedCompanies);
 	}
 	
-	public static AdvancedSearchDTO convert(AdvanceSearchResponse acoes, String[] indicadores) {
+	public static AdvancedSearchDTO convert(List<CompanyResponse> acoes, String[] indicadores) {
 		if(!contains(indicadores))
 			return convert(acoes);
 		
@@ -42,7 +42,7 @@ public class AdvanceSearchConverter {
 	private static CompanyDTO convertWithIndicator(CompanyResponse company, List<String> indicadores) {
 		CompanyDTO dto = new CompanyDTO();
 		
-		dto.setNome(company.getCompanyName());
+		dto.setNome(company.getCompanyname());
 		dto.setTicker(company.getTicker());
 		dto.setPrice(company.getPrice());
 		
@@ -59,43 +59,42 @@ public class AdvanceSearchConverter {
 	public static CompanyDTO convert(CompanyResponse company) {
 		CompanyDTO dto = new CompanyDTO();
 
-		dto.setNome(company.getCompanyName());
+		dto.setNome(company.getCompanyname());
 		dto.setTicker(company.getTicker());
 		dto.setPrice(normalize(company.getPrice()));
 		dto.setGestao(company.getGestao());
 		dto.setDy(normalize(company.getDy()));
-		dto.setDividaLiquidaEbit(normalize(company.getDividaLiquidaEbit()));
-		dto.setDividaliquidaPatrimonioLiquido(normalize(company.getDividaliquidaPatrimonioLiquido()));
-		dto.seteV_Ebit(normalize(company.geteV_Ebit()));
-		dto.setGiroAtivos(normalize(company.getGiroAtivos()));
-		dto.setLiquidezCorrente(normalize(company.getLiquidezCorrente()));
-		dto.setLiquidezMediaDiaria(normalize(company.getLiquidezMediaDiaria()));
+		dto.setDividaLiquidaEbit(normalize(company.getDividaliquidaebit()));
+		dto.setDividaliquidaPatrimonioLiquido(normalize(company.getDividaliquidapatrimonioliquido()));
+		dto.seteV_Ebit(normalize(company.getEv_ebit()));
+		dto.setGiroAtivos(normalize(company.getGiroativos()));
+		dto.setLiquidezCorrente(normalize(company.getLiquidezcorrente()));
+		dto.setLiquidezMediaDiaria(normalize(company.getLiquidezmediadiaria()));
 		dto.setLpa(normalize(company.getLpa()));
-		dto.setMargemBruta(normalize(company.getMargemBruta()));
-		dto.setMargemEbit(normalize(company.getMargemEbit()));
-		dto.setMargemLiquida(normalize(company.getMargemLiquida()));
-		dto.setP_Ativo(normalize(company.getP_Ativo()));
-		dto.setP_AtivoCirculante(normalize(company.getP_AtivoCirculante()));
-		dto.setP_CapitalGiro(normalize(company.getP_CapitalGiro()));
-		dto.setP_Ebit(normalize(company.getP_Ebit()));
-		dto.setP_L(normalize(company.getP_L()));
-		dto.setP_SR(normalize(company.getP_SR()));
-		dto.setP_VP(normalize(company.getP_VP()));
-		dto.setPassivo_Ativo(normalize(company.getPassivo_Ativo()));
+		dto.setMargemBruta(normalize(company.getMargembruta()));
+		dto.setMargemEbit(normalize(company.getMargemebit()));
+		dto.setMargemLiquida(normalize(company.getMargemliquida()));
+		dto.setP_Ativo(normalize(company.getP_ativo()));
+		dto.setP_AtivoCirculante(normalize(company.getP_ativocirculante()));
+		dto.setP_CapitalGiro(normalize(company.getP_capitalgiro()));
+		dto.setP_Ebit(normalize(company.getP_ebit()));
+		dto.setP_L(normalize(company.getP_l()));
+		dto.setP_SR(normalize(company.getP_sr()));
+		dto.setP_vp(normalize(company.getP_vp()));
+		dto.setPassivo_Ativo(normalize(company.getPassivo_ativo()));
 		dto.setPeg_Ratio(normalize(company.getPeg_Ratio()));
-		dto.setPl_Ativo(normalize(company.getPl_Ativo()));
-		dto.setReceitas_Cagr5(normalize(company.getReceitas_Cagr5()));
+		dto.setPl_Ativo(normalize(company.getPl_ativo()));
+		dto.setReceitas_Cagr5(normalize(company.getReceitas_cagr5()));
 		dto.setRoa(normalize(company.getRoa()));
 		dto.setRoe(normalize(company.getRoe()));
 		dto.setRoic(normalize(company.getRoic()));
-		dto.setValorMercado(normalize(company.getValorMercado()));
+		dto.setValorMercado(normalize(company.getValormercado()));
 		dto.setVpa(normalize(company.getVpa()));
 
 		dto.setCota_cagr(normalize(company.getCota_cagr()));
 		dto.setDividend_cagr(normalize(company.getDividend_cagr()));
 		dto.setLiquidezmediadiaria(normalize(company.getLiquidezmediadiaria()));
 		dto.setNumerocotistas(normalize(company.getNumerocotistas()));
-		dto.setP_vp(normalize(company.getP_vp()));
 		dto.setPatrimonio(normalize(company.getPatrimonio()));
 		dto.setPercentualcaixa(normalize(company.getPercentualcaixa()));
 			

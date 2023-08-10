@@ -35,7 +35,7 @@ class StatusInvestURLTest {
 	void getAdvancedDefaultURL() {
 		String url = StatusInvestAdvanceSearchURL.getUrl();
 		
-		Assertions.assertThat(url).isEqualTo("https://statusinvest.com.br/category/advancedsearchresult?search={search}&CategoryType={categoryType}");
+		Assertions.assertThat(url).isEqualTo("https://statusinvest.com.br/category/advancedsearchresultpaginated?search={search}&page=0&take=10000&CategoryType={categoryType}");
 	}
 	
 	@Test

@@ -1,26 +1,17 @@
 package br.com.b3.service;
 
+import lombok.Data;
+
+@Data
 public class ForecastFilterRequest {
 
 	public static final ForecastFilterRequest EMPTY = new ForecastFilterRequest();
 	
-	private SubFilter upsideDownside = SubFilter.EMPTY;
-	private SubFilter estimatesNumber = SubFilter.EMPTY;
+	private SubFilter upsidedownside = SubFilter.EMPTY;
+	private SubFilter estimatesnumber = SubFilter.EMPTY;
+	private Boolean revisedup = true;
+	private Boolean reviseddown = true;
+	private String[] consensus = new String[0];
 	
-	public ForecastFilterRequest() {}
-	
-	public SubFilter getUpsideDownside() {
-		return upsideDownside;
-	}
-	public void setUpsideDownside(SubFilter upsideDownside) {
-		this.upsideDownside = upsideDownside;
-	}
-	public SubFilter getEstimatesNumber() {
-		return estimatesNumber;
-	}
-	public void setEstimatesNumber(SubFilter estimatesNumber) {
-		this.estimatesNumber = estimatesNumber;
-	}
-	
-	
+
 }
