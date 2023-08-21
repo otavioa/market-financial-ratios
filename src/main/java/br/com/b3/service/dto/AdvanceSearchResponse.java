@@ -7,6 +7,8 @@ import br.com.b3.external.url.ResponseBody;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static java.util.Arrays.asList;
+
 @Data
 @NoArgsConstructor
 public class AdvanceSearchResponse implements ResponseBody {
@@ -16,8 +18,8 @@ public class AdvanceSearchResponse implements ResponseBody {
 	private Integer totalResults;
 	private Boolean hasForecast;
 
-	public AdvanceSearchResponse(List<CompanyResponse> list){
-		this.list = list;
+	public AdvanceSearchResponse(CompanyResponse... companies){
+		this.list = asList(companies);
 	}
 
 

@@ -143,7 +143,7 @@ class StatusInvestAdvancedSearchServiceTest {
 	private AdvanceSearchResponse newResponse(long companyId, String companyName, String ticker, Double price) {
 		CompanyResponse companyResponse = new CompanyResponse(companyId, companyName, ticker, price);
 
-		return new AdvanceSearchResponse(Lists.newArrayList(companyResponse));
+		return new AdvanceSearchResponse(companyResponse);
 	}
 	
 	private void mockExternalUrlGet() {

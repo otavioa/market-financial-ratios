@@ -1,12 +1,14 @@
 package br.com.b3.test.support;
 
 import java.io.IOException;
+import java.nio.file.Files;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.mockito.Mockito;
 
 import br.com.b3.service.htmlreader.HtmlReaderService;
+import org.springframework.core.io.ClassPathResource;
 
 public class URLMockServiceSupport {
 
@@ -20,3 +22,4 @@ public class URLMockServiceSupport {
 		return Jsoup.parse(html, urlTest);
 	}
 }
+
