@@ -20,13 +20,10 @@ import static java.util.Arrays.stream;
 
 @Service
 @NoArgsConstructor
-@AllArgsConstructor
 public class DataChargeService {
 
-    @Autowired
-    private ExternalURL externalUrl;
-    @Autowired
-    private CompanyRepository repo;
+    @Autowired private ExternalURL externalUrl;
+    @Autowired private CompanyRepository repo;
 
     @Transactional
     public void processCharging() {

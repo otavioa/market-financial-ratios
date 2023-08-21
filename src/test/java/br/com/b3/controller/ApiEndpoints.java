@@ -16,4 +16,6 @@ public interface ApiEndpoints {
 
 	public static final String REITS_ALL = "/statusinvest/reits/all";
 	public static final String REITS = "/statusinvest/reits";
+
+	public static final String DATA_CHARGE = "/data/charge";
 }

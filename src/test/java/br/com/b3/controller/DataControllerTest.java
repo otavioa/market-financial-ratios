@@ -1,4 +1,4 @@
-package br.com.b3.service.datacharge;
+package br.com.b3.controller;
 
 import br.com.b3.entity.Company;
 import br.com.b3.entity.CompanyRepository;
@@ -7,26 +7,41 @@ import br.com.b3.service.StatusInvestResource;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
-import org.assertj.core.api.Assertions;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.client.RestTemplate;
 
 import static br.com.b3.service.StatusInvestResource.*;
+import static br.com.b3.service.StatusInvestResource.REITS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 @AutoConfigureDataMongo
-class DataChargeServiceTest {
+class DataControllerTest {
+
+    @Autowired private MockMvc mvc;
+    @Autowired private RestTemplate restTemplate;
+
     @MockBean private ExternalURL externalUrl;
     @Autowired private CompanyRepository repository;
-    @Autowired private DataChargeService subject;
+
 
     @BeforeAll
     public static void setUpEnvironment(){
@@ -39,18 +54,17 @@ class DataChargeServiceTest {
     }
 
     @Test
-    void processCharging() {
+    void doCharge() throws Exception  {
         mockExternalUrlGet(ACOES, newResponse(1L, "EMPRESA AÇÃO", "AAA3", 100.00));
         mockExternalUrlGet(FIIS, newResponse(2L, "EMPRESA FII", "FFF11", 100.00));
         mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 100.00));
         mockExternalUrlGet(REITS, newResponse(4L, "EMPRESA REITS", "RRR", 100.00));
 
-        subject.processCharging();
+        performRequest(ApiEndpoints.DATA_CHARGE)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.is("ok")));
 
-        Company company = repository.findByNome("EMPRESA AÇÃO");
-
-        assertThat(company).isNotNull();
-        assertThat(company.getTicker()).isEqualTo("AAA3");
+        assertThat(repository.count()).isEqualTo(4);
     }
 
     private AdvanceSearchResponse newResponse(long companyId, String companyName, String ticker, Double price) {
@@ -61,5 +75,13 @@ class DataChargeServiceTest {
         Mockito.when(externalUrl.doGet(
                 eq("http://url?CategoryType=" + resource.getCategoryType()),
                 eq(AdvanceSearchResponse.class))).thenReturn(response);
+    }
+
+    private ResultActions performRequest(String endPoint, Parameter... parameters) throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(endPoint);
+        for(Parameter parameter : parameters)
+            requestBuilder.param(parameter.getName(), parameter.getValue());
+
+        return mvc.perform(requestBuilder);
     }
 }
