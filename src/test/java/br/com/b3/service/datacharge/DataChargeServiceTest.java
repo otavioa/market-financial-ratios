@@ -7,7 +7,6 @@ import br.com.b3.service.StatusInvestResource;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,9 +40,9 @@ class DataChargeServiceTest {
     @Test
     void processCharging() {
         mockExternalUrlGet(ACOES, newResponse(1L, "EMPRESA AÇÃO", "AAA3", 100.00));
-        mockExternalUrlGet(FIIS, newResponse(2L, "EMPRESA FII", "FFF11", 100.00));
-        mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 100.00));
-        mockExternalUrlGet(REITS, newResponse(4L, "EMPRESA REITS", "RRR", 100.00));
+        mockExternalUrlGet(FIIS, newResponse(2L, "EMPRESA FII", "FFF11", 110.00));
+        mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 120.00));
+        mockExternalUrlGet(REITS, newResponse(4L, "EMPRESA REITS", "RRR", 130.00));
 
         subject.processCharging();
 

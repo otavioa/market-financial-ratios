@@ -7,7 +7,6 @@ import br.com.b3.service.StatusInvestResource;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

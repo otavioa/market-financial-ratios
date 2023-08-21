@@ -1,6 +1,5 @@
 package br.com.b3.controller;
 
-import br.com.b3.entity.Company;
 import br.com.b3.entity.CompanyRepository;
 import br.com.b3.external.url.ExternalURL;
 import br.com.b3.service.StatusInvestResource;
@@ -26,7 +25,6 @@ import org.springframework.web.client.RestTemplate;
 import static br.com.b3.service.StatusInvestResource.*;
 import static br.com.b3.service.StatusInvestResource.REITS;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
