@@ -1,5 +1,6 @@
 package br.com.b3.service.datacharge;
 
+import br.com.b3.ApplicationTest;
 import br.com.b3.entity.Company;
 import br.com.b3.entity.CompanyRepository;
 import br.com.b3.external.url.ExternalURL;
@@ -8,33 +9,27 @@ import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static br.com.b3.service.StatusInvestResource.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 
-@SpringBootTest
-@AutoConfigureDataMongo
+@ApplicationTest
 class DataChargeServiceTest {
+
     @MockBean private ExternalURL externalUrl;
+
     @Autowired private CompanyRepository repository;
     @Autowired private DataChargeService subject;
 
     @BeforeAll
     public static void setUpEnvironment(){
         StatusInvestAdvanceSearchURL.setUrl("http://url?CategoryType={categoryType}");
-    }
-
-    @BeforeEach
-    public void setUpTests(){
-        repository.deleteAll();
     }
 
     @Test
@@ -48,8 +43,8 @@ class DataChargeServiceTest {
 
         Company company = repository.findByNome("EMPRESA AÇÃO");
 
-        assertThat(company).isNotNull();
-        assertThat(company.getTicker()).isEqualTo("AAA3");
+        Mockito.verify(repository, times(1)).deleteAll();
+        Mockito.verify(repository, times(1)).insert(anyList());
     }
 
     private AdvanceSearchResponse newResponse(long companyId, String companyName, String ticker, Double price) {

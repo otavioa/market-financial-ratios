@@ -1,5 +1,6 @@
 package br.com.b3.controller;
 
+import br.com.b3.ApplicationTest;
 import br.com.b3.entity.CompanyRepository;
 import br.com.b3.external.url.ExternalURL;
 import br.com.b3.service.StatusInvestResource;
@@ -8,13 +9,9 @@ import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -23,32 +20,24 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.client.RestTemplate;
 
 import static br.com.b3.service.StatusInvestResource.*;
-import static br.com.b3.service.StatusInvestResource.REITS;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureDataMongo
+@ApplicationTest
 class DataControllerTest {
 
     @Autowired private MockMvc mvc;
     @Autowired private RestTemplate restTemplate;
-
-    @MockBean private ExternalURL externalUrl;
     @Autowired private CompanyRepository repository;
 
+    @MockBean private ExternalURL externalUrl;
 
     @BeforeAll
     public static void setUpEnvironment(){
         StatusInvestAdvanceSearchURL.setUrl("http://url?CategoryType={categoryType}");
-    }
-
-    @BeforeEach
-    public void setUpTests(){
-        repository.deleteAll();
     }
 
     @Test
@@ -62,7 +51,8 @@ class DataControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.is("ok")));
 
-        assertThat(repository.count()).isEqualTo(4);
+        Mockito.verify(repository, times(1)).deleteAll();
+        Mockito.verify(repository, times(1)).insert(anyList());
     }
 
     private AdvanceSearchResponse newResponse(long companyId, String companyName, String ticker, Double price) {

@@ -1,25 +1,19 @@
 package br.com.b3.controller;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.io.IOException;
-import java.util.List;
-
+import br.com.b3.ApplicationTest;
+import br.com.b3.entity.CompanyRepository;
+import br.com.b3.service.dto.AdvanceSearchResponse;
+import br.com.b3.service.dto.CompanyResponse;
+import br.com.b3.service.htmlreader.HtmlReaderService;
+import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
+import br.com.b3.service.urls.StatusInvestURL;
+import br.com.b3.test.support.URLMockServiceSupport;
+import br.com.b3.util.JSONUtils;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,16 +22,16 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.client.RestTemplate;
 
-import br.com.b3.service.dto.AdvanceSearchResponse;
-import br.com.b3.service.dto.CompanyResponse;
-import br.com.b3.service.htmlreader.HtmlReaderService;
-import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
-import br.com.b3.service.urls.StatusInvestURL;
-import br.com.b3.test.support.URLMockServiceSupport;
-import br.com.b3.util.JSONUtils;
+import java.io.IOException;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+import static org.hamcrest.Matchers.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@ApplicationTest
 class StatusInvestControllerTest {
 
 	private static final String URL_PATCH_FOR_ACAO = "CategoryType=1";
@@ -51,6 +45,7 @@ class StatusInvestControllerTest {
 	
 	@Autowired private MockMvc mvc;
 	@Autowired private RestTemplate restTemplate;
+	@Autowired private CompanyRepository repository;
 	
 	@MockBean
 	private HtmlReaderService readerService;
