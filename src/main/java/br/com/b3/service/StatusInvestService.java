@@ -94,7 +94,7 @@ public class StatusInvestService {
 	
 	public List<TickerResponse> getAllTickersInfo(List<String> tickers) {
 		return tickers.stream()
-				.filter(t -> tickerExists(t))
+				.filter(this::tickerExists)
 				.map(t -> {
 					
 					Document document = fetchDocumentFromTickerOr(t, 
