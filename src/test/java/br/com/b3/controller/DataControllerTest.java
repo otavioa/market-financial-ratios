@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.client.RestTemplate;
 
 import static br.com.b3.service.StatusInvestResource.*;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -30,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DataControllerTest {
 
     @Autowired private MockMvc mvc;
-    @Autowired private RestTemplate restTemplate;
     @Autowired private CompanyRepository repository;
 
     @MockBean private ExternalURL externalUrl;

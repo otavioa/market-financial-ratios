@@ -1,17 +1,18 @@
 package br.com.b3.external.url.client;
 
-import java.io.IOException;
-import java.util.Optional;
-
+import br.com.b3.external.url.ResponseBody;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import br.com.b3.external.url.ResponseBody;
+import java.io.IOException;
+import java.io.Serial;
+import java.util.Optional;
 
 public class ExternalURLClientException extends Exception {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private HttpClientErrorException ex;
@@ -50,7 +51,7 @@ public class ExternalURLClientException extends Exception {
 		}
 	}
 
-	public HttpStatus getHttpStatus() {
+	public HttpStatusCode getHttpStatus() {
 		return ex == null ? HttpStatus.BAD_REQUEST : ex.getStatusCode();
 	}
 	public String getCode() {

@@ -18,6 +18,6 @@ class Patch<T extends ResponseBody> extends Get<T> {
 				.addToHeaderUserAgent()
 				.addToHeaderAccept()
 				.addToHeader(headerArguments)
-				.patchObject(url, request, responseBodyClass).getBody();
+				.patchObject(url, request, responseBodyClass);
 	}
 }
