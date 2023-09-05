@@ -46,17 +46,17 @@ class ExternalURLClientTest {
 	@Test
 	void callForBadURI() {
 		ExternalURLClientException thrown = assertThrows(ExternalURLClientException.class, () ->
-			subject.call("htp://", HttpMethod.GET, new HttpHeaders(), request, ResponseBody.class)
+			subject.call("htp://", HttpMethod.GET, getHttpHeaders(), request, ResponseBody.class)
 			,"ExternalURLClientException was expected");
 		
 		assertThat(thrown.getMessage()).isEqualTo("URL mal formada. URL:htp://");
 	}
-	
+
 	@Test
 	void callWithRequest() throws ExternalURLClientException {
 		WebClientMockHelper.answerForAnyRequest(webClient, request, r -> response);
 		
-		Mono<ResponseBody> response = subject.call(URL, HttpMethod.GET, new HttpHeaders(), request, ResponseBody.class);
+		Mono<ResponseBody> response = subject.call(URL, HttpMethod.GET, getHttpHeaders(), request, ResponseBody.class);
 		
 		Assertions.assertThat(response).isEqualTo(this.response);
 	}
@@ -65,7 +65,7 @@ class ExternalURLClientTest {
 	void callWithoutRequest() throws ExternalURLClientException {
 		answerForAnyRetrieve(r -> response);
 
-		Mono<ResponseBody> response = subject.call(URL, HttpMethod.GET, new HttpHeaders(), ResponseBody.class);
+		Mono<ResponseBody> response = subject.call(URL, HttpMethod.GET, getHttpHeaders(), ResponseBody.class);
 		
 		Assertions.assertThat(response).isEqualTo(this.response);
 	}
@@ -75,7 +75,7 @@ class ExternalURLClientTest {
 		answerForAnyRetrieve(r -> {throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "ClientError");});
 		
 		ExternalURLClientException thrown = assertThrows(ExternalURLClientException.class,
-				() -> subject.call(URL, HttpMethod.GET, new HttpHeaders(), ResponseBody.class),
+				() -> subject.call(URL, HttpMethod.GET, getHttpHeaders(), ResponseBody.class),
 				"ExternalURLClientException was expected");
 		
 		assertThat(thrown.getMessage()).isEqualTo("400 ClientError");
@@ -86,7 +86,7 @@ class ExternalURLClientTest {
 		answerForAnyRetrieve(r -> {	throw new HttpServerErrorException(HttpStatus.BAD_GATEWAY, "ServerError");});
 
 		ExternalURLClientException thrown = assertThrows(ExternalURLClientException.class, () ->
-			subject.call(URL, HttpMethod.GET, new HttpHeaders(), ResponseBody.class)
+			subject.call(URL, HttpMethod.GET, getHttpHeaders(), ResponseBody.class)
 			,"ExternalURLClientException was expected");
 
 		assertThat(thrown.getMessage()).isEqualTo("502 ServerError");
@@ -97,7 +97,7 @@ class ExternalURLClientTest {
 		answerForAnyRetrieve(r -> {throw new RuntimeException("RuntimeException");});
 
 		ExternalURLClientException thrown = assertThrows(ExternalURLClientException.class, () ->
-			subject.call(URL, HttpMethod.GET, new HttpHeaders(), ResponseBody.class)
+			subject.call(URL, HttpMethod.GET, getHttpHeaders(), ResponseBody.class)
 			,"ExternalURLClientException was expected");
 		
 		assertThat(thrown.getMessage()).isEqualTo("RuntimeException");
@@ -105,6 +105,14 @@ class ExternalURLClientTest {
 	
 	private void answerForAnyRetrieve(Answer<?> answer) {
 		WebClientMockHelper.answerForAnyRetrieve(webClient, answer);
+	}
+
+	private static HttpHeaders getHttpHeaders() {
+		HttpHeaders header = new HttpHeaders();
+		header.add("key", "value");
+		header.add("Content-Type", "application/json");
+
+		return header;
 	}
 
 }

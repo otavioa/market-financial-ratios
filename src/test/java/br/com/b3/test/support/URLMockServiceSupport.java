@@ -1,18 +1,17 @@
 package br.com.b3.test.support;
 
-import java.io.IOException;
-import java.nio.file.Files;
-
+import br.com.b3.service.htmlreader.HtmlReaderService;
+import lombok.NoArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.mockito.Mockito;
 
-import br.com.b3.service.htmlreader.HtmlReaderService;
-import org.springframework.core.io.ClassPathResource;
+import java.io.IOException;
 
+@NoArgsConstructor
 public class URLMockServiceSupport {
 
-	public static void mockReaderService(HtmlReaderService readerService, String urlTested, String name) throws IOException, Exception {
+	public static void mockReaderService(HtmlReaderService readerService, String urlTested, String name) throws Exception {
 		Document parse = getDocumentFrom(name, urlTested);
 		Mockito.when(readerService.getHTMLDocument(urlTested)).thenReturn(parse);
 	}
