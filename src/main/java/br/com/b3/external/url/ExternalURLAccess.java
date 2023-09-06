@@ -1,17 +1,15 @@
 package br.com.b3.external.url;
 
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
+import br.com.b3.external.url.client.ExternalURLClient;
+import br.com.b3.external.url.client.ExternalURLClientException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import br.com.b3.external.url.client.ExternalURLClient;
-import br.com.b3.external.url.client.ExternalURLClientException;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Service
 class ExternalURLAccess {
@@ -53,22 +51,22 @@ class ExternalURLAccess {
 		return this;
 	}
 
-	public <R extends ResponseBody> ResponseEntity<R> postObject(String url, Request request, Class<R> responseClass)
+	public <R extends ResponseBody> R postObject(String url, Request request, Class<R> responseClass)
 			throws ExternalURLClientException {
 
-		return client.call(url, HttpMethod.POST, headers, request, responseClass);
+		return client.call(url, HttpMethod.POST, headers, request, responseClass).block();
 	}
 
-	public <R extends ResponseBody> ResponseEntity<R> getObject(String url, Class<R> responseClass)
+	public <R extends ResponseBody> R getObject(String url, Class<R> responseClass)
 			throws ExternalURLClientException {
 
-		return client.call(url, HttpMethod.GET, headers, responseClass);
+		return client.call(url, HttpMethod.GET, headers, responseClass).block();
 	}
 
-	public <R extends ResponseBody> ResponseEntity<R> patchObject(String url, Request request, Class<R> responseClass)
+	public <R extends ResponseBody> R patchObject(String url, Request request, Class<R> responseClass)
 			throws ExternalURLClientException {
 
-		return client.call(url, HttpMethod.PATCH, headers, request, responseClass);
+		return client.call(url, HttpMethod.PATCH, headers, request, responseClass).block();
 	}
 
 }

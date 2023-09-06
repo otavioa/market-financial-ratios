@@ -1,11 +1,10 @@
 package br.com.b3.service.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.com.b3.external.url.ResponseBody;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -19,7 +18,11 @@ public class AdvanceSearchResponse implements ResponseBody {
 	private Boolean hasForecast;
 
 	public AdvanceSearchResponse(CompanyResponse... companies){
-		this.list = asList(companies);
+		this(asList(companies));
+	}
+
+	public AdvanceSearchResponse(List<CompanyResponse> companies){
+		this.list = companies;
 	}
 
 

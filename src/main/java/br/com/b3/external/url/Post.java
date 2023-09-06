@@ -18,6 +18,6 @@ class Post<T extends ResponseBody> extends Get<T> {
 				.addToHeaderUserAgent()
 				.addToHeaderAccept()
 				.addToHeader(headerArguments)
-				.postObject(url, request, responseBodyClass).getBody();
+				.postObject(url, request, responseBodyClass);
 	}
 }

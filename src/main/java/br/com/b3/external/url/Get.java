@@ -20,7 +20,7 @@ class Get<T extends ResponseBody> {
 				.addToHeaderUserAgent()
 				.addToHeaderAccept()
 				.addToHeader(headerArguments)
-				.getObject(url, responseBodyClass).getBody();
+				.getObject(url, responseBodyClass);
 	}
 
 }

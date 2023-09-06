@@ -1,11 +1,8 @@
 package br.com.b3.external.url;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-
+import br.com.b3.external.url.client.ExternalURLClient;
+import br.com.b3.external.url.client.ExternalURLClientException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,10 +12,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import reactor.core.publisher.Mono;
 
-import br.com.b3.external.url.client.ExternalURLClient;
-import br.com.b3.external.url.client.ExternalURLClientException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 @ExtendWith(MockitoExtension.class)
 class ExternalURLTest {
@@ -27,7 +26,7 @@ class ExternalURLTest {
 	
 	@Mock private ExternalURLClient client;
 	@Mock private Request request;
-	@Mock private ResponseEntity<ResponseBody> response;
+	@Mock private Mono<ResponseBody> response;
 	
 	private ExternalURLAccess urlAccess;
 	
@@ -36,7 +35,7 @@ class ExternalURLTest {
 	
 	
 	@BeforeEach
-	public void setUp() throws ExternalURLClientException {
+	public void setUp() {
 		urlAccess = new ExternalURLAccess(client); 
 		subject = new ExternalURL(urlAccess);
 	}
@@ -152,7 +151,7 @@ class ExternalURLTest {
 	}
 	
 	
-	class FakeResponse implements ResponseBody {
+	static class FakeResponse implements ResponseBody {
 		
 	}
 

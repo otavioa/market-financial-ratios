@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-
 @SpringBootApplication
 @EnableMongoRepositories
 public class B3Application extends SpringBootServletInitializer {
