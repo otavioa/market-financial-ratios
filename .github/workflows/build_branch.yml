@@ -6,7 +6,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build and Test (mvn test)
+    name: Build and Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -15,5 +15,5 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'maven'
-      - name: Build with Maven
+      - name: Build with Maven  (mvn test)
         run: mvn test
