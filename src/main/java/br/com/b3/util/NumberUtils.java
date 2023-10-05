@@ -1,5 +1,7 @@
 package br.com.b3.util;
 
+import org.springframework.util.Assert;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
@@ -65,11 +67,8 @@ public class NumberUtils {
 	}
 
 	public static Double round(Double value, int scale) {
-		if (value == null)
-			return null;
-		
-		if (scale < 0)
-			throw new IllegalArgumentException();
+		Assert.notNull(value, "'value' can not be null");
+		Assert.isTrue(scale > 0, "'scale' can not be negative");
 
 		BigDecimal bd = new BigDecimal(Double.toString(value));
 		bd = bd.setScale(scale, RoundingMode.HALF_UP);

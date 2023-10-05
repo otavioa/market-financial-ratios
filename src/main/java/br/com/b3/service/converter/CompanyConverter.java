@@ -1,4 +1,4 @@
-package br.com.b3.service.datacharge;
+package br.com.b3.service.converter;
 
 import br.com.b3.entity.Company;
 import br.com.b3.service.dto.CompanyResponse;
@@ -6,7 +6,14 @@ import br.com.b3.service.dto.CompanyResponse;
 import static br.com.b3.util.NumberUtils.*;
 
 public class CompanyConverter {
+
+    private CompanyConverter(){ }
+
     public static Company convert(CompanyResponse company) {
+        return new CompanyConverter().executeConversion(company);
+    }
+
+    public Company executeConversion(CompanyResponse company) {
         Company dto = new Company();
 
         dto.setNome(company.getCompanyname());
@@ -51,7 +58,7 @@ public class CompanyConverter {
         return dto;
     }
 
-    private static Double normalize(Double value){
+    private Double normalize(Double value){
         return round(ifNullDefault(value, DOUBLE_ZERO), 2);
     }
 }

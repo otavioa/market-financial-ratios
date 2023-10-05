@@ -4,6 +4,7 @@ import br.com.b3.entity.Company;
 import br.com.b3.entity.CompanyRepository;
 import br.com.b3.external.url.ExternalURL;
 import br.com.b3.service.StatusInvestResource;
+import br.com.b3.service.converter.CompanyConverter;
 import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
