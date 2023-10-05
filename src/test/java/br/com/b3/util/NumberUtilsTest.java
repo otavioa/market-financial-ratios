@@ -89,10 +89,12 @@ class NumberUtilsTest {
 	
 	@Test
 	void roundNullValue() {
-		Double value = null;
-		Double result = NumberUtils.round(value, 2);
-		
-		Assertions.assertNull(result);
+		assertThrows(IllegalArgumentException.class, () -> {
+
+			Double value = null;
+			NumberUtils.round(value, 2);
+
+		}, "IllegalArgumentException was expected");
 	}
 	
 	@Test
