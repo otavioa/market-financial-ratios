@@ -1,8 +1,8 @@
 package br.com.b3.controller;
 
 import br.com.b3.ApplicationTest;
-import br.com.b3.service.dto.AdvanceSearchResponse;
-import br.com.b3.service.dto.CompanyResponse;
+import br.com.b3.service.datacharge.AdvanceSearchResponse;
+import br.com.b3.service.datacharge.CompanyResponse;
 import br.com.b3.service.htmlreader.HtmlReaderService;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
 import br.com.b3.service.urls.StatusInvestURL;

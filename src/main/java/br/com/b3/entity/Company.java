@@ -5,15 +5,19 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Builder
 @JsonInclude(Include.NON_NULL)
 @Document("company")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Company implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -21,6 +25,7 @@ public class Company implements Serializable {
 	@JsonIgnore
 	private String id;
 
+	private String type;
 	private String ticker;
 	private String nome;
 	private String gestao;

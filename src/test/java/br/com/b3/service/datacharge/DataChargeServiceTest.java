@@ -5,8 +5,6 @@ import br.com.b3.entity.Company;
 import br.com.b3.entity.CompanyRepository;
 import br.com.b3.external.url.ExternalURL;
 import br.com.b3.service.StatusInvestResource;
-import br.com.b3.service.dto.AdvanceSearchResponse;
-import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

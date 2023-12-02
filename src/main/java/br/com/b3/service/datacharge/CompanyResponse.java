@@ -1,4 +1,4 @@
-package br.com.b3.service.dto;
+package br.com.b3.service.datacharge;
 
 import br.com.b3.external.url.ResponseBody;
 import lombok.Data;

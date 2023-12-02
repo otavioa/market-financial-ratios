@@ -1,6 +1,6 @@
 package br.com.b3.controller;
 
-import br.com.b3.service.dto.CompanyResponse;
+import br.com.b3.service.datacharge.CompanyResponse;
 import br.com.b3.util.NumberUtils;
 
 public class CompanyResponseBuilder {
