@@ -1,11 +1,10 @@
 package br.com.b3.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 public interface AllTickers {
 
-	public static final List<String> ACOES = Arrays.asList("AALR3", "ABCB4", "ABEV3", "ADHM3", "AFLT3", "AGRO3",
+	public static final List<String> ACOES = List.of("AALR3", "ABCB4", "ABEV3", "ADHM3", "AFLT3", "AGRO3",
 			"AHEB3", "AHEB5", "AHEB6", "ALPA3", "ALPA4", "ALPK3", "ALSC3", "ALSO3", "ALUP11", "ALUP3", "ALUP4", "AMAR3",
 			"ANDG3B", "ANDG4B", "ANIM3", "APER3", "APTI3", "APTI4", "ARZZ3", "ATMP3", "ATOM3", "AZEV3", "AZEV4",
 			"AZUL4", "B3SA3", "BAHI3", "BALM3", "BALM4", "BAUH4", "BAZA3", "BBAS3", "BBDC3", "BBDC4", "BBML3", "BBRK3",
@@ -52,7 +51,7 @@ public interface AllTickers {
 			"VIVT3", "VIVT4", "VLID3", "VSPT3", "VSPT4", "VULC3", "VVAR3", "WEGE3", "WHRL3", "WHRL4", "WIZS3", "WLMM3",
 			"WLMM4", "WSON33", "YDUQ3");
 
-	public static final List<String> FIIS = Arrays.asList("CXTL11", "RBFF11", "LUGG11", "TBOF11", "PATC11", "BRCO11",
+	public static final List<String> FIIS = List.of("CXTL11", "RBFF11", "LUGG11", "TBOF11", "PATC11", "BRCO11",
 			"HGBS11", "BARI11", "ALZR11", "RBBV11", "RBRF11", "RBDS11", "LVBI11", "FCFL11", "HUSC11", "FISD11",
 			"CRFF11", "FINF11", "XPML11", "EDFO11B", "MXRF11", "ONEF11", "SDIL11", "FAMB11B", "VPSI11", "DOMC11",
 			"OULG11", "RBRP11", "XPLG11", "VINO11", "CPTS11B", "GSFI11", "NVIF11B", "LATR11B", "VSEC11", "XPHT11",
@@ -79,7 +78,7 @@ public interface AllTickers {
 			"SFND11", "ELDO11B", "RBRY11", "RBCO11", "JPPA11", "BBVJ11", "NCHB11", "QAGR11", "VGIP11", "WTSP11B",
 			"PRSN11B", "HOSI11", "RCFA11");
 
-	public static final List<String> ETFS = Arrays.asList("BBSD11", "XBOV11", "IVVB11", "BOVA11", "BRAX11", "ECOO11",
+	public static final List<String> ETFS = List.of("BBSD11", "XBOV11", "IVVB11", "BOVA11", "BRAX11", "ECOO11",
 			"SMAL11", "BOW11", "DIVO11", "FIND11", "FIXA11", "GOVE11", "IMAB11", "MATB11", "ISUS11", "PIBB11",
 			"SPXI11");
 

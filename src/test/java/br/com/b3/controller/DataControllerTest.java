@@ -1,11 +1,11 @@
 package br.com.b3.controller;
 
-import br.com.b3.ApplicationTest;
+import br.com.b3.MockMvcApp;
 import br.com.b3.entity.CompanyRepository;
 import br.com.b3.external.url.ExternalURL;
 import br.com.b3.service.StatusInvestResource;
-import br.com.b3.service.dto.AdvanceSearchResponse;
-import br.com.b3.service.dto.CompanyResponse;
+import br.com.b3.service.datacharge.AdvanceSearchResponse;
+import br.com.b3.service.datacharge.CompanyResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,13 +25,13 @@ import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ApplicationTest
+@MockMvcApp
 class DataControllerTest {
 
-    @Autowired private MockMvc mvc;
-    @Autowired private CompanyRepository repository;
-
     @MockBean private ExternalURL externalUrl;
+
+    @Autowired private CompanyRepository repository;
+    @Autowired private MockMvc mvc;
 
     @BeforeAll
     public static void setUpEnvironment(){
@@ -41,9 +41,9 @@ class DataControllerTest {
     @Test
     void doCharge() throws Exception  {
         mockExternalUrlGet(ACOES, newResponse(1L, "EMPRESA AÇÃO", "AAA3", 100.00));
-        mockExternalUrlGet(FIIS, newResponse(2L, "EMPRESA FII", "FFF11", 100.00));
-        mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 100.00));
-        mockExternalUrlGet(REITS, newResponse(4L, "EMPRESA REITS", "RRR", 100.00));
+        mockExternalUrlGet(FIIS, newResponse(2L, "EMPRESA FII", "FFF11", 101.00));
+        mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 102.00));
+        mockExternalUrlGet(REITS, newResponse(4L, "EMPRESA REITS", "RRR", 103.00));
 
         performRequest(ApiEndpoints.DATA_CHARGE)
                 .andExpect(status().isOk())
@@ -66,7 +66,7 @@ class DataControllerTest {
     private ResultActions performRequest(String endPoint, Parameter... parameters) throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(endPoint);
         for(Parameter parameter : parameters)
-            requestBuilder.param(parameter.getName(), parameter.getValue());
+            requestBuilder.param(parameter.name(), parameter.value());
 
         return mvc.perform(requestBuilder);
     }

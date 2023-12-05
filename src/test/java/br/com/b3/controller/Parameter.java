@@ -1,20 +1,6 @@
 package br.com.b3.controller;
 
-public class Parameter {
+public record Parameter(String name, String value) {
 
-	private final String name;
-	private final String value;
 
-	public Parameter(String name, String value) {
-		this.name = name;
-		this.value = value;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getValue() {
-		return value;
-	}
 }

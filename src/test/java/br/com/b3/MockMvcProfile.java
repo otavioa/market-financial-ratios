@@ -5,12 +5,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-@Profile(TestProfileConfiguration.TEST_PROFILE)
+@Profile(MockMvcProfile.MOCK_MVC_PROFILE)
 @Configuration
-public class TestProfileConfiguration {
+public class MockMvcProfile {
 
-	public static final String TEST_PROFILE = "test-profile";
+	public static final String MOCK_MVC_PROFILE = "mock-mvc-profile";
 
-	@MockBean private CompanyRepository repository;
+	@MockBean
+	private CompanyRepository repository;
 
 }

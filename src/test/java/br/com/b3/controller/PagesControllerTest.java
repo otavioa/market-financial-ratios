@@ -6,16 +6,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.b3.ApplicationTest;
+import br.com.b3.MockMvcApp;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
-@ApplicationTest
+@MockMvcApp
 class PagesControllerTest {
 
-	@Autowired
-	private MockMvc mvc;
+	@Autowired private MockMvc mvc;
 
 	@Test
 	void homePage() throws Exception {

@@ -1,4 +1,4 @@
-package br.com.b3.util.exception;
+package br.com.b3.exception;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

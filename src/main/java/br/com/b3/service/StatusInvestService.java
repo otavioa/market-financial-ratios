@@ -11,7 +11,7 @@ import br.com.b3.controller.AllTickers;
 import br.com.b3.service.htmlreader.HtmlReaderService;
 import br.com.b3.service.ticket.TickerResponse;
 import br.com.b3.service.urls.StatusInvestURL;
-import br.com.b3.util.exception.GenericException;
+import br.com.b3.exception.GenericException;
 
 @Service
 public class StatusInvestService {

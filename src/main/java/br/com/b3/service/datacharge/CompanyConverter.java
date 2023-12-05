@@ -1,7 +1,7 @@
-package br.com.b3.service.converter;
+package br.com.b3.service.datacharge;
 
 import br.com.b3.entity.Company;
-import br.com.b3.service.dto.CompanyResponse;
+import br.com.b3.service.StatusInvestResource;
 
 import static br.com.b3.util.NumberUtils.*;
 
@@ -9,13 +9,14 @@ public class CompanyConverter {
 
     private CompanyConverter(){ }
 
-    public static Company convert(CompanyResponse company) {
-        return new CompanyConverter().executeConversion(company);
+    public static Company convert(StatusInvestResource resource, CompanyResponse company) {
+        return new CompanyConverter().executeConversion(resource, company);
     }
 
-    public Company executeConversion(CompanyResponse company) {
+    public Company executeConversion(StatusInvestResource resource, CompanyResponse company) {
         Company dto = new Company();
 
+        dto.setType(resource.name());
         dto.setNome(company.getCompanyname());
         dto.setTicker(company.getTicker());
         dto.setPrice(normalize(company.getPrice()));

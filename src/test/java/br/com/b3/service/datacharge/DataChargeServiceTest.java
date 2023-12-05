@@ -1,12 +1,10 @@
 package br.com.b3.service.datacharge;
 
-import br.com.b3.ApplicationTest;
+import br.com.b3.MockMvcApp;
 import br.com.b3.entity.Company;
 import br.com.b3.entity.CompanyRepository;
 import br.com.b3.external.url.ExternalURL;
 import br.com.b3.service.StatusInvestResource;
-import br.com.b3.service.dto.AdvanceSearchResponse;
-import br.com.b3.service.dto.CompanyResponse;
 import br.com.b3.service.urls.StatusInvestAdvanceSearchURL;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -19,7 +17,7 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 
-@ApplicationTest
+@MockMvcApp
 class DataChargeServiceTest {
 
     @MockBean private ExternalURL externalUrl;

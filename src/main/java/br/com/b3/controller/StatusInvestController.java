@@ -1,134 +1,44 @@
 package br.com.b3.controller;
 
-import static br.com.b3.controller.dto.AdvanceSearchConverter.convert;
-import static java.util.Arrays.asList;
-
-import br.com.b3.service.dto.CompanyResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import br.com.b3.controller.dto.AdvancedSearchDTO;
+import br.com.b3.entity.Company;
 import br.com.b3.service.StatusInvestAdvancedSearchService;
 import br.com.b3.service.StatusInvestService;
-import br.com.b3.service.dto.AdvanceSearchResponse;
 import br.com.b3.service.ticket.TickerResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static br.com.b3.controller.dto.AdvanceSearchConverter.convert;
+import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 
 @RestController
 @RequestMapping("/statusinvest")
 public class StatusInvestController {
 
-	@Autowired
-	private StatusInvestAdvancedSearchService service;
-	
-	@Autowired
-	private StatusInvestService simpleService;
+	@Autowired private StatusInvestAdvancedSearchService service;
+	@Autowired private StatusInvestService simpleService;
 
 	@GetMapping("/all")
 	public ResponseEntity<AdvancedSearchDTO> getAllAvailable() {
 
-		List<CompanyResponse> acoes = service.getAllAvailableCompanies();
+		List<Company> companies = service.getAllCompanies();
 
-		return ResponseEntity.ok(convert(acoes));
+		return ResponseEntity.ok(convert(companies));
 	}
 
 	@GetMapping
-	public ResponseEntity<AdvancedSearchDTO> getAllAvailableByTickers(
-			@RequestParam(value = "tickers", required = true) String[] tickers,
-			@RequestParam(value = "indicadores", required = false) String[] indicadores) {
+	public ResponseEntity<AdvancedSearchDTO> getAllAvailableBy(
+			@RequestParam(value = "tickers", required = false) String[] tickers,
+			@RequestParam(value = "types", required = false) String[] types,
+			@RequestParam(value = "indicators", required = false) String[] indicators) {
 
-		List<CompanyResponse> response = service.getAllAvailableCompanies(asList(tickers));
+		List<Company> response = service.getAllCompaniesBy(tickers, types);
 
-		return ResponseEntity.ok(convert(response, indicadores));
+		return ResponseEntity.ok(convert(response, indicators));
 	}
-	
-//---------
-
-	@GetMapping("/acoes/all")
-	public ResponseEntity<AdvancedSearchDTO> getAllAcoes() {
-
-		List<CompanyResponse> acoes = service.getAllAcoes();
-
-		return ResponseEntity.ok(convert(acoes));
-	}
-
-	@GetMapping("/acoes")
-	public ResponseEntity<AdvancedSearchDTO> getAcoesByTickers(
-			@RequestParam(value = "tickers", required = true) String[] tickers,
-			@RequestParam(value = "indicadores", required = false) String[] indicadores) {
-
-		List<CompanyResponse> acoes = service.getAcaoByTickers(tickers);
-
-		return ResponseEntity.ok(convert(acoes, indicadores));
-	}
-
-//---------
-
-	@GetMapping("/fiis/all")
-	public ResponseEntity<AdvancedSearchDTO> getAllFiis() {
-
-		List<CompanyResponse> fiis = service.getAllFiis();
-
-		return ResponseEntity.ok(convert(fiis));
-	}
-
-	@GetMapping("/fiis")
-	public ResponseEntity<AdvancedSearchDTO> getFiisByTickers(
-			@RequestParam(value = "tickers", required = true) String[] tickers,
-			@RequestParam(value = "indicadores", required = false) String[] indicadores) {
-
-		List<CompanyResponse> fiis = service.getFiiByTicker(tickers);
-
-		return ResponseEntity.ok(convert(fiis, indicadores));
-	}
-
-//---------
-
-	@GetMapping("/stocks/all")
-	public ResponseEntity<AdvancedSearchDTO> getAllStocks() {
-
-		List<CompanyResponse> stocks = service.getAllStocks();
-
-		return ResponseEntity.ok(convert(stocks));
-	}
-
-	@GetMapping("/stocks")
-	public ResponseEntity<AdvancedSearchDTO> getStocksByTickers(
-			@RequestParam(value = "tickers", required = true) String[] tickers,
-			@RequestParam(value = "indicadores", required = false) String[] indicadores) {
-
-		List<CompanyResponse> stocks = service.getStockByTickers(tickers);
-
-		return ResponseEntity.ok(convert(stocks, indicadores));
-	}
-
-//---------
-
-	@GetMapping("/reits/all")
-	public ResponseEntity<AdvancedSearchDTO> getAllReits() {
-
-		List<CompanyResponse> reits = service.getAllReits();
-
-		return ResponseEntity.ok(convert(reits));
-	}
-
-	@GetMapping("/reits")
-	public ResponseEntity<AdvancedSearchDTO> getReitsByTickers(
-			@RequestParam(value = "tickers", required = true) String[] tickers,
-			@RequestParam(value = "indicadores", required = false) String[] indicadores) {
-
-		List<CompanyResponse> reits = service.getReitByTickers(tickers);
-
-		return ResponseEntity.ok(convert(reits, indicadores));
-	}
-	
-	//---------
 	
 	@GetMapping("/etfs/{ticket}")
 	public ResponseEntity<TickerResponse> getEtfTicketInfo(@PathVariable(value="ticket", required=true) String ticket){
@@ -137,4 +47,5 @@ public class StatusInvestController {
 		
 		return ResponseEntity.ok(ticketInfo);
 	}
+
 }
