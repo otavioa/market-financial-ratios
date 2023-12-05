@@ -4,7 +4,7 @@ import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHA
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.b3.util.exception.GenericException;
+import br.com.b3.exception.GenericException;
 
 public class JSONUtils {
 

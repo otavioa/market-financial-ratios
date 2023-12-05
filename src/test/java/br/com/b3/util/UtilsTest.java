@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.b3.util.exception.GenericException;
+import br.com.b3.exception.GenericException;
 
 @ExtendWith(MockitoExtension.class)
 public class UtilsTest {
