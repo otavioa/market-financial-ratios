@@ -1,6 +1,5 @@
 package br.com.mfr.service.statusinvest;
 
-import br.com.mfr.service.statusinvest.*;
 import br.com.mfr.service.statusinvest.dto.AcoesFilter;
 import br.com.mfr.service.statusinvest.dto.AdvancedFilterRequest;
 import br.com.mfr.service.statusinvest.dto.ForecastFilterRequest;

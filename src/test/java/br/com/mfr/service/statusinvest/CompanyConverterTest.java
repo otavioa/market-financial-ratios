@@ -3,7 +3,6 @@ package br.com.mfr.service.statusinvest;
 import br.com.mfr.entity.Company;
 import br.com.mfr.service.statusinvest.dto.CompanyConverter;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
-import br.com.mfr.service.statusinvest.StatusInvestResource;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
