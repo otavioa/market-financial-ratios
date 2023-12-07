@@ -126,13 +126,13 @@ class ExternalURLTest {
 
 		try {
 			subject.doGet(URL, FakeResponse.class);
-			fail("Teste deveria ter quebrado");
+			fail("Test should've broken");
 			
 		} catch (RuntimeException e) {
 			assertEquals("404 - not found", e.getCause().getMessage());
 			
 		} catch (Exception e) {
-			fail("Não deveria ter lançado Exception, mas sim RuntimeException");
+			fail("Was expected to received a RuntimeException");
 		}
 	}
 	

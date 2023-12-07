@@ -13,6 +13,6 @@ public class WithValue implements DocumentDiscoveryRule {
 
 	@Override
 	public String toString() {
-		return "Valor";
+		return "Price";
 	}
 }

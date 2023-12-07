@@ -47,7 +47,7 @@ public class ExternalURLClientException extends Exception {
 			return Optional.of(readValue);
 		} catch (IOException e) {
 			throw new ExternalURLClientException(
-					"Falha ao converter mensagem em objeto. Mensagem: " + ex.getMessage());
+					"Attempt to convert message into object fail. Message: " + ex.getMessage());
 		}
 	}
 

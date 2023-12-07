@@ -23,44 +23,29 @@ public class UtilsTest {
 
 	@Mock private ObjectMapper mockMapper;
 	
-	@BeforeEach
-	public void setUp() {
-		JSONUtils.setMapper(new ObjectMapper());
-	}
-	
 	@Test
 	void jsonUtils_toJSON() {
-		DummyObject object = new DummyObject("teste", 1);
+		DummyObject object = new DummyObject("test", 1);
 
 		String json = JSONUtils.toJSON(object);
 
-		assertEquals(json, "{\"value1\":\"teste\",\"value2\":1}");
+		assertEquals(json, "{\"value1\":\"test\",\"value2\":1}");
 	}
 
 	@Test
-	void jsonUtils_tryInvalidObjecttoJSON() {
-		IllegalArgumentException exception = new IllegalArgumentException("teste");
+	void jsonUtils_tryInvalidObjectToJSON() {
+		IllegalArgumentException exception = new IllegalArgumentException("test");
 		when(mockMapper.configure(any(MapperFeature.class), eq(true))).thenThrow(exception);
-		JSONUtils.setMapper(mockMapper);
 		
 		try {
-			JSONUtils.toJSON("123".getBytes());
+			JSONUtils.toJSON(mockMapper, "123".getBytes());
 			fail();
 		} catch (Exception e) {
 			assertEquals(e.getClass(), GenericException.class);
 			assertEquals(e.getCause().getClass(), IllegalArgumentException.class);
 			
-			assertEquals(e.getMessage(), "Falhou ao converter objeto");
+			assertEquals(e.getMessage(), "Attempt to convert object failed.");
 		}
-	}
-	
-	@Test
-	void jsonUtils_getNullMapper() {
-		JSONUtils.setMapper(null);
-		
-		ObjectMapper mapper = JSONUtils.getMapper();
-		
-		assertNotNull(mapper);
 	}
 
 	static class DummyObject {

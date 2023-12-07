@@ -2,7 +2,7 @@ package br.com.mfr.external.url.client;
 
 import br.com.mfr.external.url.Request;
 import br.com.mfr.external.url.ResponseBody;
-import br.com.mfr.webclient.WebClientMockHelper;
+import br.com.mfr.test.support.WebClientMockSupport;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,15 +46,15 @@ class ExternalURLClientTest {
 	@Test
 	void callForBadURI() {
 		ExternalURLClientException thrown = assertThrows(ExternalURLClientException.class, () ->
-			subject.call("htp://", HttpMethod.GET, getHttpHeaders(), request, ResponseBody.class)
+			subject.call("http://", HttpMethod.GET, getHttpHeaders(), request, ResponseBody.class)
 			,"ExternalURLClientException was expected");
 		
-		assertThat(thrown.getMessage()).isEqualTo("URL mal formada. URL:htp://");
+		assertThat(thrown.getMessage()).isEqualTo("Malformed URL: http://");
 	}
 
 	@Test
 	void callWithRequest() throws ExternalURLClientException {
-		WebClientMockHelper.answerForAnyRequest(webClient, request, r -> response);
+		WebClientMockSupport.answerForAnyRequest(webClient, request, r -> response);
 		
 		Mono<ResponseBody> response = subject.call(URL, HttpMethod.GET, getHttpHeaders(), request, ResponseBody.class);
 		
@@ -104,7 +104,7 @@ class ExternalURLClientTest {
 	}
 	
 	private void answerForAnyRetrieve(Answer<?> answer) {
-		WebClientMockHelper.answerForAnyRetrieve(webClient, answer);
+		WebClientMockSupport.answerForAnyRetrieve(webClient, answer);
 	}
 
 	private static HttpHeaders getHttpHeaders() {

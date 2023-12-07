@@ -12,7 +12,7 @@ public class DocumentDiscovery {
 		try {
 			return rule.getContentOf(document);
 		} catch (Exception e) {
-			LOGGER.warn("Falhou ao recuperar Indicador da regra: " + rule.toString());
+			LOGGER.warn("Attempt to retrieve ratio rule failed: " + rule.toString());
 			return null;
 		}
 	}

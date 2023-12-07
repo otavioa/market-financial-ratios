@@ -50,7 +50,7 @@ class ExternalURLClientExceptionTest {
 	void newWithException() throws ExternalURLClientException {
 		Mockito.when(ex.getMessage()).thenReturn("exception");
 		Mockito.when(ex.getStatusCode()).thenReturn(BAD_GATEWAY);
-		Mockito.when(ex.getResponseBodyAsString()).thenReturn("{\"attribute\": \"quebrou\"}");
+		Mockito.when(ex.getResponseBodyAsString()).thenReturn("{\"attribute\": \"broke\"}");
 		
 		subject = new ExternalURLClientException(ex);
 		
@@ -58,18 +58,18 @@ class ExternalURLClientExceptionTest {
 		Assertions.assertThat(subject.getHttpStatus()).isEqualTo(BAD_GATEWAY);
 		Assertions.assertThat(subject.getCode()).isNull();
 		Assertions.assertThat(subject.getResponseBodyAsString().isPresent()).isTrue();
-		Assertions.assertThat(subject.getResponseBodyAsString().get()).isEqualTo("{\"attribute\": \"quebrou\"}");
+		Assertions.assertThat(subject.getResponseBodyAsString().get()).isEqualTo("{\"attribute\": \"broke\"}");
 		
 		Optional<FakeResponse> response = subject.getResponseBodyAs(FakeResponse.class);
 		Assertions.assertThat(response.isPresent()).isTrue();
-		Assertions.assertThat(response.get().getAttribute()).isEqualTo("quebrou");
+		Assertions.assertThat(response.get().getAttribute()).isEqualTo("broke");
 		
 	}
 	
 	@Test
 	void newWithException_breakParse() throws ExternalURLClientException {
 		Mockito.when(ex.getMessage()).thenReturn("exception");
-		Mockito.when(ex.getResponseBodyAsString()).thenReturn("{attribute\": \"quebrou\"}");
+		Mockito.when(ex.getResponseBodyAsString()).thenReturn("{attribute\": \"broke\"}");
 		
 		subject = new ExternalURLClientException(ex);
 		
@@ -79,7 +79,7 @@ class ExternalURLClientExceptionTest {
 			
 		}, "ExternalURLClientException was expected");
 		
-		Assertions.assertThat(thrown.getMessage()).isEqualTo("Falha ao converter mensagem em objeto. Mensagem: exception");
+		Assertions.assertThat(thrown.getMessage()).isEqualTo("Attempt to convert message into object fail. Message: exception");
 	}
 
 	public static class FakeResponse implements ResponseBody {

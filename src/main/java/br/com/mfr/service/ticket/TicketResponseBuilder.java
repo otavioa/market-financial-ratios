@@ -4,7 +4,7 @@ import org.jsoup.nodes.Document;
 
 import br.com.mfr.service.ticket.discover.DocumentDiscovery;
 import br.com.mfr.service.ticket.discover.WithDY;
-import br.com.mfr.service.ticket.discover.WithIndicador;
+import br.com.mfr.service.ticket.discover.WithRatio;
 import br.com.mfr.service.ticket.discover.WithLPA;
 import br.com.mfr.service.ticket.discover.WithPL;
 import br.com.mfr.service.ticket.discover.WithPVP;
@@ -18,9 +18,9 @@ public class TicketResponseBuilder {
 	
 	private Document document;
 	private boolean useZero;
-	private String codigo;
+	private String ticker;
 
-	private String indicador;
+	private String ratio;
 	private String value;
 	private String pl;
 	private String roe;
@@ -40,8 +40,8 @@ public class TicketResponseBuilder {
 		return this;
 	}
 	
-	public TicketResponseBuilder setCodigo(String codigo) {
-		this.codigo = codigo;
+	public TicketResponseBuilder setTicker(String ticker) {
+		this.ticker = ticker;
 		return this;
 	}
 	
@@ -85,24 +85,24 @@ public class TicketResponseBuilder {
 		return this;
 	}
 	
-	public TicketResponseBuilder withIndicador(String indicador) {
-		this.indicador = indicador;
-		this.value = documentDiscovery.find(document, new WithIndicador(indicador));
+	public TicketResponseBuilder withRatio(String ratio) {
+		this.ratio = ratio;
+		this.value = documentDiscovery.find(document, new WithRatio(ratio));
 		return this;
 	}
 
 	public TickerResponse build() {
 		TickerResponse ticket = new TickerResponse();
 		
-		ticket.setCodigo(codigo);
+		ticket.setTicker(ticker);
 		ticket.setValue(valueOrZero(value));
-		ticket.setIndicador(indicador);
-		ticket.setLPA(valueOrZero(lpa));
-		ticket.setPL(valueOrZero(pl));
+		ticket.setRatio(ratio);
+		ticket.setLpa(valueOrZero(lpa));
+		ticket.setPl(valueOrZero(pl));
 		ticket.setRoe(valueOrZero(roe));
-		ticket.setVPA(valueOrZero(vpa));
-		ticket.setDY(valueOrZero(dy));
-		ticket.setPVP(valueOrZero(pvp));
+		ticket.setVpa(valueOrZero(vpa));
+		ticket.setDy(valueOrZero(dy));
+		ticket.setPvp(valueOrZero(pvp));
 		
 		return ticket;
 	}

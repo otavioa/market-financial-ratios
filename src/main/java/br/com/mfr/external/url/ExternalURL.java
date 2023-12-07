@@ -41,7 +41,7 @@ public class ExternalURL {
 		try {
 			return request.execute(headers);
 		} catch (Exception e) {
-			LOGGER.error("Erro na tentativa de request: ", e);
+			LOGGER.error("Attempt to request fail with: ", e);
 
 			throw new RuntimeException(e);
 		}

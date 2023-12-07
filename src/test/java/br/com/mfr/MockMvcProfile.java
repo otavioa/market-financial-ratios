@@ -11,7 +11,6 @@ public class MockMvcProfile {
 
 	public static final String MOCK_MVC_PROFILE = "mock-mvc-profile";
 
-	@MockBean
-	private CompanyRepository repository;
+	@MockBean private CompanyRepository repository;
 
 }

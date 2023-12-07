@@ -10,9 +10,9 @@ class GenericExceptionTest {
 	
 	@Test
 	void newException() {
-		subject = new GenericException("Mensagem teste", new RuntimeException("Runtime message"));
+		subject = new GenericException("Message test", new RuntimeException("Runtime message"));
 		
-		assertEquals(subject.getMessage(), "Mensagem teste");
+		assertEquals(subject.getMessage(), "Message test");
 		assertEquals(subject.getCause().getClass(), RuntimeException.class);
 		assertEquals(subject.getCause().getMessage(), "Runtime message");
 	}

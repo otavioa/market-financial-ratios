@@ -3,7 +3,6 @@ package br.com.mfr.external.url.client;
 
 import br.com.mfr.external.url.Request;
 import br.com.mfr.external.url.ResponseBody;
-import br.com.mfr.external.url.client.util.AccessUtil;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

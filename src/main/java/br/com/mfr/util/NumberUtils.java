@@ -40,9 +40,9 @@ public class NumberUtils {
 		if(value == null) 
 			return SCAPE_CHARACTER;
 		
-		if(isBilion(value))
+		if(isBillion(value))
 			return format(value / 1000000000) + "B";
-		if (isMilion(value))
+		if (isMillion(value))
 			return format(value / 1000000) + "M";
 		if (isGrand(value))
 			return format(value / 1000) + "K";
@@ -54,11 +54,11 @@ public class NumberUtils {
 		return value >= 1000;
 	}
 
-	private static boolean isMilion(Double value) {
+	private static boolean isMillion(Double value) {
 		return value >= 1000000;
 	}
 
-	private static boolean isBilion(Double value) {
+	private static boolean isBillion(Double value) {
 		return value >= 1000000000;
 	}
 

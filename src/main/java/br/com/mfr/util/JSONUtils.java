@@ -8,27 +8,28 @@ import br.com.mfr.exception.GenericException;
 
 public class JSONUtils {
 
-	private static ObjectMapper mapper;
+	private ObjectMapper mapper;
 
-	private JSONUtils() {}
+	public JSONUtils(ObjectMapper mapper) {
+		this.mapper = mapper;
+	}
+
+	static String toJSON(ObjectMapper mapper, Object object) {
+		return new JSONUtils(mapper).asJSON(object);
+	}
 
 	public static String toJSON(Object object) {
+		return toJSON(new ObjectMapper(), object);
+	}
+
+	private String asJSON(Object object){
 		try {
-			return getMapper()
+			return mapper
 					.configure(SORT_PROPERTIES_ALPHABETICALLY, true)
 					.writeValueAsString(object);
 		} catch (Exception e) {
-			throw new GenericException("Falhou ao converter objeto", e);
+			throw new GenericException("Attempt to convert object failed.", e);
 		}
-	}
-
-	public static ObjectMapper getMapper() {
-		return mapper != null ? mapper : new ObjectMapper();
-	}
-
-
-	public static void setMapper(ObjectMapper mapper) {
-		JSONUtils.mapper = mapper;
 	}
 
 }

@@ -45,28 +45,28 @@ class NumberUtilsTest {
 	}
 	
 	@Test
-	void formatCompactDoubleToString_dezenas() {
+	void formatCompactDoubleToString_dozens() {
 		String result = NumberUtils.formatCompact(10.00);
 		
 		Assertions.assertEquals("10,00", result);
 	}
 	
 	@Test
-	void formatCompactDoubleToString_milhares() {
+	void formatCompactDoubleToString_thousands() {
 		String result = NumberUtils.formatCompact(1000.00);
 		
 		Assertions.assertEquals("1,00K", result);
 	}
 	
 	@Test
-	void formatCompactDoubleToString_milhoes() {
+	void formatCompactDoubleToString_millions() {
 		String result = NumberUtils.formatCompact(1000000.00);
 		
 		Assertions.assertEquals("1,00M", result);
 	}
 	
 	@Test
-	void formatCompactDoubleToString_bilhoes() {
+	void formatCompactDoubleToString_billions() {
 		String result = NumberUtils.formatCompact(1000000000.00);
 		
 		Assertions.assertEquals("1,00B", result);

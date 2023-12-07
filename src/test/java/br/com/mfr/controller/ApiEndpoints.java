@@ -2,8 +2,8 @@ package br.com.mfr.controller;
 
 public interface ApiEndpoints {
 
-	final String STATUSINVEST_ALL = "/statusinvest/all";
-	final String STATUSINVEST = "/statusinvest";
+	String MARKET_RATIO_ALL = "/market-ratio/all";
+	String MARKET_RATIO = "/market-ratio";
 
-	final String DATA_CHARGE = "/data/charge";
+	String DATA_CHARGE = "/data/charge";
 }

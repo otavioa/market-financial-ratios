@@ -45,7 +45,7 @@ public class HtmlReaderService {
 	private Response executeForUrl(String url) throws IOException {
 		Connection connect = jsoupService.getConnection(url);
 		
-		LOGGER.info("Realizando busca de dados na URL: " + url);
+		LOGGER.info("Searching for data from URL: " + url);
 		
 		return connect.execute();
 	}
