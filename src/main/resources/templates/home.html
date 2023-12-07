@@ -8,7 +8,7 @@
 <link rel="icon"
 	href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico">
 
-<title>B3 Financial</title>
+<title>MFR Application</title>
 
 <!-- Bootstrap core CSS -->
 <link rel="stylesheet"
@@ -31,60 +31,76 @@
 			<div class="col-12 col-md-2 col-xl-2 bd-sidebar"></div>
 			<div class="col-12 col-md-8">
 				<main class="py-md-3 bd-content" role="main">
-				<h1>B3 Financial</h1>
-				<h3>Endpoints.</h3>
-				<p>Todos os endpoints disponíveis você encontra <a th:href="@{/swagger-ui/}" >aqui</a> :).
-					Faça bom proveito!</p>
+				<h1>Market Financial Ratios</h1>
+				<h3>Endpoints</h3>
+				<p>All available endpoints. Enjoy!</p>
+					<table class="table table-bordered table-hover">
+						<thead class="thead-light">
+						<tr>
+							<th scope="col">Endpoint</th>
+							<th scope="col">Description</th>
+							<th scope="col">Test</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td>/market-ratio/all</td>
+							<td>Retrieve all available ticker and their rations</td>
+							<a href="/market-ratio/all" target="_blank" class="btn btn-primary">Test</a>
+						</tr>
+						<tr>
+							<td>/market-ratio</td>
+							<td>Retrieve tickers by 'types', 'tickers' and 'ratios'.</td>
+							<a href="/market-ratio?types=STOCKS&tickers=AMZN&ratios=PL" target="_blank" class="btn btn-primary">Test</a>
+						</tr>
+						</tbody>
+					</table>
 				
-				<h3>Indicadores disponíveis.</h3>
-				<p>São todos os indicadores que a aplicação recupera da
-					StatusInvest.</p>
-				<p>Os indicadores são aplicáveis aos serviços que dispõem do <i>query parameter</i> <b>indicadores</b>. Veja Exemplos*</p>
+				<h3>Ratios.</h3>
+				<p>Available ratios to use with parameter 'ratios' on /market-ratio endpoint.</p>
 				<table class="table table-bordered table-hover">
 					<thead class="thead-light">
 						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Chave</th>
-							<th scope="col">Indicador</th>
+							<th scope="col">Key</th>
+							<th scope="col">Ratio</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<th scope="row">1</th>
 							<td>PL</td>
-							<td>P/L - Preço atual / Lucro por ação (LPA)</td>
+							<td>P/L (P/E for stocks) - Price/Earnings</td>
 						</tr>
 						<tr>
 							<th scope="row">2</th>
 							<td>ROE</td>
-							<td>Return on Equity / Retorno sobre Patrimônio Líquido</td>
+							<td>Return on Equity</td>
 						</tr>
 						<tr>
 							<th scope="row">3</th>
 							<td>LPA</td>
-							<td>Lucro líquido / Nº de ações</td>
+							<td>LPA (EPS for stocks) – Earnings Per Share</td>
 						</tr>
 						<tr>
 							<th scope="row">4</th>
 							<td>PVP</td>
-							<td>P/VP - Preço atual / Valor patrimonial por ação (VPA)</td>
+							<td>P/VP (P/BV for stocks)- Price to Book Value</td>
 						</tr>
 						<tr>
 							<th scope="row">5</th>
 							<td>VPA</td>
-							<td>Patrimônio líquido / Nº de ações</td>
+							<td>VPA (BVPS for stocks) - Book value per share</td>
 						</tr>
 						<tr>
 							<th scope="row">6</th>
 							<td>DY</td>
-							<td>Dividend Yield - % dos últimos 12 meses.</td>
+							<td>% Dividend Yield (MAT)</td>
 						</tr>
 					</tbody>
 				</table>
-				<h3>Dicas.</h3>
+				<h3>Tips.</h3>
 				<ul>
-					<li>Indicadores que não forem encontrados na página da
-						StatusInvest serão retornados com valor "-".</li>
+					<li>the application will return '-' for unavailable ration"-".</li>
 					<li>O uso incorreto de um endpoint poderá retornar 404 ou 500
 						como erro.</li>
 					<li>Exemplo de Planilha do GDocs que utiliza os recursos da
