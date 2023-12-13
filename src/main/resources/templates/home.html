@@ -1,233 +1,304 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="icon"
-	href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon"
+          href="https://getbootstrap.com/docs/4.0/assets/img/favicons/favicon.ico">
 
-<title>B3 Financial</title>
+    <title>MFR Application</title>
 
-<!-- Bootstrap core CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-	crossorigin="anonymous">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-	crossorigin="anonymous"></script>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 
-<!-- Custom styles for this template -->
-<link href="../static/css/home.css" th:href="@{/css/home.css}"
-	rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="../static/css/home.css" th:href="@{/css/home.css}"
+          rel="stylesheet"/>
 </head>
 
 <body>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-12 col-md-2 col-xl-2 bd-sidebar"></div>
-			<div class="col-12 col-md-8">
-				<main class="py-md-3 bd-content" role="main">
-				<h1>B3 Financial</h1>
-				<h3>Endpoints.</h3>
-				<p>Todos os endpoints disponíveis você encontra <a th:href="@{/swagger-ui/}" >aqui</a> :).
-					Faça bom proveito!</p>
-				
-				<h3>Indicadores disponíveis.</h3>
-				<p>São todos os indicadores que a aplicação recupera da
-					StatusInvest.</p>
-				<p>Os indicadores são aplicáveis aos serviços que dispõem do <i>query parameter</i> <b>indicadores</b>. Veja Exemplos*</p>
-				<table class="table table-bordered table-hover">
-					<thead class="thead-light">
-						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Chave</th>
-							<th scope="col">Indicador</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>PL</td>
-							<td>P/L - Preço atual / Lucro por ação (LPA)</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>ROE</td>
-							<td>Return on Equity / Retorno sobre Patrimônio Líquido</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>LPA</td>
-							<td>Lucro líquido / Nº de ações</td>
-						</tr>
-						<tr>
-							<th scope="row">4</th>
-							<td>PVP</td>
-							<td>P/VP - Preço atual / Valor patrimonial por ação (VPA)</td>
-						</tr>
-						<tr>
-							<th scope="row">5</th>
-							<td>VPA</td>
-							<td>Patrimônio líquido / Nº de ações</td>
-						</tr>
-						<tr>
-							<th scope="row">6</th>
-							<td>DY</td>
-							<td>Dividend Yield - % dos últimos 12 meses.</td>
-						</tr>
-					</tbody>
-				</table>
-				<h3>Dicas.</h3>
-				<ul>
-					<li>Indicadores que não forem encontrados na página da
-						StatusInvest serão retornados com valor "-".</li>
-					<li>O uso incorreto de um endpoint poderá retornar 404 ou 500
-						como erro.</li>
-					<li>Exemplo de Planilha do GDocs que utiliza os recursos da
-						ferramenta <a
-						href="https://docs.google.com/spreadsheets/d/10AZBCZ54qzdrJjvih8nA99B0WlHxx0_EJw4dB8nrx5o/edit?usp=sharing"
-						target="_blank">aqui</a>
-					</li>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-2 col-xl-2 bd-sidebar"></div>
+        <div class="col-12 col-md-8">
+            <main class="py-md-3 bd-content" role="main">
+                <h1>Market Financial Ratios</h1>
+                <br>
+                <h3>Endpoints</h3>
+                <p>All available endpoints. Enjoy!</p>
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Endpoint</th>
+                        <th scope="col">Description</th>
+                        <th scope="col" class="text-center">Test</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>/market-ratio/all</td>
+                        <td>Retrieve all available tickers and their ratios.</td>
+                        <td class="text-center">
+                            <a href="/market-ratio/all" target="_blank" class="btn btn-primary">Test</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>/market-ratio?&#60;params&#62;</td>
+                        <td>Retrieve tickers by setting 'types', 'tickers' and 'ratios' parameters.</td>
+                        <td class="text-center">
+                            <a href="/market-ratio?types=STOCKS&tickers=AMZN&ratios=PL" target="_blank"
+                               class="btn btn-primary">Test</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>/market-ratio/etfs/{ticker}</td>
+                        <td>Retrieve ticker ratios from ETF (only works for Brazilian ones), you need to specify one by
+                            one.
+                        </td>
+                        <td class="text-center">
+                            <a href="/market-ratio/etfs/IVVB11" target="_blank" class="btn btn-primary">Test</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <h3>Available Types</h3>
+                <p>Types that you can use as a parameter for 'types' on /market-ratio?types=X endpoint.</p>
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Key</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>ACOES</td>
+                        <td>Retrieve tickers by filtering Brazilian stocks.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>FIIS</td>
+                        <td>Retrieve tickers by filtering Brazilian reits.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>STOCKS</td>
+                        <td>Retrieve tickers by filtering American stocks.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>REITS</td>
+                        <td>Retrieve tickers by filtering American reits.</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <h3>Available Ratios</h3>
+                <p>Those are all available ratios that you can use for parameter 'ratios' on /market-ratio?&#60;params&#62;
+                    endpoint.</p>
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Key</th>
+                        <th scope="col">Ratio</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>PL</td>
+                        <td>P/L (P/E for stocks) - Price/Earnings.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>ROE</td>
+                        <td>Return on Equity</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>LPA</td>
+                        <td>LPA (EPS for stocks) – Earnings Per Share.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>PVP</td>
+                        <td>P/VP (P/BV for stocks)- Price to Book Value.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td>VPA</td>
+                        <td>VPA (BVPS for stocks) - Book value per share.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">6</th>
+                        <td>DY</td>
+                        <td>% Dividend Yield (MAT).</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h3>Tips</h3>
+                <ul>
+                    <li>The application will return '-' for unavailable values.</li>
+                    <li>The application might return 400* or 500* in case of error.</li>
+                    <li>It's possible to match values with its origin (StatusInvest), all data come from there. Just
+                        access <a target="_blank" href="https://statusinvest.com.br">Status Invest</a>.
+                    </li>
+                    <li>For endpoint /market-ratio?&#60;params&#62; you'll need to specify at least one parameter of
+                        'types' or 'tickers'.
+                    </li>
+                </ul>
+                <br>
+                <h3>Examples</h3>
+                <div class="row justify-content-center">
+                    <div class="col-auto mb-3">
+                        <div class="card h-100" style="width: 26rem;">
+                            <div class="card-header font-weight-bold">
+                                /market-ratio?tickers=AMZN
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Return ratios from Amazon (AMZN).</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/market-ratio?tickers=AMZN" target="_blank"
+                                   class="btn btn-primary">Test it!</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto mb-3">
+                        <div class="card h-100" style="width: 26rem;">
+                            <div class="card-header font-weight-bold">
+                                /market-ratio?tickers=DOC
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Return ratios from Physicians Realty Trust Reit (DOC).</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/market-ratio?tickers=DOC" target="_blank"
+                                   class="btn btn-primary">Test it!</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto mb-3">
+                        <div class="card h-100" style="width: 26rem;">
+                            <div class="card-header font-weight-bold">
+                                /market-ratio?types=STOCKS
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Return all stocks.</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/market-ratio?types=STOCKS" target="_blank"
+                                   class="btn btn-primary">Test it!</a>
+                            </div>
+                        </div>
+                    </div>
 
-				</ul>
-				<h3>Exemplos.</h3>
-				<div class="row justify-content-center">
-					<div class="col-auto mb-3">
-						<div class="card h-100" style="width: 26rem;">
-							<div class="card-header font-weight-bold">
-								/statusinvest/acoes?tickers=ITSA4</div>
-							<div class="card-body">
-								<p class="card-text">Retorna todos os indicadores
-									disponíveis do ticker da Itaúsa</p>
-							</div>
-							<div class="card-footer">
-								<a href="/statusinvest/acoes?tickers=ITSA4" target="_blank"
-									class="btn btn-primary">Testar</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-auto mb-3">
-						<div class="card h-100" style="width: 26rem;">
-							<div class="card-header font-weight-bold">
-								/statusinvest/acoes?tickers=ITSA4&indicadores=PL</div>
-							<div class="card-body">
-								<p class="card-text">Retorna o valor de PL para a ação da
-									Itaúsa</p>
-							</div>
-							<div class="card-footer">
-								<a href="/statusinvest/acoes?tickers=ITSA4&indicadores=PL" target="_blank"
-									class="btn btn-primary">Testar</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-auto mb-3">
-						<div class="card h-100" style="width: 26rem;">
-							<div class="card-header font-weight-bold">
-								/statusinvest/acoes/all</div>
-							<div class="card-body">
-								<p class="card-text">Retorna todas as ações disponíveis no mercado</p>
-							</div>
-							<div class="card-footer">
-								<a href="/statusinvest/acoes/all" target="_blank"
-									class="btn btn-primary">Testar</a>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-auto mb-3">
-						<div class="card h-100" style="width: 26rem;">
-							<div class="card-header font-weight-bold">
-								/statusinvest/fiis/XPLG11</div>
-							<div class="card-body">
-								<p class="card-text">Retorna todos os indicadores
-									disponíveis para FII do ticker da XP LOG</p>
-							</div>
-							<div class="card-footer">
-								<a href="/statusinvest/fiis/XPLG11"
-									target="_blank" class="btn btn-primary">Testar</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-auto mb-3">
-						<div class="card h-100" style="width: 26rem;">
-							<div class="card-header font-weight-bold">
-								/statusinvest/fiis?tickers=XPLG11&indicadores=PVP</div>
-							<div class="card-body">
-								<p class="card-text">Retorna o valor de P/VP para o FII da
-									XP LOG</p>
-							</div>
-							<div class="card-footer">
-								<a href="/statusinvest/fiis?tickers=XPLG11&indicadores=PVP"
-									target="_blank" class="btn btn-primary">Testar</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-auto mb-3">
-						<div class="card h-100" style="width: 26rem;">
-							<div class="card-header font-weight-bold">
-								/statusinvest/fiis/all</div>
-							<div class="card-body">
-								<p class="card-text">Retorna todas os fundos imobíliarios disponíveis no mercado</p>
-							</div>
-							<div class="card-footer">
-								<a href="/statusinvest/fiis/all" target="_blank"
-									class="btn btn-primary">Testar</a>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-auto mb-3">
-						<div class="card h-100" style="width: 26rem;">
-							<div class="card-header font-weight-bold">
-								/statusinvest/etfs/IVVB11</div>
-							<div class="card-body">
-								<p class="card-text">Retorna todos os indicadores
-									disponíveis para o ETF do fundo de cotas do índice ISHARES S&P
-									500</p>
-							</div>
-							<div class="card-footer">
-								<a href="/statusinvest/etfs/IVVB11" target="_blank"
-									class="btn btn-primary">Testar</a>
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-auto mb-3">
-						<div class="card h-100" style="width: 26rem;">
-							<div class="card-header font-weight-bold">
-								/statusinvest?tickers=ITSA4,XPLG11,WPD,DOC,AMZN,NEE</div>
-							<div class="card-body">
-								<p class="card-text">Retornará todos os valores e
-									indicadores dos tickers informados. (Não funciona para ETF's)</p>
-							</div>
-							<div class="card-footer">
-								<a href="/statusinvest?tickers=ITSA4,XPLG11,WPD,DOC,AMZN,NEE"
-									target="_blank" class="btn btn-primary">Testar</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-auto mb-3">
-						<div class="card h-100" style="width: 26rem;">
-							<div class="card-header font-weight-bold">
-								/statusinvest/all</div>
-							<div class="card-body">
-								<p class="card-text">Retornará todos os ativos para Ações / FII's / Stocks / REIT's</p>
-							</div>
-							<div class="card-footer">
-								<a href="/statusinvest/all"
-									target="_blank" class="btn btn-primary">Testar</a>
-							</div>
-						</div>
-					</div>
-					
-				</div>
-			</div>
-			<div class="col-12 col-md-2 col-xl-2"></div>
-		</div>
-	</div>
+                    <div class="col-auto mb-3">
+                        <div class="card h-100" style="width: 26rem;">
+                            <div class="card-header font-weight-bold">
+                                /market-ratio/all
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Return all available tickers.</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/market-ratio/all"
+                                   target="_blank" class="btn btn-primary">Test it!</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto mb-3">
+                        <div class="card h-100" style="width: 26rem;">
+                            <div class="card-header font-weight-bold">
+                                /market-ratio?tickers=DOC&ratios=PVP
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Return the P/VP (P/BV for stocks)- Price to Book Value from
+                                    DOC.</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/market-ratio?tickers=DOC&ratios=PVP"
+                                   target="_blank" class="btn btn-primary">Test it!</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto mb-3">
+                        <div class="card h-100" style="width: 26rem;">
+                            <div class="card-header font-weight-bold">
+                                /market-ratio?types=FIIS&ratios=DY
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Return only de DY from all Brazilian FIIS.</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/market-ratio?types=FIIS&ratios=DY" target="_blank"
+                                   class="btn btn-primary">Test it!</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-auto mb-3">
+                        <div class="card h-100" style="width: 26rem;">
+                            <div class="card-header font-weight-bold">
+                                /market-ratio/etfs/IVVB11
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Return data from Brazilian ETF ISHARES S&P 500.</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/market-ratio/etfs/IVVB11" target="_blank"
+                                   class="btn btn-primary">Test it!</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-auto mb-3">
+                        <div class="card h-100" style="width: 26rem;">
+                            <div class="card-header font-weight-bold">
+                                /market-ratio?tickers=ITSA4,XPLG11,WPD,DOC,AMZN,NEE
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Return data from all the specified tickers. (Doesn't work for
+                                    ETF's).</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/market-ratio?tickers=ITSA4,XPLG11,WPD,DOC,AMZN,NEE"
+                                   target="_blank" class="btn btn-primary">Test it!</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto mb-3">
+                        <div class="card h-100" style="width: 26rem;">
+                            <div class="card-header font-weight-bold">
+                                /market-ratio?types=STOCKS&types=REITS&ratios=LPA&ratios=DY
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Return LPA and DY from all Stocks and Reits.</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/market-ratio?types=STOCKS&types=REITS&ratios=LPA&ratios=DY"
+                                   target="_blank" class="btn btn-primary">Test it!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div class="col-12 col-md-2 col-xl-2"></div>
+    </div>
+</div>
 </body>
 </html>
