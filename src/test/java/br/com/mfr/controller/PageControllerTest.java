@@ -21,7 +21,7 @@ class PageControllerTest {
 		mvc.perform(get("/"))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(content().string(containsString("B3 Financial")));
+			.andExpect(content().string(containsString("MFR Application")));
 	}
 
 }

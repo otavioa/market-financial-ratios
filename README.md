@@ -1,4 +1,4 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=otavioa_b3-financial&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=otavioa_b3-financial) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=otavioa_b3-financial&metric=coverage)](https://sonarcloud.io/summary/new_code?id=otavioa_b3-financial)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=otavioa_mfr&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=otavioa_mfr) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=otavioa_mfr&metric=coverage)](https://sonarcloud.io/summary/new_code?id=otavioa_mfr)
 
 # Market Financial Ratios (MFR) API
 
@@ -31,11 +31,11 @@ You can set these variables as Java Arguments when starting the application.
 - Run the `br.com.mfr.Application.class` class as a Java Application.
 - Alternatively, use the Maven command `mvn spring-boot:run`.
 
-4. **Access the API:**
+5. **Access the API:**
 - The application will be available on port 5000 (`localhost:5000/`).
 - A documentation is available at `/`.
 
-5. **Populate the Database:**
+6. **Populate the Database:**
 - Call `http://localhost:5000/data/charge` to populate the database.
 
 

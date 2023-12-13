@@ -18,12 +18,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=otavioa_b3-financial
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=otavioa_mfr
 #      - name: Upload JAR
 #        uses: actions/upload-artifact@v3
 #        with:
 #          name: artifact
-#          path: target/b3-1.1.0-SNAPSHOT.jar
+#          path: target/mrf-1.1.0-SNAPSHOT.jar
 #  deploy:
 #    needs: build
 #    name: Deploy
@@ -39,8 +39,8 @@ jobs:
 #          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
 #          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #          use_existing_version_if_available: false
-#          application_name: B3Financial
-#          environment_name: B3Financial-env-1
+#          application_name: MFRApi
+#          environment_name: MFRApi-env-1
 #          version_label: ${{github.SHA}}
 #          region: us-east-2
-#          deployment_package: b3-1.1.0-SNAPSHOT.jar
+#          deployment_package: mrf-1.1.0-SNAPSHOT.jar
