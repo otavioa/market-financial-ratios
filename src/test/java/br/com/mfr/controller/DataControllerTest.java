@@ -3,15 +3,15 @@ package br.com.mfr.controller;
 import br.com.mfr.MockMvcApp;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.external.url.ExternalURL;
+import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import br.com.mfr.service.statusinvest.StatusInvestResource;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
-import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
+import lombok.AllArgsConstructor;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -26,12 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockMvcApp
+@AllArgsConstructor
 class DataControllerTest {
 
     @MockBean private ExternalURL externalUrl;
 
-    @Autowired private CompanyRepository repository;
-    @Autowired private MockMvc mvc;
+    private CompanyRepository repository;
+    private MockMvc mvc;
 
     @BeforeAll
     public static void setUpEnvironment(){

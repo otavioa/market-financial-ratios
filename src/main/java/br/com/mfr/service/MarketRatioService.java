@@ -4,7 +4,6 @@ import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 @AllArgsConstructor
 public class MarketRatioService {
 
-	@Autowired private CompanyRepository repo;
+	private CompanyRepository repo;
 
 	public List<Company> getAllCompanies() {
 		return repo.findAll();

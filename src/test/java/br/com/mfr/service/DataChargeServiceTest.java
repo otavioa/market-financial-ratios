@@ -4,14 +4,14 @@ import br.com.mfr.MockMvcApp;
 import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.external.url.ExternalURL;
+import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
+import br.com.mfr.service.statusinvest.StatusInvestResource;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
-import br.com.mfr.service.statusinvest.StatusInvestResource;
-import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static br.com.mfr.service.statusinvest.StatusInvestResource.*;
@@ -20,12 +20,13 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 
 @MockMvcApp
+@AllArgsConstructor
 class DataChargeServiceTest {
 
     @MockBean private ExternalURL externalUrl;
 
-    @Autowired private CompanyRepository repository;
-    @Autowired private DataChargeService subject;
+    private CompanyRepository repository;
+    private DataChargeService subject;
 
     @BeforeAll
     public static void setUpEnvironment(){

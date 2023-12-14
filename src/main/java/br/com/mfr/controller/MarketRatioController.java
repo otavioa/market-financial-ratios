@@ -5,7 +5,7 @@ import br.com.mfr.entity.Company;
 import br.com.mfr.service.MarketRatioService;
 import br.com.mfr.service.SimpleMarketRatioService;
 import br.com.mfr.service.ticket.TickerResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +15,11 @@ import static br.com.mfr.controller.dto.CompaniesConverter.convert;
 
 @RestController
 @RequestMapping("/market-ratio")
+@AllArgsConstructor
 public class MarketRatioController {
 
-	@Autowired private MarketRatioService service;
-	@Autowired private SimpleMarketRatioService simpleService;
+	private MarketRatioService service;
+	private SimpleMarketRatioService simpleService;
 
 	@GetMapping("/all")
 	public ResponseEntity<CompaniesResponse> getAllAvailable() {

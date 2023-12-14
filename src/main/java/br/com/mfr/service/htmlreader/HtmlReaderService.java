@@ -1,19 +1,20 @@
 package br.com.mfr.service.htmlreader;
 
-import static java.lang.Integer.parseInt;
-
-import java.io.IOException;
-
+import lombok.AllArgsConstructor;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.HttpStatusException;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
+import static java.lang.Integer.parseInt;
+
 @Service
+@AllArgsConstructor
 public class HtmlReaderService {
 
 	private static final int RETRY_DEFAULT_DELAY = 1000;
@@ -22,11 +23,11 @@ public class HtmlReaderService {
 	private static final int HTTP_BAD_REQUEST = 400;
 	private static final int HTTP_OK = 200;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(HtmlReaderService.class);
-	
-	@Autowired
-	private JsoupServiceConnection jsoupService;
 	private int delay = RETRY_DEFAULT_DELAY;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(HtmlReaderService.class);
+
+	private JsoupServiceConnection jsoupService;
 	
 	public Document getHTMLDocument(String url) throws Exception {
 		Response response = executeForUrl(url);

@@ -2,7 +2,6 @@ package br.com.mfr.external.url;
 
 import br.com.mfr.external.url.client.ExternalURLClient;
 import br.com.mfr.external.url.client.ExternalURLClientException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,7 +17,6 @@ class ExternalURLAccess {
 
 	private HttpHeaders headers = new HttpHeaders();
 
-	@Autowired
 	@Qualifier("ExternalURLRestClient")
 	private ExternalURLClient client;
 

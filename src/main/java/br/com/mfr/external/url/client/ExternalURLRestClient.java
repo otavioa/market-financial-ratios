@@ -5,7 +5,6 @@ import br.com.mfr.external.url.Request;
 import br.com.mfr.external.url.ResponseBody;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,7 @@ import java.util.function.Supplier;
 @AllArgsConstructor
 @Service("ExternalURLRestClient")
 public class ExternalURLRestClient implements ExternalURLClient {
-
-	@Autowired
+	
 	private WebClient client;
 	
 	@Override
