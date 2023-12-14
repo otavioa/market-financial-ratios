@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@NoArgsConstructor
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class DataChargeService {

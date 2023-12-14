@@ -11,7 +11,6 @@ import java.util.List;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 
 @Service
-@NoArgsConstructor
 @AllArgsConstructor
 public class MarketRatioService {
 

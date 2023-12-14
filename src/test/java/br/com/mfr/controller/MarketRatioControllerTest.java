@@ -7,11 +7,11 @@ import br.com.mfr.service.htmlreader.HtmlReaderService;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import br.com.mfr.service.statusinvest.StatusInvestURL;
 import br.com.mfr.test.support.URLMockServiceSupport;
-import lombok.AllArgsConstructor;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MongoDbMvcApp
 @AutoConfigureWireMock(port = MarketRatioControllerTest.URL_PORT)
-@AllArgsConstructor
 class MarketRatioControllerTest {
 
 	public static final int URL_PORT = 5050;
@@ -36,8 +35,8 @@ class MarketRatioControllerTest {
 	private static final String URL_ADVANCED_PATH = "/path?CategoryType={categoryType}";
 	private static final String URL_SIMPLE_PATH = "/{type}/{ticket}";
 
-	private MockMvc mvc;
-	private CompanyRepository repo;
+	@Autowired private MockMvc mvc;
+	@Autowired CompanyRepository repo;
 
 	@MockBean private HtmlReaderService readerService;
 
@@ -190,7 +189,7 @@ class MarketRatioControllerTest {
 				.andExpect(jsonPath("$.value", is("278,12")));
 	}
 
-	private void mockReaderService(String url, String fileName) throws IOException, Exception {
+	private void mockReaderService(String url, String fileName) throws Exception {
 		URLMockServiceSupport.mockReaderService(readerService, url, fileName);
 	}
 

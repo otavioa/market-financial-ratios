@@ -6,12 +6,10 @@ import br.com.mfr.service.htmlreader.HtmlReaderService;
 import br.com.mfr.service.statusinvest.StatusInvestURL;
 import br.com.mfr.service.ticket.TickerResponse;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
 @Service
-@NoArgsConstructor
 @AllArgsConstructor
 public class SimpleMarketRatioService {
 

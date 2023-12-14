@@ -9,11 +9,11 @@ public class ExternalURL {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExternalURL.class);
 	
-	HeaderArguments headers = HeaderArguments.init();
-	
+	private HeaderArguments headers;
 	private ExternalURLAccess externalAccess;
 
 	public ExternalURL(ExternalURLAccess externalAccess) {
+		this.headers = HeaderArguments.init();
 		this.externalAccess = externalAccess;
 	}
 	
