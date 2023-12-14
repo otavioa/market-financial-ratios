@@ -1,19 +1,23 @@
 package br.com.mfr.service.htmlreader;
 
-import static java.lang.Integer.parseInt;
-
-import java.io.IOException;
-
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.HttpStatusException;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.Objects;
+
+import static java.lang.Integer.parseInt;
+import static java.util.Objects.isNull;
+
 @Service
+@NoArgsConstructor
 public class HtmlReaderService {
 
 	private static final int RETRY_DEFAULT_DELAY = 1000;
@@ -23,10 +27,14 @@ public class HtmlReaderService {
 	private static final int HTTP_OK = 200;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HtmlReaderService.class);
-	
-	@Autowired
+
+	private Integer requestDelay;
 	private JsoupServiceConnection jsoupService;
-	private int delay = RETRY_DEFAULT_DELAY;
+
+	public HtmlReaderService(JsoupServiceConnection jsoupService, Integer requestDelay) {
+        this.jsoupService = jsoupService;
+        this.requestDelay = requestDelay;
+	}
 	
 	public Document getHTMLDocument(String url) throws Exception {
 		Response response = executeForUrl(url);
@@ -60,9 +68,13 @@ public class HtmlReaderService {
 
 	private void wait(Response response) throws InterruptedException {
 		String header = response.header("Retry-After");
-		int delayInMolliseconds = parseInt(header) * delay;
+		int delayInMilliseconds = parseInt(header) * getDelay();
 
-		Thread.sleep(delayInMolliseconds);
+		Thread.sleep(delayInMilliseconds);
+	}
+
+	private int getDelay() {
+		return isNull(requestDelay) ? RETRY_DEFAULT_DELAY : requestDelay;
 	}
 
 	private boolean isTooManyRequests(int statusCode) {
@@ -73,12 +85,4 @@ public class HtmlReaderService {
 		return statusCode < HTTP_OK || statusCode >= HTTP_BAD_REQUEST;
 	}
 
-	public int getDelay() {
-		return delay;
-	}
-
-	public void setDelay(int delay) {
-		this.delay = delay;
-	}
-	
 }

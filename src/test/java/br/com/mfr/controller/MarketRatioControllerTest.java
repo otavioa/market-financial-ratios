@@ -189,7 +189,7 @@ class MarketRatioControllerTest {
 				.andExpect(jsonPath("$.value", is("278,12")));
 	}
 
-	private void mockReaderService(String url, String fileName) throws IOException, Exception {
+	private void mockReaderService(String url, String fileName) throws Exception {
 		URLMockServiceSupport.mockReaderService(readerService, url, fileName);
 	}
 

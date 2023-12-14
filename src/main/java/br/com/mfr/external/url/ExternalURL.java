@@ -2,7 +2,6 @@ package br.com.mfr.external.url;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,11 +9,11 @@ public class ExternalURL {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExternalURL.class);
 	
-	HeaderArguments headers = HeaderArguments.init();
-	
-	@Autowired private ExternalURLAccess externalAccess;
-	
+	private HeaderArguments headers;
+	private ExternalURLAccess externalAccess;
+
 	public ExternalURL(ExternalURLAccess externalAccess) {
+		this.headers = HeaderArguments.init();
 		this.externalAccess = externalAccess;
 	}
 	
