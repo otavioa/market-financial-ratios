@@ -8,13 +8,11 @@ import br.com.mfr.service.statusinvest.StatusInvestResource;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyConverter;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
-import com.google.inject.internal.util.Lists;
-import com.google.inject.internal.util.Maps;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +35,7 @@ public class DataChargeService {
     }
 
     private List<Company> getCompanies(Map<StatusInvestResource, List<CompanyResponse>> companiesFromStatusInvest) {
-        List<Company> companies = Lists.newArrayList();
+        List<Company> companies = new ArrayList<>();
 
         companiesFromStatusInvest.forEach((resource, listCompaniesResponse) -> {
             List<Company> convertedCompanies = listCompaniesResponse.stream()
@@ -51,7 +49,7 @@ public class DataChargeService {
     }
 
     private Map<StatusInvestResource, List<CompanyResponse>> getCompaniesFromStatusInvest() {
-        HashMap<StatusInvestResource, List<CompanyResponse>> result = Maps.newHashMap();
+        HashMap<StatusInvestResource, List<CompanyResponse>> result = new HashMap<>();
 
         for (StatusInvestResource resource: StatusInvestResource.values()){
             List<CompanyResponse> listResponse = retrieveCompaniesFromResource(resource);

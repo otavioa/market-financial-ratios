@@ -70,7 +70,7 @@ class MarketRatioServiceTest {
 
 		Mockito.when(repository.findByTickerIn(anyList())).thenReturn(of(company));
 
-		List<Company> response = subject.getAllCompaniesBy(new String[]{"ABEV3"}, null);
+		List<Company> response = subject.getAllCompaniesBy(new String[]{"ABEV3"});
 
 		assertOnlyOneTicker(response, "1", "AMBEV", "ABEV3");
 	}
@@ -91,7 +91,7 @@ class MarketRatioServiceTest {
 	@Test
 	void tryToRetrieveCompaniesWithoutTickersAndTypes(){
 		try {
-			subject.getAllCompaniesBy(null, null);
+			subject.getAllCompaniesBy(null);
 			fail();
 		} catch (Exception e) {
 			assertEquals("'tickers' or 'types' must be informed.", e.getMessage());
