@@ -1,17 +1,16 @@
 package br.com.mfr.service.statusinvest.dto;
 
-import lombok.Data;
+public record ForecastFilterRequest(
+		SubFilter upsidedownside,
+		SubFilter estimatesnumber,
+		Boolean revisedup,
+		Boolean reviseddown,
+		String[] consensus) {
 
-@Data
-public class ForecastFilterRequest {
+	public ForecastFilterRequest(SubFilter upsidedownside, SubFilter estimatesnumber) {
+		this(upsidedownside, estimatesnumber, true, true, new String[0]);
+	}
 
-	public static final ForecastFilterRequest EMPTY = new ForecastFilterRequest();
-	
-	private SubFilter upsidedownside = SubFilter.EMPTY;
-	private SubFilter estimatesnumber = SubFilter.EMPTY;
-	private Boolean revisedup = true;
-	private Boolean reviseddown = true;
-	private String[] consensus = new String[0];
-	
-
+	public static final ForecastFilterRequest EMPTY =
+			new ForecastFilterRequest(SubFilter.EMPTY, SubFilter.EMPTY, true, true, new String[0]);
 }

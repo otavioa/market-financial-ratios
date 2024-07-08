@@ -8,7 +8,6 @@ import br.com.mfr.service.statusinvest.StatusInvestResource;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyConverter;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +17,17 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
 @Transactional(readOnly = true)
 public class DataChargeService {
 
-    private ExternalURL externalUrl;
-    private CompanyRepository repo;
+    private final ExternalURL externalUrl;
+    private final CompanyRepository repo;
+
+    public DataChargeService(ExternalURL externalUrl, CompanyRepository repo) {
+        this.externalUrl = externalUrl;
+        this.repo = repo;
+    }
+
 
     @Transactional
     public void processCharging() {

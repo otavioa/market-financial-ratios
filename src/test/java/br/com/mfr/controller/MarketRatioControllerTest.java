@@ -19,8 +19,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.IOException;
-
 import static org.assertj.core.util.Strings.concat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -62,16 +60,16 @@ class MarketRatioControllerTest {
 		performRequest(ApiEndpoints.MARKET_RATIO_ALL)
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", Matchers.hasSize(4)))
-				.andExpect(jsonPath("$[0].nome", Matchers.is("EMPRESA ACAO")))
+				.andExpect(jsonPath("$[0].name", Matchers.is("EMPRESA ACAO")))
 				.andExpect(jsonPath("$[0].type", Matchers.is("ACOES")))
 				.andExpect(jsonPath("$[0].ticker", Matchers.is("ACAO3")))
-				.andExpect(jsonPath("$[1].nome", Matchers.is("FUNDO FII")))
+				.andExpect(jsonPath("$[1].name", Matchers.is("FUNDO FII")))
 				.andExpect(jsonPath("$[1].type", Matchers.is("FIIS")))
 				.andExpect(jsonPath("$[1].ticker", Matchers.is("FII11")))
-				.andExpect(jsonPath("$[2].nome", Matchers.is("COMPANY STOCK")))
+				.andExpect(jsonPath("$[2].name", Matchers.is("COMPANY STOCK")))
 				.andExpect(jsonPath("$[2].type", Matchers.is("STOCKS")))
 				.andExpect(jsonPath("$[2].ticker", Matchers.is("STK")))
-				.andExpect(jsonPath("$[3].nome", Matchers.is("REIT REIT")))
+				.andExpect(jsonPath("$[3].name", Matchers.is("REIT REIT")))
 				.andExpect(jsonPath("$[3].type", Matchers.is("REITS")))
 				.andExpect(jsonPath("$[3].ticker", Matchers.is("RIT")));
 	}
@@ -89,15 +87,15 @@ class MarketRatioControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isArray())
 				.andExpect(jsonPath("$", Matchers.hasSize(1)))
-				.andExpect(jsonPath("$[0].nome", Matchers.is("FUNDO FII")))
+				.andExpect(jsonPath("$[0].name", Matchers.is("FUNDO FII")))
 				.andExpect(jsonPath("$[0].ticker", Matchers.is("FII11")));
 	}
 
 	@Test
 	void getByTickerAndRatios() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).pl(11.0).lpa(3.0).vpa(4.0).roe(12.0).build(),
-				buildCompany("2", "FUNDO FII", "FIIS", "FII11", 130.0).dy(5.0).pvp(1.10).build(),
+				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).withPl(11.0).withLpa(3.0).withVpa(4.0).withRoe(12.0).build(),
+				buildCompany("2", "FUNDO FII", "FIIS", "FII11", 130.0).withDy(5.0).withPvp(1.10).build(),
 				buildCompany("3", "COMPANY STOCK", "STOCKS", "STK", 40.).build(),
 				buildCompany("4", "REIT REIT", "REITS", "RIT", 172.0).build());
 
@@ -114,7 +112,7 @@ class MarketRatioControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isArray())
 				.andExpect(jsonPath("$", Matchers.hasSize(2)))
-				.andExpect(jsonPath("$[0].nome", Matchers.is("EMPRESA ACAO")))
+				.andExpect(jsonPath("$[0].name", Matchers.is("EMPRESA ACAO")))
 				.andExpect(jsonPath("$[0].ticker", Matchers.is("ACAO3")))
 				.andExpect(jsonPath("$[0].pl", Matchers.is(11.00)))
 				.andExpect(jsonPath("$[0].lpa", Matchers.is(3.00)))
@@ -123,7 +121,7 @@ class MarketRatioControllerTest {
 				.andExpect(jsonPath("$[0].pvp", Matchers.is(0.00)))
 				.andExpect(jsonPath("$[0].roe", Matchers.is(12.00)))
 
-				.andExpect(jsonPath("$[1].nome", Matchers.is("FUNDO FII")))
+				.andExpect(jsonPath("$[1].name", Matchers.is("FUNDO FII")))
 				.andExpect(jsonPath("$[1].ticker", Matchers.is("FII11")))
 				.andExpect(jsonPath("$[1].pl", Matchers.is(0.00)))
 				.andExpect(jsonPath("$[1].lpa", Matchers.is(0.00)))
@@ -146,7 +144,7 @@ class MarketRatioControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isArray())
 				.andExpect(jsonPath("$", Matchers.hasSize(1)))
-				.andExpect(jsonPath("$[0].nome", Matchers.is("EMPRESA ACAO")))
+				.andExpect(jsonPath("$[0].name", Matchers.is("EMPRESA ACAO")))
 				.andExpect(jsonPath("$[0].ticker", Matchers.is("ACAO3")));
 	}
 
@@ -159,7 +157,7 @@ class MarketRatioControllerTest {
 	@Test
 	void getByTypeAndRatios() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).pl(11.0).lpa(3.0).vpa(4.0).roe(12.0).build(),
+				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).withPl(11.0).withLpa(3.0).withVpa(4.0).withRoe(12.0).build(),
 				buildCompany("2", "FUNDO FII", "FIIS","FII11", 130.0).build());
 
 
@@ -171,7 +169,7 @@ class MarketRatioControllerTest {
 				new Parameter("ratios", "ROE"))
 
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$[0].nome", Matchers.is("EMPRESA ACAO")))
+				.andExpect(jsonPath("$[0].name", Matchers.is("EMPRESA ACAO")))
 				.andExpect(jsonPath("$[0].ticker", Matchers.is("ACAO3")))
 				.andExpect(jsonPath("$[0].pl", Matchers.is(11.00)))
 				.andExpect(jsonPath("$[0].lpa", Matchers.is(3.00)))
@@ -200,7 +198,7 @@ class MarketRatioControllerTest {
 
 	private static Company.CompanyBuilder buildCompany(String id, String name, String type, String ticker, Double price) {
 		return Company.builder()
-				.id(id).nome(name).type(type).ticker(ticker).price(price);
+				.withId(id).withName(name).withType(type).withTicker(ticker).withPrice(price);
 	}
 
 	private ResultActions performRequest(String endPoint, Parameter... parameters) throws Exception {

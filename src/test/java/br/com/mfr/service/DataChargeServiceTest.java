@@ -41,7 +41,7 @@ class DataChargeServiceTest {
 
         subject.processCharging();
 
-        Company company = repository.findByNome("EMPRESA AÇÃO");
+        Company company = repository.findByName("EMPRESA AÇÃO");
 
         Mockito.verify(repository, times(1)).deleteAll();
         Mockito.verify(repository, times(1)).insert(anyList());

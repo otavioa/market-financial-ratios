@@ -5,7 +5,6 @@ import br.com.mfr.entity.Company;
 import br.com.mfr.service.MarketRatioService;
 import br.com.mfr.service.SimpleMarketRatioService;
 import br.com.mfr.service.ticket.TickerResponse;
-import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,13 +14,17 @@ import static br.com.mfr.controller.dto.CompaniesConverter.convert;
 
 @RestController
 @RequestMapping("/market-ratio")
-@AllArgsConstructor
 public class MarketRatioController {
 
 	private MarketRatioService service;
 	private SimpleMarketRatioService simpleService;
 
-	@GetMapping("/all")
+    public MarketRatioController(MarketRatioService service, SimpleMarketRatioService simpleService) {
+		this.simpleService = simpleService;
+		this.service = service;
+	}
+
+    @GetMapping("/all")
 	public ResponseEntity<CompaniesResponse> getAllAvailable() {
 
 		List<Company> companies = service.getAllCompanies();
@@ -35,6 +38,7 @@ public class MarketRatioController {
 			@RequestParam(value = "types", required = false) String[] types,
 			@RequestParam(value = "ratios", required = false) String[] ratios) {
 
+		//TODO - Extract filter directly from DB
 		List<Company> companies = service.getAllCompaniesBy(tickers, types);
 
 		return ResponseEntity.ok(convert(companies, ratios));

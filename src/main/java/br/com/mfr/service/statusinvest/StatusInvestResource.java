@@ -4,17 +4,17 @@ import br.com.mfr.service.statusinvest.dto.*;
 
 public enum StatusInvestResource {
 	
-	ACOES(1, new AcoesFilter()),
-	FIIS(2, new FiisFilter()),
-	STOCKS(12, new StocksFilter()),
-	REITS(13, new ReitsFilter());
+	ACOES(1, "0;25"),
+	FIIS(2, "0;20"),
+	STOCKS(12, "0;25"),
+	REITS(13, "0;25");
 
 	private Integer categoryType;
-	private AdvancedFilterRequest filter;
+	private String statusInvestRange;
 
-	StatusInvestResource(int categoryType, AdvancedFilterRequest acoesFilter) {
+	StatusInvestResource(int categoryType, String statusInvestRange) {
 		this.categoryType = categoryType;
-		this.filter = acoesFilter;
+		this.statusInvestRange = statusInvestRange;
 	}
 
 	public Integer getCategoryType() {
@@ -22,7 +22,11 @@ public enum StatusInvestResource {
 	}
 
 	public AdvancedFilterRequest getFilter() {
-		return filter;
+		return getEmptyFilterRequest();
 	}
-	
+
+	private AdvancedFilterRequest getEmptyFilterRequest() {
+		return new AdvancedFilterRequest(statusInvestRange);
+	}
+
 }

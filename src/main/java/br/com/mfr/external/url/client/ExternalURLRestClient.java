@@ -3,8 +3,6 @@ package br.com.mfr.external.url.client;
 
 import br.com.mfr.external.url.Request;
 import br.com.mfr.external.url.ResponseBody;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -14,14 +12,18 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.Supplier;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Service("ExternalURLRestClient")
 public class ExternalURLRestClient implements ExternalURLClient {
 	
 	private WebClient client;
-	
-	@Override
+
+	public ExternalURLRestClient(){	}
+
+    public ExternalURLRestClient(WebClient client) {
+        this.client = client;
+    }
+
+    @Override
 	public <R extends ResponseBody> Mono<R> call(String url, HttpMethod method,
 			HttpHeaders headers, Request request, Class<R> responseClass) throws ExternalURLClientException {
 		
