@@ -27,7 +27,7 @@ class SimpleMarketRatioServiceTest {
 	
 	@Test
 	void getEtfInfo() throws Exception {
-		mockReaderService("https://teste.com.br/etfs/IVVB11", "pages/ivvb11_page.html");
+		mockReaderService("https://teste.com.br/etfs/IVVB11", "testdata/ivvb11_page.html");
 
 		TickerResponse response = subject.getEtfInfo("IVVB11");
 

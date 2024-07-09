@@ -21,7 +21,7 @@ class DocumentDiscoveryTest {
 	
 	@Test
 	void testWithValidDocument() throws IOException {
-		Document document = URLMockServiceSupport.getDocumentFrom("pages/wege3_page.html", "https://teste.com.br/acoes/WEGE3");
+		Document document = URLMockServiceSupport.getDocumentFrom("testdata/wege3_page.html", "https://teste.com.br/acoes/WEGE3");
 		
 		String result = subject.find(document, new WithValue());
 

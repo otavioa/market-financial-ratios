@@ -179,7 +179,7 @@ class MarketRatioControllerTest {
 
 	@Test
 	void getEtfByTicker() throws Exception {
-		mockReaderService(concat(URL_DOMAIN, ":", URL_PORT, "/etfs/IVVB11"), "pages/ivvb11_page.html");
+		mockReaderService(concat(URL_DOMAIN, ":", URL_PORT, "/etfs/IVVB11"), "testdata/ivvb11_page.html");
 
 		performRequest(ApiEndpoints.MARKET_RATIO + "/etfs/IVVB11")
 				.andExpect(status().isOk())
