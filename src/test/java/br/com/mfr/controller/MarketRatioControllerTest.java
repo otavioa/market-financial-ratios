@@ -19,8 +19,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.IOException;
-
 import static org.assertj.core.util.Strings.concat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -181,7 +179,7 @@ class MarketRatioControllerTest {
 
 	@Test
 	void getEtfByTicker() throws Exception {
-		mockReaderService(concat(URL_DOMAIN, ":", URL_PORT, "/etfs/IVVB11"), "ivvb11_page.html");
+		mockReaderService(concat(URL_DOMAIN, ":", URL_PORT, "/etfs/IVVB11"), "pages/ivvb11_page.html");
 
 		performRequest(ApiEndpoints.MARKET_RATIO + "/etfs/IVVB11")
 				.andExpect(status().isOk())

@@ -1,13 +1,12 @@
 package br.com.mfr.service.ticket.discover;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-
+import br.com.mfr.test.support.URLMockServiceSupport;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 
-import br.com.mfr.test.support.URLMockServiceSupport;
+import java.io.IOException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DocumentDiscoveryTest {
 
@@ -22,7 +21,7 @@ class DocumentDiscoveryTest {
 	
 	@Test
 	void testWithValidDocument() throws IOException {
-		Document document = URLMockServiceSupport.getDocumentFrom("wege3_page.html", "https://teste.com.br/acoes/WEGE3");
+		Document document = URLMockServiceSupport.getDocumentFrom("pages/wege3_page.html", "https://teste.com.br/acoes/WEGE3");
 		
 		String result = subject.find(document, new WithValue());
 
