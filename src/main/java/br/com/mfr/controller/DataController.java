@@ -15,7 +15,7 @@ public class DataController {
         this.service = service;
     }
 
-    @GetMapping("/charge")
+    @GetMapping("/populate")
     public String doCharge() {
 
         service.processCharging();

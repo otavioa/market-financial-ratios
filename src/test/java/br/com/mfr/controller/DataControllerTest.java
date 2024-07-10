@@ -45,7 +45,7 @@ class DataControllerTest {
         mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 102.00));
         mockExternalUrlGet(REITS, newResponse(4L, "EMPRESA REITS", "RRR", 103.00));
 
-        performRequest(ApiEndpoints.DATA_CHARGE)
+        performRequest(ApiEndpoints.DATA_POPULATE)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.is("ok")));
 
