@@ -12,12 +12,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.Supplier;
 
-@Service("ExternalURLRestClient")
+@Service
 public class ExternalURLRestClient implements ExternalURLClient {
 	
 	private WebClient client;
-
-	public ExternalURLRestClient(){	}
 
     public ExternalURLRestClient(WebClient client) {
         this.client = client;

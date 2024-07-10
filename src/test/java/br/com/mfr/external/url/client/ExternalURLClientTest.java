@@ -39,7 +39,7 @@ class ExternalURLClientTest {
 	
 	@Test
 	void newClient() {
-		subject = new ExternalURLRestClient();
+		subject = new ExternalURLRestClient(webClient);
 		Assertions.assertThat(subject).isNotNull();
 	}
 	
