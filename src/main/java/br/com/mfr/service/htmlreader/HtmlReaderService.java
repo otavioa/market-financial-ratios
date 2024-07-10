@@ -1,7 +1,5 @@
 package br.com.mfr.service.htmlreader;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.HttpStatusException;
@@ -11,14 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Objects.isNull;
 
 @Service
-@NoArgsConstructor
 public class HtmlReaderService {
+
+	public HtmlReaderService(){}
 
 	private static final int RETRY_DEFAULT_DELAY = 1000;
 	

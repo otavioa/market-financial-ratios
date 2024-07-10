@@ -13,7 +13,7 @@ class CompanyConverterTest {
         CompanyResponse response = new CompanyResponse(1L, "test", "TST11", 100.00);
         Company company = CompanyConverter.convert(StatusInvestResource.ACOES, response);
 
-        Assertions.assertThat(company.getType()).isEqualTo("ACOES");
+        Assertions.assertThat(company.type()).isEqualTo("ACOES");
         Assertions.assertThat(company).isNotNull();
     }
 }

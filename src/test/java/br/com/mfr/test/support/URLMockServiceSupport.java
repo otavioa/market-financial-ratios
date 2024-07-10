@@ -1,14 +1,12 @@
 package br.com.mfr.test.support;
 
 import br.com.mfr.service.htmlreader.HtmlReaderService;
-import lombok.NoArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.mockito.Mockito;
 
 import java.io.IOException;
 
-@NoArgsConstructor
 public class URLMockServiceSupport {
 
 	public static void mockReaderService(HtmlReaderService readerService, String urlTested, String name) throws Exception {

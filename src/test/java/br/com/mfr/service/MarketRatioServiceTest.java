@@ -39,7 +39,7 @@ class MarketRatioServiceTest {
 	@Test
 	void getAllAvailable() {
 		Company company = Company.builder()
-				.id("1").nome("AMBEV").type("ACOES").ticker("ABEV3").price(30.00)
+				.withId("1").withName("AMBEV").withType("ACOES").withTicker("ABEV3").withPrice(30.00)
 				.build();
 
 		Mockito.when(repository.findAll()).thenReturn(of(company));
@@ -52,7 +52,7 @@ class MarketRatioServiceTest {
 	@Test
 	void getCompaniesByTickerAndType() {
 		Company company = Company.builder()
-				.id("1").nome("AMBEV").type("ACOES").ticker("ABEV3").price(30.00)
+				.withId("1").withName("AMBEV").withType("ACOES").withTicker("ABEV3").withPrice(30.00)
 				.build();
 
 		 Mockito.when(repository.findByTickerInAndTypeIn(anyList(), anyList())).thenReturn(of(company));
@@ -65,7 +65,7 @@ class MarketRatioServiceTest {
 	@Test
 	void getCompaniesByTicker() {
 		Company company = Company.builder()
-				.id("1").nome("AMBEV").type("ACOES").ticker("ABEV3").price(30.00)
+				.withId("1").withName("AMBEV").withType("ACOES").withTicker("ABEV3").withPrice(30.00)
 				.build();
 
 		Mockito.when(repository.findByTickerIn(anyList())).thenReturn(of(company));
@@ -78,7 +78,7 @@ class MarketRatioServiceTest {
 	@Test
 	void getCompaniesByType() {
 		Company company = Company.builder()
-				.id("1").nome("AMBEV").type("ACOES").ticker("ABEV3").price(30.00)
+				.withId("1").withName("AMBEV").withType("ACOES").withTicker("ABEV3").withPrice(30.00)
 				.build();
 
 		Mockito.when(repository.findByTypeIn(anyList())).thenReturn(of(company));
@@ -102,9 +102,9 @@ class MarketRatioServiceTest {
 		MatcherAssert.assertThat(response, Matchers.hasSize(1));
 
 		Company company = response.get(0);
-		assertThat(company.getId(), Matchers.is(id));
-		assertThat(company.getNome(), Matchers.is(name));
-		assertThat(company.getTicker(), Matchers.is(ticker));
+		assertThat(company.id(), Matchers.is(id));
+		assertThat(company.name(), Matchers.is(name));
+		assertThat(company.ticker(), Matchers.is(ticker));
 	}
 
 }

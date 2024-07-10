@@ -92,17 +92,16 @@ public class TicketResponseBuilder {
 	}
 
 	public TickerResponse build() {
-		TickerResponse ticket = new TickerResponse();
-		
-		ticket.setTicker(ticker);
-		ticket.setValue(valueOrZero(value));
-		ticket.setRatio(ratio);
-		ticket.setLpa(valueOrZero(lpa));
-		ticket.setPl(valueOrZero(pl));
-		ticket.setRoe(valueOrZero(roe));
-		ticket.setVpa(valueOrZero(vpa));
-		ticket.setDy(valueOrZero(dy));
-		ticket.setPvp(valueOrZero(pvp));
+		TickerResponse ticket = new TickerResponse(
+				ticker,
+				ratio,
+				valueOrZero(value),
+				valueOrZero(pl),
+				valueOrZero(roe),
+				valueOrZero(lpa),
+				valueOrZero(vpa), 
+				valueOrZero(dy),
+				valueOrZero(pvp));
 		
 		return ticket;
 	}

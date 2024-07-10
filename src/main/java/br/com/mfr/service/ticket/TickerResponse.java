@@ -1,31 +1,17 @@
 package br.com.mfr.service.ticket;
 
+import br.com.mfr.util.JSONUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import br.com.mfr.util.JSONUtils;
-import lombok.Getter;
-import lombok.Setter;
-
 @JsonInclude(Include.NON_NULL)
-@Getter @Setter
-public class TickerResponse {
+public record TickerResponse(String ticker, String ratio, String value, String pl,
+							 String roe, String lpa, String vpa, String dy, String pvp){
 
-	private String ticker;
-	private String ratio;
-	private String value;
-	private String pl;
-	private String roe;
-	private String lpa;
-	private String vpa;
-	private String dy;
-	private String pvp;
-	
-	
 	public static TicketResponseBuilder builder() {
 		return new TicketResponseBuilder();
 	}
-	
+
 	@Override
 	public String toString() {
 		return JSONUtils.toJSON(this);

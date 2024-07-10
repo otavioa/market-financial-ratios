@@ -1,70 +1,29 @@
 package br.com.mfr.service.statusinvest.dto;
 
 import br.com.mfr.external.url.ResponseBody;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-public class CompanyResponse implements ResponseBody {
+public record CompanyResponse(
+        Long companyid, String companyname, String ticker, String gestao,
+        Double sectorid, String sectorname, Double segmentid, Double subsectorid, String subsectorname,
+        String segmentname,
 
-	private Long companyid;
-	private String companyname;
-	private String ticker;
-	private String gestao;
-	private Double sectorid;
-	private String sectorname;
-	private Double segmentid;
-	private Double subsectorid;
-	private String subsectorname;
-	private String segmentname;
-	private Double dy;
-	private Double dividaliquidaebit;
-	private Double dividaliquidapatrimonioliquido;
-	private Double ev_ebit;
-	private Double giroativos;
-	private Double liquidezcorrente;
-	private Double liquidezmediadiaria;
-	private Double lpa;
-	private Double margembruta;
-	private Double margemebit;
-	private Double margemliquida;
-	private Double p_ativo;
-	private Double p_ativocirculante;
-	private Double p_capitalgiro;
-	private Double p_ebit;
-	private Double p_l;
-	private Double p_sr;
-	private Double p_vp;
-	private Double passivo_ativo;
-	private Double peg_Ratio;
-	private Double pl_ativo;
-	private Double price;
-	private Double receitas_cagr5;
-	private Double lucros_cagr5;
-	private Double roa;
-	private Double roe;
-	private Double roic;
-	private Double valormercado;
-	private Double vpa;
+        Double dy, Double dividaliquidaebit, Double dividaliquidapatrimonioliquido, Double ev_ebit, Double giroativos,
+        Double liquidezcorrente, Double liquidezmediadiaria, Double lpa, Double margembruta, Double margemebit,
+        Double margemliquida, Double p_ativo, Double p_ativocirculante, Double p_capitalgiro, Double p_ebit, Double p_l,
+        Double p_sr, Double p_vp, Double passivo_ativo, Double peg_Ratio, Double pl_ativo, Double price,
+        Double receitas_cagr5, Double lucros_cagr5, Double roa, Double roe, Double roic, Double valormercado, Double vpa,
 
-	//fii
-	private String segment;
-	private String gestao_f;
-	private Double valorpatrimonialcota;
-	private Double cota_cagr;
-	private Double dividend_cagr;
-	private Double numerocotistas;
-	private Double numerocotas;
-	private Double patrimonio;
-	private Double percentualcaixa;
-	private Double lastdividend;
-	
-	public CompanyResponse(Long companyId, String companyName, String ticker, Double price) {
-		this.companyid = companyId;
-		this.companyname = companyName;
-		this.ticker = ticker;
-		this.price = price;
-	}
+        //fii
+        String segment, String gestao_f,
+        Double valorpatrimonialcota, Double cota_cagr, Double dividend_cagr, Double numerocotistas, Double numerocotas,
+        Double patrimonio, Double percentualcaixa, Double lastdividend
+) implements ResponseBody {
+
+
+    public CompanyResponse(Long companyId, String companyName, String ticker, Double price) {
+        this(companyId, companyName, ticker, null, null, null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, price,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    }
 
 }

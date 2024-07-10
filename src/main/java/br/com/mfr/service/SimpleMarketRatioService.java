@@ -5,17 +5,19 @@ import br.com.mfr.exception.GenericException;
 import br.com.mfr.service.htmlreader.HtmlReaderService;
 import br.com.mfr.service.statusinvest.StatusInvestURL;
 import br.com.mfr.service.ticket.TickerResponse;
-import lombok.AllArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class SimpleMarketRatioService {
 
-	private HtmlReaderService readerService;
+	private final HtmlReaderService readerService;
 
-	public TickerResponse getEtfInfo(String ticker) {
+    public SimpleMarketRatioService(HtmlReaderService readerService) {
+        this.readerService = readerService;
+    }
+
+    public TickerResponse getEtfInfo(String ticker) {
 		Document document = fetchDocumentFromTicker(ticker);
 
 		TickerResponse response = TickerResponse.builder()

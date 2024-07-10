@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends MongoRepository<Company, String> {
 
-    Company findByNome(String nome);
+    Company findByName(String name);
 
     List<Company> findByTickerInAndTypeIn(List<String> tickers, List<String> types);
 

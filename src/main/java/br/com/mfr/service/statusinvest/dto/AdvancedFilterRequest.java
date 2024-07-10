@@ -1,62 +1,28 @@
 package br.com.mfr.service.statusinvest.dto;
 
+import br.com.mfr.util.JSONUtils;
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-import br.com.mfr.util.JSONUtils;
-import lombok.Data;
-
-@Data
-public abstract class AdvancedFilterRequest {
-
-	private String my_range;
-
-	private String Sector = "";
-	private String SubSector = "";
-	private String Segment = "";
-	
-	private ForecastFilterRequest forecast = ForecastFilterRequest.EMPTY;
-
-	private SubFilter dy = SubFilter.EMPTY;
-	private SubFilter p_vp = SubFilter.EMPTY;
-	private SubFilter percentualcaixa = SubFilter.EMPTY;
-	private SubFilter numerocotistas = SubFilter.EMPTY;
-	private SubFilter dividend_cagr = SubFilter.EMPTY;
-	private SubFilter cota_cagr = SubFilter.EMPTY;
-	private SubFilter liquidezmediadiaria = SubFilter.EMPTY;
-	private SubFilter patrimonio = SubFilter.EMPTY;
-	private SubFilter valorpatrimonialcota = SubFilter.EMPTY;
-	private SubFilter numerocotas = SubFilter.EMPTY;
-	private SubFilter lastdividend = SubFilter.EMPTY;
-
-	private SubFilter p_l = SubFilter.EMPTY;
-	private SubFilter peg_ratio = SubFilter.EMPTY;
-	private SubFilter p_ativo = SubFilter.EMPTY;
-	private SubFilter margembruta = SubFilter.EMPTY;
-	private SubFilter margemebit = SubFilter.EMPTY;
-	private SubFilter margemliquida = SubFilter.EMPTY;
-	private SubFilter p_ebit = SubFilter.EMPTY;
-	private SubFilter ev_ebit = SubFilter.EMPTY;
-	private SubFilter dividaliquidaebit = SubFilter.EMPTY;
-	private SubFilter dividaliquidapatrimonioliquido = SubFilter.EMPTY;
-	private SubFilter p_sr = SubFilter.EMPTY;
-	private SubFilter p_capitalgiro = SubFilter.EMPTY;
-	private SubFilter p_ativocirculante = SubFilter.EMPTY;
-	private SubFilter roe = SubFilter.EMPTY;
-	private SubFilter roic = SubFilter.EMPTY;
-	private SubFilter roa = SubFilter.EMPTY;
-	private SubFilter liquidezcorrente = SubFilter.EMPTY;
-	private SubFilter pl_ativo = SubFilter.EMPTY;
-	private SubFilter passivo_ativo = SubFilter.EMPTY;
-	private SubFilter giroativos = SubFilter.EMPTY;
-	private SubFilter receitas_cagr5 = SubFilter.EMPTY;
-	private SubFilter lucros_cagr5 = SubFilter.EMPTY;
-	private SubFilter vpa = SubFilter.EMPTY;
-	private SubFilter lpa = SubFilter.EMPTY;
-	private SubFilter valormercado = new SubFilter("1", null); //solve temp bug from StatusInvest
+public record AdvancedFilterRequest(String my_range, String sector, String subSector, String segment,
+									ForecastFilterRequest forecast, SubFilter dy, SubFilter p_vp, SubFilter percentualcaixa, SubFilter numerocotistas,
+									SubFilter dividend_cagr, SubFilter cota_cagr, SubFilter liquidezmediadiaria, SubFilter patrimonio, SubFilter valorpatrimonialcota,
+									SubFilter numerocotas, SubFilter lastdividend, SubFilter p_l, SubFilter peg_ratio, SubFilter p_ativo, SubFilter margembruta,
+									SubFilter margemebit, SubFilter margemliquida, SubFilter p_ebit, SubFilter ev_ebit, SubFilter dividaliquidaebit,
+									SubFilter dividaliquidapatrimonioliquido, SubFilter p_sr, SubFilter p_capitalgiro, SubFilter p_ativocirculante, SubFilter roe,
+									SubFilter roic, SubFilter roa, SubFilter liquidezcorrente, SubFilter pl_ativo, SubFilter passivo_ativo, SubFilter giroativos,
+									SubFilter receitas_cagr5, SubFilter lucros_cagr5, SubFilter vpa, SubFilter lpa, SubFilter valormercado) {
 
 	public AdvancedFilterRequest(String my_range) {
-		this.my_range = my_range;
+		this(my_range, "", "", "",
+				ForecastFilterRequest.EMPTY,
+				SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY,
+				SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY,
+				SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY,
+				SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY,
+				SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY, SubFilter.EMPTY,
+				new SubFilter("1", null));
 	}
 
 	public String asQueryParameter() {

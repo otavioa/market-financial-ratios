@@ -2,8 +2,6 @@ package br.com.mfr.service;
 
 import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,12 +9,15 @@ import java.util.List;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 
 @Service
-@AllArgsConstructor
 public class MarketRatioService {
 
-	private CompanyRepository repo;
+	private final CompanyRepository repo;
 
-	public List<Company> getAllCompanies() {
+    public MarketRatioService(CompanyRepository repo) {
+        this.repo = repo;
+    }
+
+    public List<Company> getAllCompanies() {
 		return repo.findAll();
 	}
 
