@@ -36,7 +36,7 @@ class StatusInvestResourceTest {
 	
 	@Test
 	void acaoResource() {
-		StatusInvestResource acoes = StatusInvestResource.ACOES;
+		StatusInvestResources acoes = StatusInvestResources.ACOES;
 		
 		Assertions.assertThat(acoes.getCategoryType()).isEqualTo(1);
 		Assertions.assertThat(acoes.getFilter().my_range()).isEqualTo("0;25");
@@ -44,7 +44,7 @@ class StatusInvestResourceTest {
 	
 	@Test
 	void fiiResource() {
-		StatusInvestResource acoes = StatusInvestResource.FIIS;
+		StatusInvestResources acoes = StatusInvestResources.FIIS;
 		
 		Assertions.assertThat(acoes.getCategoryType()).isEqualTo(2);
 		Assertions.assertThat(acoes.getFilter().my_range()).isEqualTo("0;20");
@@ -52,7 +52,7 @@ class StatusInvestResourceTest {
 	
 	@Test
 	void stockResource() {
-		StatusInvestResource acoes = StatusInvestResource.STOCKS;
+		StatusInvestResources acoes = StatusInvestResources.STOCKS;
 		
 		Assertions.assertThat(acoes.getCategoryType()).isEqualTo(12);
 		Assertions.assertThat(acoes.getFilter().my_range()).isEqualTo("0;25");
@@ -60,7 +60,7 @@ class StatusInvestResourceTest {
 	
 	@Test
 	void reitResource() {
-		StatusInvestResource acoes = StatusInvestResource.REITS;
+		StatusInvestResources acoes = StatusInvestResources.REITS;
 		
 		Assertions.assertThat(acoes.getCategoryType()).isEqualTo(13);
 		Assertions.assertThat(acoes.getFilter().my_range()).isEqualTo("0;25");

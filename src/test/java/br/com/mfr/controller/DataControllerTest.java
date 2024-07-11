@@ -4,7 +4,7 @@ import br.com.mfr.MockMvcApp;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.external.url.ExternalURL;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
-import br.com.mfr.service.statusinvest.StatusInvestResource;
+import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
 import org.hamcrest.Matchers;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static br.com.mfr.service.statusinvest.StatusInvestResource.*;
+import static br.com.mfr.service.statusinvest.StatusInvestResources.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -57,7 +57,7 @@ class DataControllerTest {
         return new AdvanceSearchResponse(new CompanyResponse(companyId, companyName, ticker, price));
     }
 
-    private void mockExternalUrlGet(StatusInvestResource resource, AdvanceSearchResponse response) {
+    private void mockExternalUrlGet(StatusInvestResources resource, AdvanceSearchResponse response) {
         Mockito.when(externalUrl.doGet(
                 eq("http://url?CategoryType=" + resource.getCategoryType()),
                 eq(AdvanceSearchResponse.class))).thenReturn(response);

@@ -2,7 +2,7 @@ package br.com.mfr.service.statusinvest;
 
 import br.com.mfr.service.statusinvest.dto.*;
 
-public enum StatusInvestResource {
+public enum StatusInvestResources {
 	
 	ACOES(1, "0;25"),
 	FIIS(2, "0;20"),
@@ -12,7 +12,7 @@ public enum StatusInvestResource {
 	private Integer categoryType;
 	private String statusInvestRange;
 
-	StatusInvestResource(int categoryType, String statusInvestRange) {
+	StatusInvestResources(int categoryType, String statusInvestRange) {
 		this.categoryType = categoryType;
 		this.statusInvestRange = statusInvestRange;
 	}
