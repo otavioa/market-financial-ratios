@@ -47,10 +47,10 @@ class DataControllerTest {
 
         performRequest(ApiEndpoints.DATA_POPULATE)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", Matchers.is("ok")));
+                .andExpect(jsonPath("$", Matchers.startsWith("Time elapsed: 00:00:")));
 
         Mockito.verify(repository, times(1)).deleteAll();
-        Mockito.verify(repository, times(1)).insert(anyList());
+        Mockito.verify(repository, times(4)).insert(anyList());
     }
 
     private AdvanceSearchResponse newResponse(long companyId, String companyName, String ticker, Double price) {

@@ -44,7 +44,7 @@ class DataChargeServiceTest {
         Company company = repository.findByName("EMPRESA AÇÃO");
 
         Mockito.verify(repository, times(1)).deleteAll();
-        Mockito.verify(repository, times(1)).insert(anyList());
+        Mockito.verify(repository, times(4)).insert(anyList());
     }
 
     private AdvanceSearchResponse newResponse(long companyId, String companyName, String ticker, Double price) {
