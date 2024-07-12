@@ -1,7 +1,7 @@
 package br.com.mfr.service.statusinvest.dto;
 
 import br.com.mfr.entity.Company;
-import br.com.mfr.service.statusinvest.StatusInvestResource;
+import br.com.mfr.service.statusinvest.StatusInvestResources;
 
 import static br.com.mfr.util.NumberUtils.*;
 
@@ -9,11 +9,11 @@ public class CompanyConverter {
 
     private CompanyConverter(){ }
 
-    public static Company convert(StatusInvestResource resource, CompanyResponse company) {
+    public static Company convert(StatusInvestResources resource, CompanyResponse company) {
         return new CompanyConverter().executeConversion(resource, company);
     }
 
-    public Company executeConversion(StatusInvestResource resource, CompanyResponse company) {
+    public Company executeConversion(StatusInvestResources resource, CompanyResponse company) {
         Company dto = Company.builder()
                 .withType(resource.name())
                 .withName(company.companyname())

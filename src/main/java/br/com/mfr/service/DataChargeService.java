@@ -4,17 +4,15 @@ import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.external.url.ExternalURL;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
-import br.com.mfr.service.statusinvest.StatusInvestResource;
+import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyConverter;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,40 +28,35 @@ public class DataChargeService {
 
 
     @Transactional
-    public void processCharging() {
-        Map<StatusInvestResource, List<CompanyResponse>> companiesFromStatusInvest = getCompaniesFromStatusInvest();
-        List<Company> companies = getCompanies(companiesFromStatusInvest);
-
-        repo.deleteAll();
-        repo.insert(companies);
+    public void populateData() {
+        deleteAllRecords();
+        populateDataBy(StatusInvestResources.values());
     }
 
-    private List<Company> getCompanies(Map<StatusInvestResource, List<CompanyResponse>> companiesFromStatusInvest) {
-        List<Company> companies = new ArrayList<>();
+    private void populateDataBy(StatusInvestResources[] resources) {
+        Arrays.stream(resources)
+                .parallel()
+                .forEach(resource -> {
+                    List<Company> companies = getCompaniesFrom(resource);
+                    repo.insert(companies);
+                });
+    }
 
-        companiesFromStatusInvest.forEach((resource, listCompaniesResponse) -> {
-            List<Company> convertedCompanies = listCompaniesResponse.stream()
-                    .map(companyResponse -> CompanyConverter.convert(resource, companyResponse))
-                    .toList();
+    private List<Company> getCompaniesFrom(StatusInvestResources resource) {
+        List<CompanyResponse> listResponse = retrieveCompaniesFromResource(resource);
 
-            companies.addAll(convertedCompanies);
-        });
+        List<Company> companies = listResponse.stream()
+                .map(r -> CompanyConverter.convert(resource, r))
+                .toList();
 
         return companies;
     }
 
-    private Map<StatusInvestResource, List<CompanyResponse>> getCompaniesFromStatusInvest() {
-        HashMap<StatusInvestResource, List<CompanyResponse>> result = new HashMap<>();
-
-        for (StatusInvestResource resource: StatusInvestResource.values()){
-            List<CompanyResponse> listResponse = retrieveCompaniesFromResource(resource);
-            result.put(resource, listResponse);
-        }
-
-       return result;
+    private void deleteAllRecords() {
+        repo.deleteAll();
     }
 
-    private List<CompanyResponse> retrieveCompaniesFromResource(StatusInvestResource resource) {
+    private List<CompanyResponse> retrieveCompaniesFromResource(StatusInvestResources resource) {
         String preparedURL = getStatusInvestUrl()
                 .replace("{categoryType}", resource.getCategoryType().toString())
                 .replace("{search}", resource.getFilter().asQueryParameter());

@@ -4,7 +4,7 @@ import br.com.mfr.MockMvcApp;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.external.url.ExternalURL;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
-import br.com.mfr.service.statusinvest.StatusInvestResource;
+import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
 import org.hamcrest.Matchers;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static br.com.mfr.service.statusinvest.StatusInvestResource.*;
+import static br.com.mfr.service.statusinvest.StatusInvestResources.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -45,19 +45,19 @@ class DataControllerTest {
         mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 102.00));
         mockExternalUrlGet(REITS, newResponse(4L, "EMPRESA REITS", "RRR", 103.00));
 
-        performRequest(ApiEndpoints.DATA_CHARGE)
+        performRequest(ApiEndpoints.DATA_POPULATE)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", Matchers.is("ok")));
+                .andExpect(jsonPath("$", Matchers.startsWith("Time elapsed: 00:00:")));
 
         Mockito.verify(repository, times(1)).deleteAll();
-        Mockito.verify(repository, times(1)).insert(anyList());
+        Mockito.verify(repository, times(4)).insert(anyList());
     }
 
     private AdvanceSearchResponse newResponse(long companyId, String companyName, String ticker, Double price) {
         return new AdvanceSearchResponse(new CompanyResponse(companyId, companyName, ticker, price));
     }
 
-    private void mockExternalUrlGet(StatusInvestResource resource, AdvanceSearchResponse response) {
+    private void mockExternalUrlGet(StatusInvestResources resource, AdvanceSearchResponse response) {
         Mockito.when(externalUrl.doGet(
                 eq("http://url?CategoryType=" + resource.getCategoryType()),
                 eq(AdvanceSearchResponse.class))).thenReturn(response);

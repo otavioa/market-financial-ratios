@@ -6,7 +6,7 @@ import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.external.url.ExternalURL;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
-import br.com.mfr.service.statusinvest.StatusInvestResource;
+import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static br.com.mfr.service.statusinvest.StatusInvestResource.*;
+import static br.com.mfr.service.statusinvest.StatusInvestResources.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -39,19 +39,19 @@ class DataChargeServiceTest {
         mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 120.00));
         mockExternalUrlGet(REITS, newResponse(4L, "EMPRESA REITS", "RRR", 130.00));
 
-        subject.processCharging();
+        subject.populateData();
 
         Company company = repository.findByName("EMPRESA AÇÃO");
 
         Mockito.verify(repository, times(1)).deleteAll();
-        Mockito.verify(repository, times(1)).insert(anyList());
+        Mockito.verify(repository, times(4)).insert(anyList());
     }
 
     private AdvanceSearchResponse newResponse(long companyId, String companyName, String ticker, Double price) {
         return new AdvanceSearchResponse(new CompanyResponse(companyId, companyName, ticker, price));
     }
 
-    private void mockExternalUrlGet(StatusInvestResource resource, AdvanceSearchResponse response) {
+    private void mockExternalUrlGet(StatusInvestResources resource, AdvanceSearchResponse response) {
         Mockito.when(externalUrl.doGet(
                 eq("http://url?CategoryType=" + resource.getCategoryType()),
                 eq(AdvanceSearchResponse.class))).thenReturn(response);
