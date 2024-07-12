@@ -25,7 +25,7 @@ public class DataController {
         service.populateData();
         Instant end = Instant.now();
 
-        return STR."Time elapsed: \{getDurationOfRequest(start, end)}";
+        return String.format("Time elapsed: %s.", getDurationOfRequest(start, end));
     }
 
     private static String getDurationOfRequest(Instant start, Instant end) {
