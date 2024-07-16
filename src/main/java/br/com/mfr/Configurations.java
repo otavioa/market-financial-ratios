@@ -12,6 +12,8 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.time.Duration;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -40,5 +42,10 @@ public class Configurations {
                 .doOnConnected(conn ->
                         conn.addHandlerLast(new ReadTimeoutHandler(MAX_TIMEOUT, TimeUnit.MILLISECONDS))
                                 .addHandlerLast(new WriteTimeoutHandler(MAX_TIMEOUT, TimeUnit.MILLISECONDS)));
+    }
+
+    @Bean
+    ExecutorService sseThreadExecutor(){
+        return Executors.newSingleThreadExecutor();
     }
 }
