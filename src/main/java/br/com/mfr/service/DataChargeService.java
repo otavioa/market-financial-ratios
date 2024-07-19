@@ -2,22 +2,21 @@ package br.com.mfr.service;
 
 import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
-import br.com.mfr.exception.GenericException;
 import br.com.mfr.external.url.ExternalURL;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyConverter;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
-import org.springframework.http.MediaType;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Semaphore;
 
 import static java.lang.String.format;
 
@@ -27,45 +26,49 @@ public class DataChargeService {
 
     private final ExternalURL externalUrl;
     private final CompanyRepository repo;
+    private final ApplicationEventPublisher publisher;
 
-    public DataChargeService(ExternalURL externalUrl, CompanyRepository repo) {
+    private final Semaphore semaphore = new Semaphore(1);
+
+    public DataChargeService(ExternalURL externalUrl,
+                             CompanyRepository repo, ApplicationEventPublisher publisher) {
+
         this.externalUrl = externalUrl;
+        this.publisher = publisher;
         this.repo = repo;
     }
 
     @Transactional
-    public void populateData(SseEmitter emitter) {
-        UUID id = UUID.randomUUID();
+    @Async("dataPopulateThread")
+    public void populateData() {
+        if (semaphore.tryAcquire()) {
+            UUID id = UUID.randomUUID();
 
-        sendEvent(emitter,
-                new DataChargeEvent(id, DataChargeEvent.START_PROCESSING));
+            publisher.publishEvent(new DataChargeEvent(id, DataChargeEvent.START_PROCESSING));
 
-        removeData(emitter, id);
-        insertDataBy(emitter, id, StatusInvestResources.values());
+            removeData(id);
+            insertDataBy(id, StatusInvestResources.values());
 
-        sendEvent(emitter,
-                new DataChargeEvent(id, DataChargeEvent.COMPLETED));
-    }
+            publisher.publishEvent(
+                    new DataChargeEvent(id, DataChargeEvent.COMPLETED));
 
-    private static void sendEvent(SseEmitter emitter, DataChargeEvent event)  {
-        try {
-            emitter.send(event, MediaType.APPLICATION_JSON);
-        } catch (IOException e) {
-            throw new GenericException("Fail during attempt to process event with id: " + event, e);
+            semaphore.release();
         }
     }
 
-    private void insertDataBy(SseEmitter emitter, UUID id, StatusInvestResources[] resources)  {
+    private void insertDataBy(UUID id, StatusInvestResources[] resources) {
+        int poolSize = resources.length;
+
         Arrays.stream(resources)
                 .parallel()
                 .forEach(resource -> {
                     List<Company> companies = getCompaniesFrom(resource);
                     repo.insert(companies);
-                        sendEvent(emitter,
-                                new DataChargeEvent(
-                                        id,
-                                        resource.name(),
-                                        format("%s new records...", companies.size())));
+                    publisher.publishEvent(
+                            new DataChargeEvent(
+                                    id,
+                                    resource.name(),
+                                    format("%s new records...", companies.size())));
                 });
     }
 
@@ -77,11 +80,11 @@ public class DataChargeService {
                 .toList();
     }
 
-    private void removeData(SseEmitter emitter, UUID id) {
+    private void removeData(UUID id) {
         long count = repo.count();
         repo.deleteAll();
 
-        sendEvent(emitter,
+        publisher.publishEvent(
                 new DataChargeEvent(id, DataChargeEvent.REMOVED, format("%s records removed...", count)));
     }
 

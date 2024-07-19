@@ -24,7 +24,6 @@ import static org.mockito.Mockito.times;
 class DataChargeServiceTest {
 
     @MockBean private ExternalURL externalUrl;
-    @MockBean private SseEmitter emitter;
 
     @Autowired private CompanyRepository repository;
     @Autowired private DataChargeService subject;
@@ -41,7 +40,7 @@ class DataChargeServiceTest {
         mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 120.00));
         mockExternalUrlGet(REITS, newResponse(4L, "EMPRESA REITS", "RRR", 130.00));
 
-        subject.populateData(emitter);
+        subject.populateData();
 
         Company company = repository.findByName("EMPRESA AÇÃO");
 

@@ -45,7 +45,10 @@ public class Configurations {
     }
 
     @Bean
-    ExecutorService sseThreadExecutor(){
-        return Executors.newSingleThreadExecutor();
+    ExecutorService dataPopulateThread() {
+        return Executors.newSingleThreadExecutor(
+                Thread.ofVirtual()
+                        .name("data-populate")
+                        .factory());
     }
 }
