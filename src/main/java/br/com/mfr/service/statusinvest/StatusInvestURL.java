@@ -5,7 +5,9 @@ public class StatusInvestURL {
 	private static final String PROD_URL = "https://statusinvest.com.br/{type}/{ticket}";
 
 	private static String url;
-	
+
+	private StatusInvestURL(){}
+
 	public static String getUrl() {
 		if(url == null)
 			url = PROD_URL;

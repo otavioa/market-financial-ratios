@@ -1,8 +1,8 @@
 package br.com.mfr.exception;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GenericExceptionTest {
 
@@ -12,9 +12,9 @@ class GenericExceptionTest {
 	void newException() {
 		subject = new GenericException("Message test", new RuntimeException("Runtime message"));
 		
-		assertEquals(subject.getMessage(), "Message test");
-		assertEquals(subject.getCause().getClass(), RuntimeException.class);
-		assertEquals(subject.getCause().getMessage(), "Runtime message");
+		assertEquals("Message test", subject.getMessage());
+		assertEquals(RuntimeException.class, subject.getCause().getClass());
+		assertEquals("Runtime message", subject.getCause().getMessage());
 	}
 
 }

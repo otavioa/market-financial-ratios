@@ -30,7 +30,7 @@ public class HtmlReaderService {
         this.jsoupService = jsoupService;
 	}
 	
-	public Document getHTMLDocument(String url) throws Exception {
+	public Document getHTMLDocument(String url) throws IOException, InterruptedException {
 		Response response = executeForUrl(url);
 
 		int status = response.statusCode();
