@@ -1,7 +1,6 @@
 package br.com.mfr.external.url;
 
 import br.com.mfr.external.url.client.ExternalURLClient;
-import br.com.mfr.external.url.client.ExternalURLClientException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -48,19 +47,19 @@ class ExternalURLAccess {
 	}
 
 	public <R extends ResponseBody> R postObject(String url, Request request, Class<R> responseClass)
-			throws ExternalURLClientException {
+			throws ExternalURLException {
 
 		return client.call(url, HttpMethod.POST, headers, request, responseClass).block();
 	}
 
 	public <R extends ResponseBody> R getObject(String url, Class<R> responseClass)
-			throws ExternalURLClientException {
+			throws ExternalURLException {
 
 		return client.call(url, HttpMethod.GET, headers, responseClass).block();
 	}
 
 	public <R extends ResponseBody> R patchObject(String url, Request request, Class<R> responseClass)
-			throws ExternalURLClientException {
+			throws ExternalURLException {
 
 		return client.call(url, HttpMethod.PATCH, headers, request, responseClass).block();
 	}

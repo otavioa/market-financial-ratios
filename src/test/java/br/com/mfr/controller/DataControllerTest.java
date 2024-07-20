@@ -3,6 +3,7 @@ package br.com.mfr.controller;
 import br.com.mfr.MockMvcApp;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.external.url.ExternalURL;
+import br.com.mfr.external.url.ExternalURLException;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
@@ -64,7 +65,7 @@ class DataControllerTest {
         return new AdvanceSearchResponse(new CompanyResponse(companyId, companyName, ticker, price));
     }
 
-    private void mockExternalUrlGet(StatusInvestResources resource, AdvanceSearchResponse response) {
+    private void mockExternalUrlGet(StatusInvestResources resource, AdvanceSearchResponse response) throws ExternalURLException {
         Mockito.when(externalUrl.doGet(
                 eq("http://url?CategoryType=" + resource.getCategoryType()),
                 eq(AdvanceSearchResponse.class))).thenReturn(response);

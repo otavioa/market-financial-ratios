@@ -1,7 +1,5 @@
 package br.com.mfr.external.url;
 
-import br.com.mfr.external.url.client.ExternalURLClientException;
-
 class Patch<T extends ResponseBody> extends Get<T> {
 
 	private Request request;
@@ -12,7 +10,7 @@ class Patch<T extends ResponseBody> extends Get<T> {
 	}
 
 	@Override
-	public T execute(HeaderArguments headerArguments) throws ExternalURLClientException {
+	public T execute(HeaderArguments headerArguments) throws ExternalURLException {
 		return externalAccess
 				.addToHeaderJSONContent()
 				.addToHeaderUserAgent()

@@ -1,7 +1,11 @@
 package br.com.mfr.external.url.client;
 
+import br.com.mfr.exception.GenericException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import static java.lang.String.format;
 
 public class AccessUtil {
 
@@ -11,7 +15,7 @@ public class AccessUtil {
 		try {
 			return new URI(url);
 		} catch (URISyntaxException e) {
-			throw new RuntimeException("Malformed URL: " + url);
+			throw new GenericException(format("Malformed URL: %s", url), e);
 		}
 	}
 }
