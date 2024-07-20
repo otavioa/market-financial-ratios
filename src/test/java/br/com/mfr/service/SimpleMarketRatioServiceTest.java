@@ -34,7 +34,17 @@ class SimpleMarketRatioServiceTest {
 		Assertions.assertThat(response.toString()).isEqualTo(
 				"{\"ticker\":\"IVVB11\",\"value\":\"278,12\"}");
 	}
-	
+
+	@Test
+	void getInvalidEtf() throws Exception {
+		mockReaderService("https://teste.com.br/etfs/HEHE14", "testdata/invalid_ticker.html");
+
+		TickerResponse response = subject.getEtfInfo("HEHE14");
+
+		Assertions.assertThat(response.toString()).isEqualTo(
+				"{\"ticker\":\"HEHE14\"}");
+	}
+
 	private void mockReaderService(String url, String fileName) throws Exception {
 		URLMockServiceSupport.mockReaderService(readerService, url, fileName);
 	}

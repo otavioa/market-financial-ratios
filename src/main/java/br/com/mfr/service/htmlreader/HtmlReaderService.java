@@ -11,12 +11,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 import static java.lang.Integer.parseInt;
-import static java.util.Objects.isNull;
 
 @Service
 public class HtmlReaderService {
-
-	public HtmlReaderService(){}
 
 	private static final int RETRY_DEFAULT_DELAY = 1000;
 	
@@ -26,12 +23,11 @@ public class HtmlReaderService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HtmlReaderService.class);
 
-	private Integer requestDelay;
-	private JsoupServiceConnection jsoupService;
+	private Integer requestDelay = RETRY_DEFAULT_DELAY;
+	private final JsoupServiceConnection jsoupService;
 
-	public HtmlReaderService(JsoupServiceConnection jsoupService, Integer requestDelay) {
+	public HtmlReaderService(JsoupServiceConnection jsoupService) {
         this.jsoupService = jsoupService;
-        this.requestDelay = requestDelay;
 	}
 	
 	public Document getHTMLDocument(String url) throws Exception {
@@ -46,6 +42,10 @@ public class HtmlReaderService {
 				throw new HttpStatusException("HTTP error fetching URL", status, url);
 
 		return response.parse();
+	}
+
+	public void setRequestDelay(Integer requestDelay) {
+		this.requestDelay = requestDelay;
 	}
 
 	private Response executeForUrl(String url) throws IOException {
@@ -66,13 +66,9 @@ public class HtmlReaderService {
 
 	private void wait(Response response) throws InterruptedException {
 		String header = response.header("Retry-After");
-		int delayInMilliseconds = parseInt(header) * getDelay();
+		int delayInMilliseconds = parseInt(header) * requestDelay;
 
 		Thread.sleep(delayInMilliseconds);
-	}
-
-	private int getDelay() {
-		return isNull(requestDelay) ? RETRY_DEFAULT_DELAY : requestDelay;
 	}
 
 	private boolean isTooManyRequests(int statusCode) {

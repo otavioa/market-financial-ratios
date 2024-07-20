@@ -39,7 +39,7 @@ class HtmlReaderServiceTest {
 
 	@BeforeEach
 	public void setUp() throws IOException {
-		subject = new HtmlReaderService(jsoupService, null);
+		subject = new HtmlReaderService(jsoupService);
 
 		Mockito.when(response.statusCode()).thenReturn(HTTP_OK);
 		Mockito.when(response.parse()).thenReturn(document);
@@ -82,7 +82,8 @@ class HtmlReaderServiceTest {
 
 	@Test
 	void getHTMLDocumentWithDelayError() throws Exception {
-		subject = new HtmlReaderService(jsoupService, 1);
+		subject = new HtmlReaderService(jsoupService);
+		subject.setRequestDelay(1);
 
 		Mockito.when(response.statusCode())
 			.thenReturn(HTTP_MANY_REQUESTS)
