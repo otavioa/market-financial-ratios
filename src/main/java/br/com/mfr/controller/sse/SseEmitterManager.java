@@ -1,4 +1,4 @@
-package br.com.mfr.controller;
+package br.com.mfr.controller.sse;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 public class SseEmitterManager {
 
-    private static final long SSE_TIMEOUT = 30_000L;
+    private static final long SSE_TIMEOUT = 30_000L; //TODO - Future property
 
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
@@ -31,14 +31,18 @@ public class SseEmitterManager {
                     emitter.complete();
                     emitters.remove(emitter);
                 }
-
             } catch (IOException e) {
                 emitter.completeWithError(e);
+                emitters.remove(emitter);
             }
         });
     }
 
     public SseEmitter newEmitter() {
         return new SseEmitter(SSE_TIMEOUT);
+    }
+
+    public List<SseEmitter> getEmitters() {
+        return emitters;
     }
 }

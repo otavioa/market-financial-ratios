@@ -1,6 +1,6 @@
 package br.com.mfr.service;
 
-import br.com.mfr.controller.SseEmitterEventNotification;
+import br.com.mfr.controller.sse.SseEmitterEventNotification;
 
 import java.util.UUID;
 

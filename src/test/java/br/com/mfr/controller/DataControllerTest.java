@@ -22,8 +22,7 @@ import static br.com.mfr.service.statusinvest.StatusInvestResources.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcApp
 class DataControllerTest {
@@ -39,7 +38,7 @@ class DataControllerTest {
     }
 
     @Test
-    void doCharge() throws Exception  {
+    void populateData() throws Exception  {
         mockExternalUrlGet(ACOES, newResponse(1L, "EMPRESA AÇÃO", "AAA3", 100.00));
         mockExternalUrlGet(FIIS, newResponse(2L, "EMPRESA FII", "FFF11", 101.00));
         mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 102.00));
@@ -47,7 +46,15 @@ class DataControllerTest {
 
         performRequest(ApiEndpoints.DATA_POPULATE)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", Matchers.startsWith("Time elapsed: 00:00:")));
+                .andExpect(content().contentType("text/event-stream"))
+                .andExpect(jsonPath("$", Matchers.allOf(
+                        Matchers.containsString("\"name\":\"REMOVED\",\"description\":\"0 records removed...\",\"complete\":false}"),
+                        Matchers.containsString("\"name\":\"FIIS\",\"description\":\"1 new records...\",\"complete\":false}"),
+                        Matchers.containsString("\"name\":\"STOCKS\",\"description\":\"1 new records...\",\"complete\":false}"),
+                        Matchers.containsString("\"name\":\"ACOES\",\"description\":\"1 new records...\",\"complete\":false}"),
+                        Matchers.containsString("\"name\":\"REITS\",\"description\":\"1 new records...\",\"complete\":false}"),
+                        Matchers.containsString("\"name\":\"COMPLETED\",\"description\":\"\",\"complete\":true}")
+                )));
 
         Mockito.verify(repository, times(1)).deleteAll();
         Mockito.verify(repository, times(4)).insert(anyList());

@@ -1,6 +1,5 @@
 package br.com.mfr.service;
 
-import br.com.mfr.controller.AllTickers;
 import br.com.mfr.exception.GenericException;
 import br.com.mfr.service.htmlreader.HtmlReaderService;
 import br.com.mfr.service.statusinvest.StatusInvestURL;

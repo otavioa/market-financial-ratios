@@ -1,4 +1,4 @@
-package br.com.mfr.controller;
+package br.com.mfr.controller.sse;
 
 public interface SseEmitterEventNotification {
 
