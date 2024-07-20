@@ -60,7 +60,7 @@ public record Company(@Id @JsonIgnore String id, String type, String ticker, Str
 		private Double patrimonio;
 		private Double percentualCaixa;
 
-		public CompanyBuilder(){}
+		CompanyBuilder(){}
 
 		public CompanyBuilder withId(String id){
 			this.id = id;

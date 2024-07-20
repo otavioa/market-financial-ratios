@@ -1,11 +1,6 @@
 package br.com.mfr.external.url.client;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.springframework.http.HttpStatus.BAD_GATEWAY;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
-import java.util.Optional;
-
+import br.com.mfr.external.url.ResponseBody;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +9,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.HttpClientErrorException;
 
-import br.com.mfr.external.url.ResponseBody;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.http.HttpStatus.BAD_GATEWAY;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class ExternalURLClientExceptionTest {
@@ -85,8 +84,8 @@ class ExternalURLClientExceptionTest {
 	public static class FakeResponse implements ResponseBody {
 			
 		private String attribute;
-		
-		public FakeResponse() {}
+
+		FakeResponse(){}
 		
 		public String getAttribute() {
 			return attribute;
