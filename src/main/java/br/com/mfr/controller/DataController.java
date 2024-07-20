@@ -1,35 +1,39 @@
 package br.com.mfr.controller;
 
-import br.com.mfr.service.DataChargeService;
-import org.apache.commons.lang3.time.DurationFormatUtils;
+import br.com.mfr.controller.sse.SseEmitterManager;
+import br.com.mfr.service.PopulateDataEvent;
+import br.com.mfr.service.PopulateDataService;
+import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.Duration;
-import java.time.Instant;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
 @RequestMapping("/data")
 public class DataController {
 
-    private final DataChargeService service;
+    private final PopulateDataService service;
+    private final SseEmitterManager sseManager;
 
-    public DataController(DataChargeService service) {
+
+    public DataController(PopulateDataService service, SseEmitterManager sseManager) {
+        this.sseManager = sseManager;
         this.service = service;
     }
 
     @GetMapping("/populate")
-    public String populateData() {
-        Instant start = Instant.now();
-        service.populateData();
-        Instant end = Instant.now();
+    public SseEmitter populateData() {
+        SseEmitter emitter = sseManager.newEmitter();
+        sseManager.addEmitter(emitter);
 
-        return String.format("Time elapsed: %s.", getDurationOfRequest(start, end));
+        service.populateData();
+
+        return emitter;
     }
 
-    private static String getDurationOfRequest(Instant start, Instant end) {
-        Duration between = Duration.between(start, end);
-        return DurationFormatUtils.formatDuration(between.toMillis(), "HH:mm:ss");
+    @EventListener
+    public void onPopulateDataEvent(PopulateDataEvent event) {
+        sseManager.notifyEmitters(event);
     }
 }

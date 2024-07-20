@@ -4,10 +4,10 @@ import br.com.mfr.MockMvcApp;
 import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.external.url.ExternalURL;
+import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
+import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
-import br.com.mfr.service.statusinvest.StatusInvestResources;
-import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,15 +17,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static br.com.mfr.service.statusinvest.StatusInvestResources.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.timeout;
 
 @MockMvcApp
-class DataChargeServiceTest {
+class PopulateDataServiceTest {
 
     @MockBean private ExternalURL externalUrl;
 
     @Autowired private CompanyRepository repository;
-    @Autowired private DataChargeService subject;
+    @Autowired private PopulateDataService subject;
 
     @BeforeAll
     public static void setUpEnvironment(){
@@ -33,7 +33,7 @@ class DataChargeServiceTest {
     }
 
     @Test
-    void processCharging() {
+    void processPopulateData() {
         mockExternalUrlGet(ACOES, newResponse(1L, "EMPRESA AÇÃO", "AAA3", 100.00));
         mockExternalUrlGet(FIIS, newResponse(2L, "EMPRESA FII", "FFF11", 110.00));
         mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 120.00));
@@ -43,8 +43,9 @@ class DataChargeServiceTest {
 
         Company company = repository.findByName("EMPRESA AÇÃO");
 
-        Mockito.verify(repository, times(1)).deleteAll();
-        Mockito.verify(repository, times(4)).insert(anyList());
+        Mockito.verify(repository, timeout(100).times(1)).count();
+        Mockito.verify(repository, timeout(100).times(1)).deleteAll();
+        Mockito.verify(repository, timeout(100).times(4)).insert(anyList());
     }
 
     private AdvanceSearchResponse newResponse(long companyId, String companyName, String ticker, Double price) {
