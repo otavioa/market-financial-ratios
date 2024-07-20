@@ -22,7 +22,7 @@ import static java.lang.String.format;
 
 @Service
 @Transactional(readOnly = true)
-public class DataChargeService {
+public class PopulateDataService {
 
     private final ExternalURL externalUrl;
     private final CompanyRepository repo;
@@ -30,8 +30,8 @@ public class DataChargeService {
 
     private final Semaphore semaphore = new Semaphore(1);
 
-    public DataChargeService(ExternalURL externalUrl,
-                             CompanyRepository repo, ApplicationEventPublisher publisher) {
+    public PopulateDataService(ExternalURL externalUrl,
+                               CompanyRepository repo, ApplicationEventPublisher publisher) {
 
         this.externalUrl = externalUrl;
         this.publisher = publisher;
@@ -44,13 +44,13 @@ public class DataChargeService {
         if (semaphore.tryAcquire()) {
             UUID id = UUID.randomUUID();
 
-            publisher.publishEvent(new DataChargeEvent(id, DataChargeEvent.START_PROCESSING));
+            publisher.publishEvent(new PopulateDataEvent(id, PopulateDataEvent.START_PROCESSING));
 
             removeData(id);
             insertDataBy(id, StatusInvestResources.values());
 
             publisher.publishEvent(
-                    new DataChargeEvent(id, DataChargeEvent.COMPLETED));
+                    new PopulateDataEvent(id, PopulateDataEvent.COMPLETED));
 
             semaphore.release();
         }
@@ -65,7 +65,7 @@ public class DataChargeService {
                     List<Company> companies = getCompaniesFrom(resource);
                     repo.insert(companies);
                     publisher.publishEvent(
-                            new DataChargeEvent(
+                            new PopulateDataEvent(
                                     id,
                                     resource.name(),
                                     format("%s new records...", companies.size())));
@@ -85,7 +85,7 @@ public class DataChargeService {
         repo.deleteAll();
 
         publisher.publishEvent(
-                new DataChargeEvent(id, DataChargeEvent.REMOVED, format("%s records removed...", count)));
+                new PopulateDataEvent(id, PopulateDataEvent.REMOVED, format("%s records removed...", count)));
     }
 
     private List<CompanyResponse> retrieveCompaniesFromResource(StatusInvestResources resource) {

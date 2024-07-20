@@ -1,8 +1,8 @@
 package br.com.mfr.controller;
 
 import br.com.mfr.controller.sse.SseEmitterManager;
-import br.com.mfr.service.DataChargeEvent;
-import br.com.mfr.service.DataChargeService;
+import br.com.mfr.service.PopulateDataEvent;
+import br.com.mfr.service.PopulateDataService;
 import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,11 +13,11 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequestMapping("/data")
 public class DataController {
 
-    private final DataChargeService service;
+    private final PopulateDataService service;
     private final SseEmitterManager sseManager;
 
 
-    public DataController(DataChargeService service, SseEmitterManager sseManager) {
+    public DataController(PopulateDataService service, SseEmitterManager sseManager) {
         this.sseManager = sseManager;
         this.service = service;
     }
@@ -33,7 +33,7 @@ public class DataController {
     }
 
     @EventListener
-    public void onPopulateDataEvent(DataChargeEvent event) {
+    public void onPopulateDataEvent(PopulateDataEvent event) {
         sseManager.notifyEmitters(event);
     }
 }

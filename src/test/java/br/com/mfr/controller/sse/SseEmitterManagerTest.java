@@ -1,6 +1,6 @@
 package br.com.mfr.controller.sse;
 
-import br.com.mfr.service.DataChargeEvent;
+import br.com.mfr.service.PopulateDataEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,7 +68,7 @@ class SseEmitterManagerTest {
     @Test
     void notifyEmitters() throws IOException {
         UUID uuid = UUID.fromString("937fbde7-00b9-48d0-8442-0fb506ec5ceb");
-        DataChargeEvent event = new DataChargeEvent(uuid, DataChargeEvent.START_PROCESSING);
+        PopulateDataEvent event = new PopulateDataEvent(uuid, PopulateDataEvent.START_PROCESSING);
 
         subject.addEmitter(emitter);
         subject.addEmitter(emitter2);
@@ -90,7 +90,7 @@ class SseEmitterManagerTest {
     @Test
     void notifyEmittersCompleted() throws IOException {
         UUID uuid = UUID.fromString("30f85bcf-585b-4e8c-863a-8a13bb0f24ee");
-        DataChargeEvent event = new DataChargeEvent(uuid, DataChargeEvent.COMPLETED);
+        PopulateDataEvent event = new PopulateDataEvent(uuid, PopulateDataEvent.COMPLETED);
 
         subject.addEmitter(emitter);
         subject.addEmitter(emitter2);
@@ -109,7 +109,7 @@ class SseEmitterManagerTest {
     @Test
     void notifyEmittersError() throws IOException {
         UUID uuid = UUID.fromString("30f85bcf-585b-4e8c-863a-8a13bb0f24ee");
-        DataChargeEvent event = new DataChargeEvent(uuid, DataChargeEvent.COMPLETED);
+        PopulateDataEvent event = new PopulateDataEvent(uuid, PopulateDataEvent.COMPLETED);
 
         IOException exception = new IOException("Mock failure");
         Mockito.doThrow(exception).when(emitter).send(event, MediaType.APPLICATION_JSON);

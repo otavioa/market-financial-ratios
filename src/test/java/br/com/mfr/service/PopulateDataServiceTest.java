@@ -20,12 +20,12 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.timeout;
 
 @MockMvcApp
-class DataChargeServiceTest {
+class PopulateDataServiceTest {
 
     @MockBean private ExternalURL externalUrl;
 
     @Autowired private CompanyRepository repository;
-    @Autowired private DataChargeService subject;
+    @Autowired private PopulateDataService subject;
 
     @BeforeAll
     public static void setUpEnvironment(){
