@@ -9,10 +9,10 @@ import reactor.core.publisher.Mono;
 
 public interface ExternalURLClient {
 
-	public <R extends ResponseBody> Mono<R> call(
+	<R extends ResponseBody> Mono<R> call(
 			String url, HttpMethod method, HttpHeaders headers, Request request, Class<R> responseClass) throws ExternalURLException;
 	
-	public <R extends ResponseBody> Mono<R> call(
+	<R extends ResponseBody> Mono<R> call(
 			String url, HttpMethod method, HttpHeaders headers, Class<R> responseClass) throws ExternalURLException;
 
 }

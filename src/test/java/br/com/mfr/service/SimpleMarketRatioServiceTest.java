@@ -1,16 +1,19 @@
 package br.com.mfr.service;
 
+import br.com.mfr.exception.GenericException;
 import br.com.mfr.service.htmlreader.HtmlReaderService;
 import br.com.mfr.service.statusinvest.StatusInvestURL;
 import br.com.mfr.service.ticket.TickerResponse;
 import br.com.mfr.test.support.URLMockServiceSupport;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class SimpleMarketRatioServiceTest {
@@ -31,8 +34,7 @@ class SimpleMarketRatioServiceTest {
 
 		TickerResponse response = subject.getEtfInfo("IVVB11");
 
-		Assertions.assertThat(response.toString()).isEqualTo(
-				"{\"ticker\":\"IVVB11\",\"value\":\"278,12\"}");
+		assertEquals("{\"ticker\":\"IVVB11\",\"value\":\"278,12\"}", response.toString());
 	}
 
 	@Test
@@ -41,8 +43,17 @@ class SimpleMarketRatioServiceTest {
 
 		TickerResponse response = subject.getEtfInfo("HEHE14");
 
-		Assertions.assertThat(response.toString()).isEqualTo(
-				"{\"ticker\":\"HEHE14\"}");
+		assertEquals("{\"ticker\":\"HEHE14\"}", response.toString());
+	}
+
+	@Test
+	void throwErrorWhenRetrying() throws Exception {
+		URLMockServiceSupport.mockReaderServiceWithError(readerService, "https://teste.com.br/etfs/IVVB11");
+
+		Exception exception = assertThrows(
+				GenericException.class, () -> subject.getEtfInfo("IVVB11"));
+
+		assertEquals("Attempt to reach document from URL fail https://teste.com.br/etfs/IVVB11", exception.getMessage());
 	}
 
 	private void mockReaderService(String url, String fileName) throws Exception {

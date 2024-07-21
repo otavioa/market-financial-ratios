@@ -14,6 +14,10 @@ public class URLMockServiceSupport {
 		Mockito.when(readerService.getHTMLDocument(urlTested)).thenReturn(parse);
 	}
 
+	public static void mockReaderServiceWithError(HtmlReaderService readerService, String urlTested) throws Exception {
+		Mockito.doThrow(new InterruptedException("Connection Interrupted")).when(readerService).getHTMLDocument(urlTested);
+	}
+
 	public static Document getDocumentFrom(String name, String urlTest) throws IOException {
 		String html = new String(URLMockServiceSupport.class.getClassLoader().getResourceAsStream(name).readAllBytes());
 		return Jsoup.parse(html, urlTest);
