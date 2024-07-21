@@ -67,17 +67,14 @@ class ExternalURLExceptionTest {
 	}
 	
 	@Test
-	void newWithException_breakParse() throws ExternalURLException {
+	void newWithException_breakParse() {
 		Mockito.when(ex.getMessage()).thenReturn("exception");
 		Mockito.when(ex.getResponseBodyAsString()).thenReturn("{attribute\": \"broke\"}");
 		
 		subject = new ExternalURLException(ex);
 		
-		ExternalURLException thrown = assertThrows(ExternalURLException.class, () -> {
-			
-			subject.getResponseBodyAs(FakeResponse.class);
-			
-		}, "ExternalURLClientException was expected");
+		ExternalURLException thrown = assertThrows(ExternalURLException.class,
+				() -> subject.getResponseBodyAs(FakeResponse.class), "ExternalURLClientException was expected");
 		
 		Assertions.assertThat(thrown.getMessage()).isEqualTo("Attempt to convert message into object fail. Message: exception");
 	}
