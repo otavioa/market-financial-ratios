@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DocumentDiscoveryTest {
 
-	private DocumentDiscovery subject = new DocumentDiscovery();
+	private final DocumentDiscovery subject = new DocumentDiscovery();
 
 	@Test
 	void testWithInvalidDocument() {

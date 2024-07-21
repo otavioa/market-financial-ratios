@@ -1,20 +1,11 @@
 package br.com.mfr.service.ticket;
 
+import br.com.mfr.service.ticket.discover.*;
 import org.jsoup.nodes.Document;
-
-import br.com.mfr.service.ticket.discover.DocumentDiscovery;
-import br.com.mfr.service.ticket.discover.WithDY;
-import br.com.mfr.service.ticket.discover.WithRatio;
-import br.com.mfr.service.ticket.discover.WithLPA;
-import br.com.mfr.service.ticket.discover.WithPL;
-import br.com.mfr.service.ticket.discover.WithPVP;
-import br.com.mfr.service.ticket.discover.WithROE;
-import br.com.mfr.service.ticket.discover.WithVPA;
-import br.com.mfr.service.ticket.discover.WithValue;
 
 public class TicketResponseBuilder {
 
-	private DocumentDiscovery documentDiscovery;
+	private final DocumentDiscovery documentDiscovery;
 	
 	private Document document;
 	private boolean useZero;
@@ -107,7 +98,11 @@ public class TicketResponseBuilder {
 	}
 
 	private String valueOrZero(String value) {
-		return value != null ? value : useZero ? "0,00" : null;
+		return value != null ? value : nullOrZero();
+	}
+
+	private String nullOrZero() {
+		return useZero ? "0,00" : null;
 	}
 
 }

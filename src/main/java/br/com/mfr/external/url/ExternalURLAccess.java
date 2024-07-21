@@ -1,7 +1,6 @@
 package br.com.mfr.external.url;
 
 import br.com.mfr.external.url.client.ExternalURLClient;
-import br.com.mfr.external.url.client.ExternalURLClientException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -14,9 +13,9 @@ class ExternalURLAccess {
 
 	private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36";
 
-	private HttpHeaders headers = new HttpHeaders();
+	private final HttpHeaders headers = new HttpHeaders();
 
-	private ExternalURLClient client;
+	private final ExternalURLClient client;
 
 	protected ExternalURLAccess(ExternalURLClient client) {
 		this.client = client;
@@ -48,19 +47,19 @@ class ExternalURLAccess {
 	}
 
 	public <R extends ResponseBody> R postObject(String url, Request request, Class<R> responseClass)
-			throws ExternalURLClientException {
+			throws ExternalURLException {
 
 		return client.call(url, HttpMethod.POST, headers, request, responseClass).block();
 	}
 
 	public <R extends ResponseBody> R getObject(String url, Class<R> responseClass)
-			throws ExternalURLClientException {
+			throws ExternalURLException {
 
 		return client.call(url, HttpMethod.GET, headers, responseClass).block();
 	}
 
 	public <R extends ResponseBody> R patchObject(String url, Request request, Class<R> responseClass)
-			throws ExternalURLClientException {
+			throws ExternalURLException {
 
 		return client.call(url, HttpMethod.PATCH, headers, request, responseClass).block();
 	}

@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.quality.Strictness.LENIENT;
@@ -39,7 +40,7 @@ class HtmlReaderServiceTest {
 
 	@BeforeEach
 	public void setUp() throws IOException {
-		subject = new HtmlReaderService(jsoupService, null);
+		subject = new HtmlReaderService(jsoupService);
 
 		Mockito.when(response.statusCode()).thenReturn(HTTP_OK);
 		Mockito.when(response.parse()).thenReturn(document);
@@ -49,40 +50,41 @@ class HtmlReaderServiceTest {
 
 	@Test
 	void getHTMLDocument() throws Exception {
-		Document document = subject.getHTMLDocument("http://url");
+		Document expectedDocument = subject.getHTMLDocument("http://url");
 
-		Assertions.assertSame(document, this.document);
+		assertSame(expectedDocument, this.document);
 	}
 
 	@Test
-	void getHTMLDocumentWithError() throws Exception {
+	void getHTMLDocumentWithError() {
 		Mockito.when(response.statusCode()).thenReturn(HTTP_BAD_REQUEST);
 
 		try {
 			subject.getHTMLDocument("http://url");
 			Assertions.fail();
 		} catch (Exception e) {
-			assertEquals(e.getMessage(), "HTTP error fetching URL");
-			assertEquals(e.getClass(), HttpStatusException.class);
+			assertEquals("HTTP error fetching URL", e.getMessage());
+			assertEquals(HttpStatusException.class, e.getClass());
 		}
 	}
 	
 	@Test
-	void getHTMLDocumentWithInformativeError() throws Exception {
+	void getHTMLDocumentWithInformativeError() {
 		Mockito.when(response.statusCode()).thenReturn(HTTP_PROCESSING);
 
 		try {
 			subject.getHTMLDocument("http://url");
 			Assertions.fail();
 		} catch (Exception e) {
-			assertEquals(e.getMessage(), "HTTP error fetching URL");
-			assertEquals(e.getClass(), HttpStatusException.class);
+			assertEquals("HTTP error fetching URL", e.getMessage());
+			assertEquals(HttpStatusException.class, e.getClass());
 		}
 	}
 
 	@Test
 	void getHTMLDocumentWithDelayError() throws Exception {
-		subject = new HtmlReaderService(jsoupService, 1);
+		subject = new HtmlReaderService(jsoupService);
+		subject.setRequestDelay(1);
 
 		Mockito.when(response.statusCode())
 			.thenReturn(HTTP_MANY_REQUESTS)
@@ -90,9 +92,9 @@ class HtmlReaderServiceTest {
 
 		Mockito.when(response.header(eq("Retry-After"))).thenReturn("1");
 
-		Document document = subject.getHTMLDocument("http://url");
+		Document expectedDocument = subject.getHTMLDocument("http://url");
 		
-		Assertions.assertSame(document, this.document);
+		assertSame(expectedDocument, this.document);
 		
 		verify(connection, Mockito.times(2)).execute();	
 	}

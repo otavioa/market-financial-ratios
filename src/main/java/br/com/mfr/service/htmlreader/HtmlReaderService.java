@@ -11,12 +11,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 import static java.lang.Integer.parseInt;
-import static java.util.Objects.isNull;
 
 @Service
 public class HtmlReaderService {
-
-	public HtmlReaderService(){}
 
 	private static final int RETRY_DEFAULT_DELAY = 1000;
 	
@@ -26,15 +23,14 @@ public class HtmlReaderService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HtmlReaderService.class);
 
-	private Integer requestDelay;
-	private JsoupServiceConnection jsoupService;
+	private Integer requestDelay = RETRY_DEFAULT_DELAY;
+	private final JsoupServiceConnection jsoupService;
 
-	public HtmlReaderService(JsoupServiceConnection jsoupService, Integer requestDelay) {
+	public HtmlReaderService(JsoupServiceConnection jsoupService) {
         this.jsoupService = jsoupService;
-        this.requestDelay = requestDelay;
 	}
 	
-	public Document getHTMLDocument(String url) throws Exception {
+	public Document getHTMLDocument(String url) throws IOException {
 		Response response = executeForUrl(url);
 
 		int status = response.statusCode();
@@ -48,32 +44,37 @@ public class HtmlReaderService {
 		return response.parse();
 	}
 
+	public void setRequestDelay(Integer requestDelay) {
+		this.requestDelay = requestDelay;
+	}
+
 	private Response executeForUrl(String url) throws IOException {
 		Connection connect = jsoupService.getConnection(url);
 		
-		LOGGER.info("Searching for data from URL: " + url);
+		LOGGER.info("Searching for data from URL: {}", url);
 		
 		return connect.execute();
 	}
 
 	private Response waitAndRetry(Response response, String url)
-			throws NumberFormatException, InterruptedException, IOException {
+			throws NumberFormatException, IOException {
 
 		wait(response);
 		
 		return executeForUrl(url);
 	}
 
-	private void wait(Response response) throws InterruptedException {
+	private void wait(Response response) {
 		String header = response.header("Retry-After");
-		int delayInMilliseconds = parseInt(header) * getDelay();
+		int delayInMilliseconds = parseInt(header) * requestDelay;
 
-		Thread.sleep(delayInMilliseconds);
-	}
-
-	private int getDelay() {
-		return isNull(requestDelay) ? RETRY_DEFAULT_DELAY : requestDelay;
-	}
+        try {
+            Thread.sleep(delayInMilliseconds);
+        } catch (InterruptedException e) {
+			LOGGER.warn("Interrupted!", e);
+			Thread.currentThread().interrupt();
+        }
+    }
 
 	private boolean isTooManyRequests(int statusCode) {
 		return statusCode == HTTP_MANY_REQUESTS;

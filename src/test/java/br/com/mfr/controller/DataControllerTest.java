@@ -3,6 +3,7 @@ package br.com.mfr.controller;
 import br.com.mfr.MockMvcApp;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.external.url.ExternalURL;
+import br.com.mfr.external.url.ExternalURLException;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
@@ -14,6 +15,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -22,6 +24,7 @@ import static br.com.mfr.service.statusinvest.StatusInvestResources.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcApp
@@ -44,7 +47,12 @@ class DataControllerTest {
         mockExternalUrlGet(STOCKS, newResponse(3L, "EMPRESA STOCKS", "SSS", 102.00));
         mockExternalUrlGet(REITS, newResponse(4L, "EMPRESA REITS", "RRR", 103.00));
 
-        performRequest(ApiEndpoints.DATA_POPULATE)
+
+        MvcResult mvcResult = performRequest(ApiEndpoints.DATA_POPULATE)
+                .andExpect(request().asyncStarted())
+                .andReturn();
+
+        mvc.perform(asyncDispatch(mvcResult))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/event-stream"))
                 .andExpect(jsonPath("$", Matchers.allOf(
@@ -64,7 +72,7 @@ class DataControllerTest {
         return new AdvanceSearchResponse(new CompanyResponse(companyId, companyName, ticker, price));
     }
 
-    private void mockExternalUrlGet(StatusInvestResources resource, AdvanceSearchResponse response) {
+    private void mockExternalUrlGet(StatusInvestResources resource, AdvanceSearchResponse response) throws ExternalURLException {
         Mockito.when(externalUrl.doGet(
                 eq("http://url?CategoryType=" + resource.getCategoryType()),
                 eq(AdvanceSearchResponse.class))).thenReturn(response);

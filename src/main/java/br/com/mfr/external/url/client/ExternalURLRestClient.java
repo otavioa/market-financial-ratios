@@ -1,6 +1,7 @@
 package br.com.mfr.external.url.client;
 
 
+import br.com.mfr.external.url.ExternalURLException;
 import br.com.mfr.external.url.Request;
 import br.com.mfr.external.url.ResponseBody;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +16,7 @@ import java.util.function.Supplier;
 @Service
 public class ExternalURLRestClient implements ExternalURLClient {
 	
-	private WebClient client;
+	private final WebClient client;
 
     public ExternalURLRestClient(WebClient client) {
         this.client = client;
@@ -23,14 +24,14 @@ public class ExternalURLRestClient implements ExternalURLClient {
 
     @Override
 	public <R extends ResponseBody> Mono<R> call(String url, HttpMethod method,
-			HttpHeaders headers, Request request, Class<R> responseClass) throws ExternalURLClientException {
+			HttpHeaders headers, Request request, Class<R> responseClass) throws ExternalURLException {
 		
 		return doCall(url, method, headers, request, responseClass);
 	}
 
 	@Override
 	public <R extends ResponseBody> Mono<R> call(String url, HttpMethod method,
-			HttpHeaders headers, Class<R> responseClass) throws ExternalURLClientException {
+			HttpHeaders headers, Class<R> responseClass) throws ExternalURLException {
 
 		return executeCall(() -> client
 				.method(method)
@@ -41,7 +42,7 @@ public class ExternalURLRestClient implements ExternalURLClient {
 	}
 
 	private <R extends ResponseBody> Mono<R> doCall(String url, HttpMethod method,
-			HttpHeaders headers, Request request, Class<R> responseClass) throws ExternalURLClientException {
+			HttpHeaders headers, Request request, Class<R> responseClass) throws ExternalURLException {
 
 		return executeCall(() -> client
 						.method(method)
@@ -52,13 +53,13 @@ public class ExternalURLRestClient implements ExternalURLClient {
 						.bodyToMono(responseClass));
 	}
 
-	private <R extends ResponseBody> Mono<R> executeCall(Supplier<Mono<R>> consumer) throws ExternalURLClientException {
+	private <R extends ResponseBody> Mono<R> executeCall(Supplier<Mono<R>> consumer) throws ExternalURLException {
 		try {
 			return consumer.get();
 		} catch (HttpClientErrorException e) {
-			throw new ExternalURLClientException(e);
+			throw new ExternalURLException(e);
 		} catch (RuntimeException e) {
-			throw new ExternalURLClientException(e.getMessage());
+			throw new ExternalURLException(e.getMessage());
 		}
 	}
 }

@@ -3,6 +3,7 @@ package br.com.mfr.service;
 import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.external.url.ExternalURL;
+import br.com.mfr.external.url.ExternalURLException;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
@@ -57,8 +58,6 @@ public class PopulateDataService {
     }
 
     private void insertDataBy(UUID id, StatusInvestResources[] resources) {
-        int poolSize = resources.length;
-
         Arrays.stream(resources)
                 .parallel()
                 .forEach(resource -> {
@@ -93,7 +92,16 @@ public class PopulateDataService {
                 .replace("{categoryType}", resource.getCategoryType().toString())
                 .replace("{search}", resource.getFilter().asQueryParameter());
 
-        return externalUrl.doGet(preparedURL, AdvanceSearchResponse.class).getList();
+        return tryToRetrieve(preparedURL);
+    }
+
+    private List<CompanyResponse> tryToRetrieve(String preparedURL) {
+        try {
+            return externalUrl.doGet(preparedURL, AdvanceSearchResponse.class)
+                    .getList();
+        } catch (ExternalURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String getStatusInvestUrl() {

@@ -11,6 +11,7 @@ public class JsoupServiceConnection {
 		Connection connection = Jsoup.connect(url);
 		connection.ignoreHttpErrors(true);
 		connection.header("User-Agent", "Apache HTTPClient");
+
 		return connection;
 	}
 

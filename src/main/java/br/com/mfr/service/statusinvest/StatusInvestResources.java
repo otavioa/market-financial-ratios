@@ -1,6 +1,6 @@
 package br.com.mfr.service.statusinvest;
 
-import br.com.mfr.service.statusinvest.dto.*;
+import br.com.mfr.service.statusinvest.dto.AdvancedFilterRequest;
 
 public enum StatusInvestResources {
 	
@@ -9,8 +9,8 @@ public enum StatusInvestResources {
 	STOCKS(12, "0;25"),
 	REITS(13, "0;25");
 
-	private Integer categoryType;
-	private String statusInvestRange;
+	private final Integer categoryType;
+	private final String statusInvestRange;
 
 	StatusInvestResources(int categoryType, String statusInvestRange) {
 		this.categoryType = categoryType;

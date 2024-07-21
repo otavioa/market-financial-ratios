@@ -46,7 +46,7 @@ class SseEmitterManagerTest {
 
         Mockito.verify(emitter, Mockito.never()).onCompletion(ArgumentMatchers.any());
         Mockito.verify(emitter, Mockito.times(1)).onTimeout(ArgumentMatchers.any());
-        Mockito.verify(emitter, Mockito.times(1)).onError(ArgumentMatchers.any());;
+        Mockito.verify(emitter, Mockito.times(1)).onError(ArgumentMatchers.any());
 
         assertEquals(1, subject.getEmitters().size());
         assertTrue(subject.getEmitters().contains(emitter));
@@ -125,6 +125,6 @@ class SseEmitterManagerTest {
         Mockito.verify(emitter, Mockito.times(1)).completeWithError(exception);
         Mockito.verify(emitter, Mockito.never()).complete();
 
-        assertTrue(subject.getEmitters().isEmpty());;
+        assertTrue(subject.getEmitters().isEmpty());
     }
 }

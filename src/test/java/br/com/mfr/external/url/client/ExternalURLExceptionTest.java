@@ -1,11 +1,7 @@
 package br.com.mfr.external.url.client;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.springframework.http.HttpStatus.BAD_GATEWAY;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
-import java.util.Optional;
-
+import br.com.mfr.external.url.ExternalURLException;
+import br.com.mfr.external.url.ResponseBody;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,19 +10,23 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.HttpClientErrorException;
 
-import br.com.mfr.external.url.ResponseBody;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.http.HttpStatus.BAD_GATEWAY;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
-class ExternalURLClientExceptionTest {
+class ExternalURLExceptionTest {
 
 	@Mock
 	private HttpClientErrorException ex;
 	
-	private ExternalURLClientException subject;
+	private ExternalURLException subject;
 	
 	@Test
-	void newWithMessage() throws ExternalURLClientException {
-		subject = new ExternalURLClientException("Message");
+	void newWithMessage() throws ExternalURLException {
+		subject = new ExternalURLException("Message");
 		
 		Assertions.assertThat(subject.getMessage()).isEqualTo("Message");
 		Assertions.assertThat(subject.getHttpStatus()).isEqualTo(BAD_REQUEST);
@@ -36,8 +36,8 @@ class ExternalURLClientExceptionTest {
 	}
 	
 	@Test
-	void newWithMessageAndCode() throws ExternalURLClientException {
-		subject = new ExternalURLClientException("Message2", "#1009");
+	void newWithMessageAndCode() throws ExternalURLException {
+		subject = new ExternalURLException("Message2", "#1009");
 		
 		Assertions.assertThat(subject.getMessage()).isEqualTo("Message2");
 		Assertions.assertThat(subject.getHttpStatus()).isEqualTo(BAD_REQUEST);
@@ -47,12 +47,12 @@ class ExternalURLClientExceptionTest {
 	}
 	
 	@Test
-	void newWithException() throws ExternalURLClientException {
+	void newWithException() throws ExternalURLException {
 		Mockito.when(ex.getMessage()).thenReturn("exception");
 		Mockito.when(ex.getStatusCode()).thenReturn(BAD_GATEWAY);
 		Mockito.when(ex.getResponseBodyAsString()).thenReturn("{\"attribute\": \"broke\"}");
 		
-		subject = new ExternalURLClientException(ex);
+		subject = new ExternalURLException(ex);
 		
 		Assertions.assertThat(subject.getMessage()).isEqualTo("exception");
 		Assertions.assertThat(subject.getHttpStatus()).isEqualTo(BAD_GATEWAY);
@@ -67,17 +67,14 @@ class ExternalURLClientExceptionTest {
 	}
 	
 	@Test
-	void newWithException_breakParse() throws ExternalURLClientException {
+	void newWithException_breakParse() {
 		Mockito.when(ex.getMessage()).thenReturn("exception");
 		Mockito.when(ex.getResponseBodyAsString()).thenReturn("{attribute\": \"broke\"}");
 		
-		subject = new ExternalURLClientException(ex);
+		subject = new ExternalURLException(ex);
 		
-		ExternalURLClientException thrown = assertThrows(ExternalURLClientException.class, () -> {
-			
-			subject.getResponseBodyAs(FakeResponse.class);
-			
-		}, "ExternalURLClientException was expected");
+		ExternalURLException thrown = assertThrows(ExternalURLException.class,
+				() -> subject.getResponseBodyAs(FakeResponse.class), "ExternalURLClientException was expected");
 		
 		Assertions.assertThat(thrown.getMessage()).isEqualTo("Attempt to convert message into object fail. Message: exception");
 	}
@@ -85,8 +82,8 @@ class ExternalURLClientExceptionTest {
 	public static class FakeResponse implements ResponseBody {
 			
 		private String attribute;
-		
-		public FakeResponse() {}
+
+		FakeResponse(){}
 		
 		public String getAttribute() {
 			return attribute;

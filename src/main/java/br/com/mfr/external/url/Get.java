@@ -1,12 +1,10 @@
 package br.com.mfr.external.url;
 
-import br.com.mfr.external.url.client.ExternalURLClientException;
-
 class Get<T extends ResponseBody> {
 
-	protected String url;
-	protected Class<T> responseBodyClass;
-	protected ExternalURLAccess externalAccess;
+	protected final String url;
+	protected final Class<T> responseBodyClass;
+	protected final ExternalURLAccess externalAccess;
 
 	public Get(ExternalURLAccess externalAccess, String url, Class<T> responseBodyClass) {
 		this.externalAccess = externalAccess;
@@ -14,7 +12,7 @@ class Get<T extends ResponseBody> {
 		this.responseBodyClass = responseBodyClass;
 	}
 
-	public T execute(HeaderArguments headerArguments) throws ExternalURLClientException {
+	public T execute(HeaderArguments headerArguments) throws ExternalURLException {
 		return externalAccess
 				.addToHeaderJSONContent()
 				.addToHeaderUserAgent()

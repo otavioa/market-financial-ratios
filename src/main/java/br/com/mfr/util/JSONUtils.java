@@ -1,14 +1,13 @@
 package br.com.mfr.util;
 
-import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHABETICALLY;
-
+import br.com.mfr.exception.GenericException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.mfr.exception.GenericException;
+import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHABETICALLY;
 
 public class JSONUtils {
 
-	private ObjectMapper mapper;
+	private final ObjectMapper mapper;
 
 	public JSONUtils(ObjectMapper mapper) {
 		this.mapper = mapper;

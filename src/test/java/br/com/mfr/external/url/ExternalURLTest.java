@@ -2,7 +2,6 @@ package br.com.mfr.external.url;
 
 
 import br.com.mfr.external.url.client.ExternalURLClient;
-import br.com.mfr.external.url.client.ExternalURLClientException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +40,7 @@ class ExternalURLTest {
 	}
 
 	@Test
-	void getFromURL() throws ExternalURLClientException {
+	void getFromURL() throws ExternalURLException {
 		mockCall();
 		
 		subject.doGet(URL, FakeResponse.class);
@@ -50,7 +49,7 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void patchToURL() throws ExternalURLClientException {
+	public void patchToURL() throws ExternalURLException {
 		mockRequestCall();
 		
 		subject.doPatch(URL, request, FakeResponse.class);
@@ -59,7 +58,7 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void postToURL() throws ExternalURLClientException {
+	public void postToURL() throws ExternalURLException {
 		mockRequestCall();
 		
 		subject.doPost(URL, request, FakeResponse.class);
@@ -68,7 +67,7 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void getFromURL_withHeaders() throws ExternalURLClientException {
+	public void getFromURL_withHeaders() throws ExternalURLException {
 		mockCall();
 		
 		subject
@@ -85,7 +84,7 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void getFromURL_withDuplicatedHeaders() throws ExternalURLClientException {
+	public void getFromURL_withDuplicatedHeaders() throws ExternalURLException {
 		mockCall();
 		
 		subject
@@ -103,7 +102,7 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void getFromURL_changeHeaders() throws ExternalURLClientException {
+	public void getFromURL_changeHeaders() throws ExternalURLException {
 		mockCall();
 		
 		subject
@@ -121,32 +120,28 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void getURL_withError() throws ExternalURLClientException {
+	public void getURL_withError() throws ExternalURLException {
 		mockWithException("404 - not found");
 
 		try {
 			subject.doGet(URL, FakeResponse.class);
 			fail("Test should've broken");
-			
-		} catch (RuntimeException e) {
-			assertEquals("404 - not found", e.getCause().getMessage());
-			
 		} catch (Exception e) {
-			fail("Was expected to received a RuntimeException");
+			assertEquals("404 - not found", e.getMessage());
 		}
 	}
 	
-	private void mockRequestCall() throws ExternalURLClientException {
+	private void mockRequestCall() throws ExternalURLException {
 		Mockito.when(client.call(eq(URL), any(HttpMethod.class), any(HttpHeaders.class), any(Request.class), any()))
 				.thenReturn(response);
 	}
 
-	private void mockCall() throws ExternalURLClientException {
+	private void mockCall() throws ExternalURLException {
 		Mockito.when(client.call(eq(URL), any(HttpMethod.class), any(HttpHeaders.class), any())).thenReturn(response);
 	}
 
-	private void mockWithException(String errorMessage) throws ExternalURLClientException {
-		ExternalURLClientException clientException = new ExternalURLClientException(errorMessage);
+	private void mockWithException(String errorMessage) throws ExternalURLException {
+		ExternalURLException clientException = new ExternalURLException(errorMessage);
 		Mockito.when(client.call(eq(URL), any(HttpMethod.class), any(HttpHeaders.class), any())).thenThrow(clientException);
 	}
 	
