@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExternalURL {
 
-    private HeaderArguments headers;
-    private ExternalURLAccess externalAccess;
+    private final HeaderArguments headers;
+    private final ExternalURLAccess externalAccess;
 
     public ExternalURL(ExternalURLAccess externalAccess) {
         this.headers = HeaderArguments.init();

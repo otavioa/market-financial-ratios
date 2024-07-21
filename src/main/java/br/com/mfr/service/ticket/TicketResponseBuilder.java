@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 
 public class TicketResponseBuilder {
 
-	private DocumentDiscovery documentDiscovery;
+	private final DocumentDiscovery documentDiscovery;
 	
 	private Document document;
 	private boolean useZero;

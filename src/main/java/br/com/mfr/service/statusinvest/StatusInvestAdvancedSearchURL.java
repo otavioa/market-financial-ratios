@@ -7,15 +7,18 @@ public class StatusInvestAdvancedSearchURL {
 
 	private StatusInvestAdvancedSearchURL(){}
 
+	public static StatusInvestAdvancedSearchURL getInstance() {
+		return new StatusInvestAdvancedSearchURL();
+	}
+
 	public static String getUrl() {
 		if(url == null)
 			url = PROD_URL;
-		
+
 		return url;
 	}
 
 	public static void setUrl(String url) {
 		StatusInvestAdvancedSearchURL.url = url;
 	}
-
 }

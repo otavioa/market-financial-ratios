@@ -8,15 +8,18 @@ public class StatusInvestURL {
 
 	private StatusInvestURL(){}
 
+	public static StatusInvestURL getInstance() {
+		return new StatusInvestURL();
+	}
+
 	public static String getUrl() {
 		if(url == null)
 			url = PROD_URL;
-		
+
 		return url;
 	}
 
 	public static void setUrl(String url) {
 		StatusInvestURL.url = url;
 	}
-
 }

@@ -2,9 +2,9 @@ package br.com.mfr.external.url;
 
 class Get<T extends ResponseBody> {
 
-	protected String url;
-	protected Class<T> responseBodyClass;
-	protected ExternalURLAccess externalAccess;
+	protected final String url;
+	protected final Class<T> responseBodyClass;
+	protected final ExternalURLAccess externalAccess;
 
 	public Get(ExternalURLAccess externalAccess, String url, Class<T> responseBodyClass) {
 		this.externalAccess = externalAccess;

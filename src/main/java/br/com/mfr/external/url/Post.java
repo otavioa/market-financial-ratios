@@ -2,7 +2,7 @@ package br.com.mfr.external.url;
 
 class Post<T extends ResponseBody> extends Get<T> {
 
-	private Request request;
+	private final Request request;
 
 	public Post(ExternalURLAccess externalAccess, String url, Request request, Class<T> responseBodyClass) {
 		super(externalAccess, url, responseBodyClass);

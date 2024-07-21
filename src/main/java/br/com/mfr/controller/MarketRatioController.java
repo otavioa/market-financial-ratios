@@ -16,8 +16,8 @@ import static br.com.mfr.controller.dto.CompaniesConverter.convert;
 @RequestMapping("/market-ratio")
 public class MarketRatioController {
 
-	private MarketRatioService service;
-	private SimpleMarketRatioService simpleService;
+	private final MarketRatioService service;
+	private final SimpleMarketRatioService simpleService;
 
     public MarketRatioController(MarketRatioService service, SimpleMarketRatioService simpleService) {
 		this.simpleService = simpleService;

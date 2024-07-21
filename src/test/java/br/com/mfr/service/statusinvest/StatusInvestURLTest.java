@@ -17,8 +17,8 @@ class StatusInvestURLTest {
 	
 	@Test
 	void newInstances() {
-		StatusInvestURL defaultInstance = new StatusInvestURL();
-		StatusInvestAdvancedSearchURL advancedInstance = new StatusInvestAdvancedSearchURL();
+		StatusInvestURL defaultInstance = StatusInvestURL.getInstance();
+		StatusInvestAdvancedSearchURL advancedInstance = StatusInvestAdvancedSearchURL.getInstance();
 		
 		Assertions.assertThat(defaultInstance).isNotNull();
 		Assertions.assertThat(advancedInstance).isNotNull();

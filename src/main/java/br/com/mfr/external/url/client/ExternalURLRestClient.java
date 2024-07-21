@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 @Service
 public class ExternalURLRestClient implements ExternalURLClient {
 	
-	private WebClient client;
+	private final WebClient client;
 
     public ExternalURLRestClient(WebClient client) {
         this.client = client;

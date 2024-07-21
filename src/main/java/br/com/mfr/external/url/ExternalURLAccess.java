@@ -13,9 +13,9 @@ class ExternalURLAccess {
 
 	private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36";
 
-	private HttpHeaders headers = new HttpHeaders();
+	private final HttpHeaders headers = new HttpHeaders();
 
-	private ExternalURLClient client;
+	private final ExternalURLClient client;
 
 	protected ExternalURLAccess(ExternalURLClient client) {
 		this.client = client;

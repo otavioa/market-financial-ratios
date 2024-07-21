@@ -4,7 +4,7 @@ import org.jsoup.nodes.Document;
 
 public class WithRatio implements DocumentDiscoveryRule {
 
-	private DocumentDiscoveryRule rule;
+	private final DocumentDiscoveryRule rule;
 
 	public WithRatio(String ratio) {
 		this.rule = Ratio.valueOf(normalize(ratio)).getRule();
