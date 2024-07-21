@@ -7,6 +7,8 @@ import br.com.mfr.service.ticket.TickerResponse;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 import static java.lang.String.format;
 
 @Service
@@ -44,9 +46,9 @@ public class SimpleMarketRatioService {
 	}
 	
 	private Document getDocument(String url) {
-		try {
-			return readerService.getHTMLDocument(url);
-		} catch (Exception e) {
+        try {
+            return readerService.getHTMLDocument(url);
+        } catch (IOException e) {
 			throw new GenericException(format("Attempt to reach document from URL fail %s", url), e);
 		}
 	}

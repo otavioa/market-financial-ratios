@@ -30,7 +30,7 @@ public class HtmlReaderService {
         this.jsoupService = jsoupService;
 	}
 	
-	public Document getHTMLDocument(String url) throws IOException, InterruptedException {
+	public Document getHTMLDocument(String url) throws IOException {
 		Response response = executeForUrl(url);
 
 		int status = response.statusCode();
@@ -57,19 +57,24 @@ public class HtmlReaderService {
 	}
 
 	private Response waitAndRetry(Response response, String url)
-			throws NumberFormatException, InterruptedException, IOException {
+			throws NumberFormatException, IOException {
 
 		wait(response);
 		
 		return executeForUrl(url);
 	}
 
-	private void wait(Response response) throws InterruptedException {
+	private void wait(Response response) {
 		String header = response.header("Retry-After");
 		int delayInMilliseconds = parseInt(header) * requestDelay;
 
-		Thread.sleep(delayInMilliseconds);
-	}
+        try {
+            Thread.sleep(delayInMilliseconds);
+        } catch (InterruptedException e) {
+			LOGGER.warn("Interrupted!", e);
+			Thread.currentThread().interrupt();
+        }
+    }
 
 	private boolean isTooManyRequests(int statusCode) {
 		return statusCode == HTTP_MANY_REQUESTS;

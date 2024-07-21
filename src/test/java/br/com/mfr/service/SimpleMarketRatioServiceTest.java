@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -48,7 +50,8 @@ class SimpleMarketRatioServiceTest {
 
 	@Test
 	void throwErrorWhenRetrying() throws Exception {
-		URLMockServiceSupport.mockReaderServiceWithError(readerService, "https://teste.com.br/etfs/IVVB11");
+		URLMockServiceSupport.mockReaderServiceWithError(
+				readerService, "https://teste.com.br/etfs/IVVB11", new IOException("Connection failed!"));
 
 		Exception exception = assertThrows(
 				GenericException.class, () -> subject.getEtfInfo("IVVB11"));
