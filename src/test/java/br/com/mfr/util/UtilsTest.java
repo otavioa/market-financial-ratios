@@ -25,7 +25,7 @@ public class UtilsTest {
 
 		String json = JSONUtils.toJSON(object);
 
-		assertEquals(json, "{\"value1\":\"test\",\"value2\":1}");
+		assertEquals("{\"value1\":\"test\",\"value2\":1}", json);
 	}
 
 	@Test
@@ -37,8 +37,8 @@ public class UtilsTest {
 			JSONUtils.toJSON(mockMapper, "123".getBytes());
 			fail();
 		} catch (Exception e) {
-			assertEquals(e.getClass(), GenericException.class);
-			assertEquals(e.getCause().getClass(), IllegalArgumentException.class);
+			assertEquals(GenericException.class, e.getClass());
+			assertEquals(IllegalArgumentException.class, e.getCause().getClass());
 			
 			assertEquals(e.getMessage(), "Attempt to convert object failed.");
 		}

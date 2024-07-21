@@ -1,7 +1,6 @@
 package br.com.mfr.service;
 
 import br.com.mfr.MockMvcApp;
-import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.external.url.ExternalURL;
 import br.com.mfr.external.url.ExternalURLException;
@@ -41,8 +40,6 @@ class PopulateDataServiceTest {
         mockExternalUrlGet(REITS, newResponse(4L, "EMPRESA REITS", "RRR", 130.00));
 
         subject.populateData();
-
-        Company company = repository.findByName("EMPRESA AÇÃO");
 
         Mockito.verify(repository, timeout(100).times(1)).count();
         Mockito.verify(repository, timeout(100).times(1)).deleteAll();

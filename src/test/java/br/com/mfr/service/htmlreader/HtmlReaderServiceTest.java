@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.quality.Strictness.LENIENT;
@@ -49,9 +50,9 @@ class HtmlReaderServiceTest {
 
 	@Test
 	void getHTMLDocument() throws Exception {
-		Document document = subject.getHTMLDocument("http://url");
+		Document expectedDocument = subject.getHTMLDocument("http://url");
 
-		Assertions.assertSame(document, this.document);
+		assertSame(expectedDocument, this.document);
 	}
 
 	@Test
@@ -62,8 +63,8 @@ class HtmlReaderServiceTest {
 			subject.getHTMLDocument("http://url");
 			Assertions.fail();
 		} catch (Exception e) {
-			assertEquals(e.getMessage(), "HTTP error fetching URL");
-			assertEquals(e.getClass(), HttpStatusException.class);
+			assertEquals("HTTP error fetching URL", e.getMessage());
+			assertEquals(HttpStatusException.class, e.getClass());
 		}
 	}
 	
@@ -75,8 +76,8 @@ class HtmlReaderServiceTest {
 			subject.getHTMLDocument("http://url");
 			Assertions.fail();
 		} catch (Exception e) {
-			assertEquals(e.getMessage(), "HTTP error fetching URL");
-			assertEquals(e.getClass(), HttpStatusException.class);
+			assertEquals("HTTP error fetching URL", e.getMessage());
+			assertEquals(HttpStatusException.class, e.getClass());
 		}
 	}
 
@@ -91,9 +92,9 @@ class HtmlReaderServiceTest {
 
 		Mockito.when(response.header(eq("Retry-After"))).thenReturn("1");
 
-		Document document = subject.getHTMLDocument("http://url");
+		Document expectedDocument = subject.getHTMLDocument("http://url");
 		
-		Assertions.assertSame(document, this.document);
+		assertSame(expectedDocument, this.document);
 		
 		verify(connection, Mockito.times(2)).execute();	
 	}

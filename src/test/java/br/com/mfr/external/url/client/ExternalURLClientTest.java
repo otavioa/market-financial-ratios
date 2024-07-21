@@ -57,16 +57,16 @@ class ExternalURLClientTest {
 	void callWithRequest() throws ExternalURLException {
 		WebClientMockSupport.answerForAnyRequest(webClient, request, r -> response);
 		
-		Mono<ResponseBody> response = subject.call(URL, HttpMethod.GET, getHttpHeaders(), request, ResponseBody.class);
+		Mono<ResponseBody> expectedResponse = subject.call(URL, HttpMethod.GET, getHttpHeaders(), request, ResponseBody.class);
 		
-		Assertions.assertThat(response).isEqualTo(this.response);
+		Assertions.assertThat(expectedResponse).isEqualTo(this.response);
 	}
 	
 	@Test
 	void callWithoutRequest() throws ExternalURLException {
 		answerForAnyRetrieve(r -> response);
 
-		Mono<ResponseBody> response = subject.call(URL, HttpMethod.GET, getHttpHeaders(), ResponseBody.class);
+		Mono<ResponseBody> expectedResponse = subject.call(URL, HttpMethod.GET, getHttpHeaders(), ResponseBody.class);
 		
 		Assertions.assertThat(response).isEqualTo(this.response);
 	}
