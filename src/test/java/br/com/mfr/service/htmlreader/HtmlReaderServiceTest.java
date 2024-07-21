@@ -56,7 +56,7 @@ class HtmlReaderServiceTest {
 	}
 
 	@Test
-	void getHTMLDocumentWithError() throws Exception {
+	void getHTMLDocumentWithError() {
 		Mockito.when(response.statusCode()).thenReturn(HTTP_BAD_REQUEST);
 
 		try {
@@ -69,7 +69,7 @@ class HtmlReaderServiceTest {
 	}
 	
 	@Test
-	void getHTMLDocumentWithInformativeError() throws Exception {
+	void getHTMLDocumentWithInformativeError() {
 		Mockito.when(response.statusCode()).thenReturn(HTTP_PROCESSING);
 
 		try {

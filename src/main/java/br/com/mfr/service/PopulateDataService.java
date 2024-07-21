@@ -58,8 +58,6 @@ public class PopulateDataService {
     }
 
     private void insertDataBy(UUID id, StatusInvestResources[] resources) {
-        int poolSize = resources.length;
-
         Arrays.stream(resources)
                 .parallel()
                 .forEach(resource -> {
