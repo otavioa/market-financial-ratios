@@ -17,7 +17,7 @@ public class SseEmitterManager {
 
     public void addEmitter(SseEmitter emitter) {
         emitter.onTimeout(() -> emitters.remove(emitter));
-        emitter.onError((t) -> emitters.remove(emitter));
+        emitter.onError(t -> emitters.remove(emitter));
 
         emitters.add(emitter);
     }

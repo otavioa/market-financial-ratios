@@ -49,7 +49,7 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void patchToURL() throws ExternalURLException {
+	void patchToURL() throws ExternalURLException {
 		mockRequestCall();
 		
 		subject.doPatch(URL, request, FakeResponse.class);
@@ -58,7 +58,7 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void postToURL() throws ExternalURLException {
+	void postToURL() throws ExternalURLException {
 		mockRequestCall();
 		
 		subject.doPost(URL, request, FakeResponse.class);
@@ -67,7 +67,7 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void getFromURL_withHeaders() throws ExternalURLException {
+	void getFromURL_withHeaders() throws ExternalURLException {
 		mockCall();
 		
 		subject
@@ -84,7 +84,7 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void getFromURL_withDuplicatedHeaders() throws ExternalURLException {
+	void getFromURL_withDuplicatedHeaders() throws ExternalURLException {
 		mockCall();
 		
 		subject
@@ -102,7 +102,7 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void getFromURL_changeHeaders() throws ExternalURLException {
+	void getFromURL_changeHeaders() throws ExternalURLException {
 		mockCall();
 		
 		subject
@@ -120,7 +120,7 @@ class ExternalURLTest {
 	}
 	
 	@Test
-	public void getURL_withError() throws ExternalURLException {
+	void getURL_withError() throws ExternalURLException {
 		mockWithException("404 - not found");
 
 		try {

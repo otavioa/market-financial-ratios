@@ -16,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static br.com.mfr.service.statusinvest.StatusInvestResources.*;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.timeout;
 
 @MockMvcApp
@@ -52,7 +51,7 @@ class PopulateDataServiceTest {
 
     private void mockExternalUrlGet(StatusInvestResources resource, AdvanceSearchResponse response) throws ExternalURLException {
         Mockito.when(externalUrl.doGet(
-                eq("http://url?CategoryType=" + resource.getCategoryType()),
-                eq(AdvanceSearchResponse.class))).thenReturn(response);
+                "http://url?CategoryType=" + resource.getCategoryType(),
+                AdvanceSearchResponse.class)).thenReturn(response);
     }
 }
