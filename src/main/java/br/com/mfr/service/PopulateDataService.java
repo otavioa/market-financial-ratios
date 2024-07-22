@@ -2,6 +2,7 @@ package br.com.mfr.service;
 
 import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
+import br.com.mfr.exception.GenericException;
 import br.com.mfr.external.url.ExternalURL;
 import br.com.mfr.external.url.ExternalURLException;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
@@ -100,7 +101,7 @@ public class PopulateDataService {
             return externalUrl.doGet(preparedURL, AdvanceSearchResponse.class)
                     .getList();
         } catch (ExternalURLException e) {
-            throw new RuntimeException(e);
+            throw new GenericException(format("Attempt to retrieve data from url: %s failed.", preparedURL), e);
         }
     }
 

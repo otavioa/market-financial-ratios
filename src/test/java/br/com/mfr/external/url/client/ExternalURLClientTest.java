@@ -59,7 +59,7 @@ class ExternalURLClientTest {
 		
 		Mono<ResponseBody> expectedResponse = subject.call(URL, HttpMethod.GET, getHttpHeaders(), request, ResponseBody.class);
 		
-		Assertions.assertThat(expectedResponse).isEqualTo(this.response);
+		Assertions.assertThat(response).isEqualTo(expectedResponse);
 	}
 	
 	@Test
@@ -68,7 +68,7 @@ class ExternalURLClientTest {
 
 		Mono<ResponseBody> expectedResponse = subject.call(URL, HttpMethod.GET, getHttpHeaders(), ResponseBody.class);
 		
-		Assertions.assertThat(response).isEqualTo(this.response);
+		Assertions.assertThat(response).isEqualTo(expectedResponse);
 	}
 	
 	@Test

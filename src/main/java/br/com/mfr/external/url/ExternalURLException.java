@@ -16,22 +16,21 @@ public class ExternalURLException extends Exception {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private HttpClientErrorException ex;
-
-    private String code;
+    private final HttpClientErrorException ex;
+    private final String code;
 
     public ExternalURLException(String message) {
-        super(message);
-    }
-
-    public ExternalURLException(String message, String code) {
-        super(message);
-        this.code = code;
+        this(message, null, null);
     }
 
     public ExternalURLException(HttpClientErrorException ex) {
-        super(ex.getMessage());
+        this(ex.getMessage(), ex, null);
+    }
+
+    public ExternalURLException(String message, HttpClientErrorException ex, String code) {
+        super(message);
         this.ex = ex;
+        this.code = code;
     }
 
     public Optional<String> getResponseBodyAsString() {

@@ -31,19 +31,8 @@ class ExternalURLExceptionTest {
 		Assertions.assertThat(subject.getMessage()).isEqualTo("Message");
 		Assertions.assertThat(subject.getHttpStatus()).isEqualTo(BAD_REQUEST);
 		Assertions.assertThat(subject.getCode()).isNull();
-		Assertions.assertThat(subject.getResponseBodyAs(FakeResponse.class).isPresent()).isFalse();
-		Assertions.assertThat(subject.getResponseBodyAsString().isPresent()).isFalse();
-	}
-	
-	@Test
-	void newWithMessageAndCode() throws ExternalURLException {
-		subject = new ExternalURLException("Message2", "#1009");
-		
-		Assertions.assertThat(subject.getMessage()).isEqualTo("Message2");
-		Assertions.assertThat(subject.getHttpStatus()).isEqualTo(BAD_REQUEST);
-		Assertions.assertThat(subject.getCode()).isEqualTo("#1009");
-		Assertions.assertThat(subject.getResponseBodyAs(FakeResponse.class).isPresent()).isFalse();
-		Assertions.assertThat(subject.getResponseBodyAsString().isPresent()).isFalse();
+		Assertions.assertThat(subject.getResponseBodyAs(FakeResponse.class)).isEmpty();
+		Assertions.assertThat(subject.getResponseBodyAsString()).isEmpty();
 	}
 	
 	@Test
@@ -53,15 +42,15 @@ class ExternalURLExceptionTest {
 		Mockito.when(ex.getResponseBodyAsString()).thenReturn("{\"attribute\": \"broke\"}");
 		
 		subject = new ExternalURLException(ex);
-		
+
 		Assertions.assertThat(subject.getMessage()).isEqualTo("exception");
 		Assertions.assertThat(subject.getHttpStatus()).isEqualTo(BAD_GATEWAY);
 		Assertions.assertThat(subject.getCode()).isNull();
-		Assertions.assertThat(subject.getResponseBodyAsString().isPresent()).isTrue();
+		Assertions.assertThat(subject.getResponseBodyAsString()).isPresent();
 		Assertions.assertThat(subject.getResponseBodyAsString().get()).isEqualTo("{\"attribute\": \"broke\"}");
 		
 		Optional<FakeResponse> response = subject.getResponseBodyAs(FakeResponse.class);
-		Assertions.assertThat(response.isPresent()).isTrue();
+		Assertions.assertThat(response).isPresent();
 		Assertions.assertThat(response.get().getAttribute()).isEqualTo("broke");
 		
 	}
