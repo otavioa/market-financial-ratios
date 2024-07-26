@@ -9,7 +9,11 @@ RUN --mount=type=cache,target=/root/.m2 mvn clean package  -Dmaven.test.skip
 FROM openjdk:22-jdk-slim
 WORKDIR /app
 
+ARG _MONGO_URI
+ARG _MONGO_DATABASE
+
 COPY --from=build /app/target/*.jar .
+
 ENV MONGO_URI=$_MONGO_URI
 ENV MONGO_DATABASE=$_MONGO_DATABASE
 
