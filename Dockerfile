@@ -10,6 +10,8 @@ FROM openjdk:22-jdk-slim
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar .
+ENV MONGO_URI=$_MONGO_URI
+ENV MONGO_DATABASE=$_MONGO_DATABASE
 
 EXPOSE 5000
 
