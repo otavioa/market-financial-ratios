@@ -1,5 +1,6 @@
 FROM openjdk:22-jdk-slim
 WORKDIR /app
 COPY . .
-RUN chmod +x mvnw
+ENV MONGO_URI=${MONGO_URI}
+ENV MONGO_DATABASE=${MONGO_DATABASE}
 RUN ./mvnw spring-boot:run
