@@ -9,6 +9,7 @@ RUN --mount=type=cache,target=/root/.m2 mvn clean package  -Dmaven.test.skip
 FROM openjdk:22-jdk-slim
 WORKDIR /app
 
+#Set arguments for build and connect to MongoDB
 ARG _MONGO_URI
 ARG _MONGO_DATABASE
 
