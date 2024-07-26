@@ -11,4 +11,6 @@ WORKDIR /app
 
 COPY --from=build /app/target/*.jar .
 
+EXPOSE 5000
+
 CMD [ "bash", "-c", "java -jar *.jar -v"]
