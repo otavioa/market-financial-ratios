@@ -13,8 +13,7 @@ The API retrieves essential data from [StatusInvest](https://statusinvest.com.br
 To get started with the application, follow these steps:
 
 1. **Prepare the Environment:**
-  - Install Java 17 or later.
-  - Configure your IDE with [Lombok](https://projectlombok.org/).
+  - Install Java 22 or later.
   - Set up a MongoDB instance for the application.
 
 2. **Clone the Repository:**
@@ -37,7 +36,7 @@ To get started with the application, follow these steps:
 
 6. **Populate the Database:**
 - Call `http://localhost:5000/data/populate` to populate the database.
-- It is recommended that the data be refreshed whenever it is used, within a timeframe that does not affect the analysis of the API user. For example: Once a day.
+- It is recommended that the data be refreshed whenever it's used, within a timeframe that does not affect the analysis of the API user. For example: Once a day.
 
 ## Running Tests
 
