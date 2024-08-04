@@ -1,6 +1,6 @@
 package br.com.mfr.test.support;
 
-import br.com.mfr.external.url.Request;
+import br.com.mfr.external.url.RequestBody;
 import br.com.mfr.external.url.ResponseBody;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -18,7 +18,7 @@ public class WebClientMockSupport {
         answerForAnyRequest(client, null, answer);
     }
 
-    public static void answerForAnyRequest(WebClient client, Request request, Answer<?> answer) {
+    public static void answerForAnyRequest(WebClient client, RequestBody request, Answer<?> answer) {
         var bodyUriSpecMock = Mockito.mock(WebClient.RequestBodyUriSpec.class);
         var bodySpecMock = Mockito.mock(WebClient.RequestBodySpec.class);
         var headersSpecMock = Mockito.mock(WebClient.RequestHeadersSpec.class);

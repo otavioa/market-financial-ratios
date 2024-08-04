@@ -2,7 +2,7 @@ package br.com.mfr.controller;
 
 import br.com.mfr.MockMvcApp;
 import br.com.mfr.entity.CompanyRepository;
-import br.com.mfr.external.url.ExternalURL;
+import br.com.mfr.external.url.ExternalURLClient;
 import br.com.mfr.external.url.ExternalURLException;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import br.com.mfr.service.statusinvest.StatusInvestResources;
@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -22,7 +23,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static br.com.mfr.service.statusinvest.StatusInvestResources.*;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @MockMvcApp
 class DataControllerTest {
 
-    @MockBean private ExternalURL externalUrl;
+    @MockBean private ExternalURLClient externalUrl;
 
     @Autowired private CompanyRepository repository;
     @Autowired private MockMvc mvc;
@@ -73,9 +73,10 @@ class DataControllerTest {
     }
 
     private void mockExternalUrlGet(StatusInvestResources resource, AdvanceSearchResponse response) throws ExternalURLException {
-        Mockito.when(externalUrl.doGet(
-                eq("http://url?CategoryType=" + resource.getCategoryType()),
-                eq(AdvanceSearchResponse.class))).thenReturn(response);
+        String url = "http://url?CategoryType=" + resource.getCategoryType();
+
+        Mockito.when(externalUrl.get(url, AdvanceSearchResponse.class))
+                .thenReturn(ResponseEntity.ok(response));
     }
 
     private ResultActions performRequest(String endPoint, Parameter... parameters) throws Exception {

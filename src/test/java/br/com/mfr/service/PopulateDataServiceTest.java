@@ -2,7 +2,7 @@ package br.com.mfr.service;
 
 import br.com.mfr.MockMvcApp;
 import br.com.mfr.entity.CompanyRepository;
-import br.com.mfr.external.url.ExternalURL;
+import br.com.mfr.external.url.ExternalURLClient;
 import br.com.mfr.external.url.ExternalURLException;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import br.com.mfr.service.statusinvest.StatusInvestResources;
@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
 
 import static br.com.mfr.service.statusinvest.StatusInvestResources.*;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.timeout;
 @MockMvcApp
 class PopulateDataServiceTest {
 
-    @MockBean private ExternalURL externalUrl;
+    @MockBean private ExternalURLClient externalUrl;
 
     @Autowired private CompanyRepository repository;
     @Autowired private PopulateDataService subject;
@@ -50,8 +51,9 @@ class PopulateDataServiceTest {
     }
 
     private void mockExternalUrlGet(StatusInvestResources resource, AdvanceSearchResponse response) throws ExternalURLException {
-        Mockito.when(externalUrl.doGet(
-                "http://url?CategoryType=" + resource.getCategoryType(),
-                AdvanceSearchResponse.class)).thenReturn(response);
+        String url = "http://url?CategoryType=" + resource.getCategoryType();
+
+        Mockito.when(externalUrl.get(url, AdvanceSearchResponse.class))
+                .thenReturn(ResponseEntity.ok(response));
     }
 }

@@ -32,6 +32,16 @@ public class DataController {
         return emitter;
     }
 
+    @GetMapping("/etf/populate")
+    public SseEmitter populateEtfData() {
+        SseEmitter emitter = sseManager.newEmitter();
+        sseManager.addEmitter(emitter);
+
+        service.populateEtfData();
+
+        return emitter;
+    }
+
     @EventListener
     public void onPopulateDataEvent(PopulateDataEvent event) {
         sseManager.notifyEmitters(event);
