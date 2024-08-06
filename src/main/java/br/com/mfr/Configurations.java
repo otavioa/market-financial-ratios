@@ -51,4 +51,12 @@ public class Configurations {
                         .name("data-populate")
                         .factory());
     }
+
+    @Bean
+    ExecutorService dataEtfPopulateThread() {
+        return Executors.newSingleThreadExecutor(
+                Thread.ofVirtual()
+                        .name("data-etf-populate")
+                        .factory());
+    }
 }

@@ -4,6 +4,7 @@ import br.com.mfr.controller.sse.SseEmitterManager;
 import br.com.mfr.service.PopulateDataEvent;
 import br.com.mfr.service.PopulateDataService;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,7 @@ public class DataController {
     }
 
     @GetMapping("/populate")
-    public SseEmitter populateData() {
+        public SseEmitter populateData() {
         SseEmitter emitter = sseManager.newEmitter();
         sseManager.addEmitter(emitter);
 
@@ -33,13 +34,13 @@ public class DataController {
     }
 
     @GetMapping("/etf/populate")
-    public SseEmitter populateEtfData() {
+    public ResponseEntity<String> populateEtfData() {
         SseEmitter emitter = sseManager.newEmitter();
         sseManager.addEmitter(emitter);
 
         service.populateEtfData();
 
-        return emitter;
+        return ResponseEntity.ok("Processamento iniciado");
     }
 
     @EventListener

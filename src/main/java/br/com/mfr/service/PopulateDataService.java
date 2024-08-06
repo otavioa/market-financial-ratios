@@ -28,11 +28,11 @@ public class PopulateDataService {
     public void populateData() {
         if (semaphore.tryAcquire()) {
             multiLocationSource.populate();
-
             semaphore.release();
         }
     }
 
+    @Async("dataEtfPopulateThread")
     public void populateEtfData() {
         usaEtfSource.populate();
     }

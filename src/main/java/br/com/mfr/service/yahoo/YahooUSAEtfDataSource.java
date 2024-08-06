@@ -7,6 +7,8 @@ import br.com.mfr.external.url.ExternalURLClient;
 import br.com.mfr.external.url.ExternalURLException;
 import br.com.mfr.service.datasource.DataSourceType;
 import br.com.mfr.service.datasource.UsaEtfSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +26,15 @@ import static java.lang.String.format;
 @Component
 public class YahooUSAEtfDataSource implements UsaEtfSource {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(YahooUSAEtfDataSource.class);
+
     private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36";
     public static final String DEFAULT_ACCEPT = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7";
     public static final int LIMIT_PER_REQUEST = 200;
 
     private final WebClient client;
     private final CompanyRepository repo;
+
 
     public YahooUSAEtfDataSource(WebClient client, CompanyRepository repo) {
         this.client = client;
@@ -38,6 +43,8 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
 
     @Override
     public void populate() {
+        LOGGER.info("Starting update process.");
+
         try {
             var cookies = retrieveCookies();
             var crumb = retrieveCrumb(cookies);
@@ -47,9 +54,13 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
         } catch (ExternalURLException e) {
             throw new RuntimeException(e);
         }
+
+        LOGGER.info("Completed.");
     }
 
     private String retrieveCookies() throws ExternalURLException {
+        LOGGER.info("Retrieving cookies.");
+
         HttpHeaders responseHeaders = ExternalURLClient
                 .getInstance(client)
                 .addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT)
@@ -66,6 +77,8 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
     }
 
     private String retrieveCrumb(String stringCookies) throws ExternalURLException {
+        LOGGER.info("Retrieving CRUMB id.");
+
         return ExternalURLClient
                 .getInstance(client)
                 .addToHeader(HttpHeaders.COOKIE, stringCookies)
@@ -75,9 +88,11 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
     }
 
     private List<Company> retrieveUSAEtfs(String crumb, String stringCookies) {
+        LOGGER.info("Retrieving ETF's from source.");
+
         String url = String.format("https://query1.finance.yahoo.com/v1/finance/screener?crumb=%s&lang=en-US&region=US&formatted=true", crumb);
 
-        int totalRecords = fetchEtfData(url, 0, 0, stringCookies).finance().result().getFirst().total();
+        int totalRecords = getAmountOfEtfs(stringCookies, url);
         int numberOfRequests = (totalRecords / LIMIT_PER_REQUEST) + 1;
 
         List<Supplier<YahooEtfScreenerResponse>> retrievers = new ArrayList<>();
@@ -94,6 +109,12 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
         return companies;
     }
 
+    private int getAmountOfEtfs(String stringCookies, String url) {
+        int totalOfEtfs = fetchEtfData(url, 0, 0, stringCookies).finance().result().getFirst().total();
+        LOGGER.info(String.format("%s ETF's found.", totalOfEtfs));
+        return totalOfEtfs;
+    }
+
     @Transactional
     private void updateDataBase(List<Company> etfCompanies) {
         repo.deleteAllBySource(DataSourceType.USA_ETF);
@@ -101,6 +122,8 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
     }
 
     private YahooEtfScreenerResponse fetchEtfData(String url, int size, int offset, String stringCookies) {
+        LOGGER.debug(String.format("Retrieving ETF's between %s and %s", offset, offset + size));
+
         try {
             return ExternalURLClient
                     .getInstance(client)
