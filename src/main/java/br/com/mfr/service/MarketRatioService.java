@@ -25,10 +25,10 @@ public class MarketRatioService {
 		checkFields(tickers, types);
 
 		if(!isEmpty(tickers) && !isEmpty(types))
-			return repo.findByTickerInAndTypeIn(List.of(tickers), List.of(types));
+			return repo.findByTickerInAndSourceIn(List.of(tickers), List.of(types));
 
 		return isEmpty(tickers)?
-				repo.findByTypeIn(List.of(types)) :
+				repo.findBySourceIn(List.of(types)) :
 				repo.findByTickerIn(List.of(tickers));
 	}
 

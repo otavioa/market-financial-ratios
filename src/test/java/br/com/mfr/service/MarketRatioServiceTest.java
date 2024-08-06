@@ -2,6 +2,7 @@ package br.com.mfr.service;
 
 import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
+import br.com.mfr.service.datasource.DataSourceType;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -39,7 +40,7 @@ class MarketRatioServiceTest {
 	@Test
 	void getAllAvailable() {
 		Company company = Company.builder()
-				.withId("1").withName("AMBEV").withType("ACOES").withTicker("ABEV3").withPrice(30.00)
+				.withId("1").withName("AMBEV").withSource(DataSourceType.BRL_STOCK).withTicker("ABEV3").withPrice(30.00)
 				.build();
 
 		Mockito.when(repository.findAll()).thenReturn(of(company));
@@ -52,10 +53,10 @@ class MarketRatioServiceTest {
 	@Test
 	void getCompaniesByTickerAndType() {
 		Company company = Company.builder()
-				.withId("1").withName("AMBEV").withType("ACOES").withTicker("ABEV3").withPrice(30.00)
+				.withId("1").withName("AMBEV").withSource(DataSourceType.BRL_STOCK).withTicker("ABEV3").withPrice(30.00)
 				.build();
 
-		 Mockito.when(repository.findByTickerInAndTypeIn(anyList(), anyList())).thenReturn(of(company));
+		 Mockito.when(repository.findByTickerInAndSourceIn(anyList(), anyList())).thenReturn(of(company));
 
 		List<Company> response = subject.getAllCompaniesBy(new String[]{"ABEV3"}, "ACOES");
 
@@ -65,7 +66,7 @@ class MarketRatioServiceTest {
 	@Test
 	void getCompaniesByTicker() {
 		Company company = Company.builder()
-				.withId("1").withName("AMBEV").withType("ACOES").withTicker("ABEV3").withPrice(30.00)
+				.withId("1").withName("AMBEV").withSource(DataSourceType.BRL_STOCK).withTicker("ABEV3").withPrice(30.00)
 				.build();
 
 		Mockito.when(repository.findByTickerIn(anyList())).thenReturn(of(company));
@@ -78,10 +79,10 @@ class MarketRatioServiceTest {
 	@Test
 	void getCompaniesByType() {
 		Company company = Company.builder()
-				.withId("1").withName("AMBEV").withType("ACOES").withTicker("ABEV3").withPrice(30.00)
+				.withId("1").withName("AMBEV").withSource(DataSourceType.BRL_STOCK).withTicker("ABEV3").withPrice(30.00)
 				.build();
 
-		Mockito.when(repository.findByTypeIn(anyList())).thenReturn(of(company));
+		Mockito.when(repository.findBySourceIn(anyList())).thenReturn(of(company));
 
 		List<Company> response = subject.getAllCompaniesBy(null, "ACOES");
 

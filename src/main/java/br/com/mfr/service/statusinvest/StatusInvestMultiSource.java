@@ -34,12 +34,12 @@ public class StatusInvestMultiSource implements
 
     private final CompanyRepository repo;
     private final ApplicationEventPublisher publisher;
-    private final ExternalURLClient externalURL;
+    private final WebClient client;
 
     public StatusInvestMultiSource(CompanyRepository repo, ApplicationEventPublisher publisher, WebClient client) {
         this.repo = repo;
+        this.client = client;
         this.publisher = publisher;
-        this.externalURL = new ExternalURLClient(client);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class StatusInvestMultiSource implements
     }
 
     private <R extends ResponseBody>  ResponseEntity<R> fetch(String url, Class<R> responseClass) throws ExternalURLException {
-        return externalURL
+        return ExternalURLClient.getInstance(client)
                 .addToHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT)
                 .addToHeader(HttpHeaders.ACCEPT, DEFAULT_ACCEPT)

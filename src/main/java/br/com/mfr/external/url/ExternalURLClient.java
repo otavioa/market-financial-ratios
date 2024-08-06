@@ -13,9 +13,13 @@ public class ExternalURLClient {
 	private final HttpHeaders headers = new HttpHeaders();
 	private final WebClient client;
 
-	public ExternalURLClient(WebClient client) {
+	private ExternalURLClient(WebClient client) {
 		this.client = client;
     }
+
+	public static ExternalURLClient getInstance(WebClient client) {
+		return new ExternalURLClient(client);
+	}
 
 	public ExternalURLClient addToHeader(String key, String value) {
 		headers.set(key, value);

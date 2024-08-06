@@ -3,6 +3,7 @@ package br.com.mfr.controller;
 import br.com.mfr.MongoDbMvcApp;
 import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
+import br.com.mfr.service.datasource.DataSourceType;
 import br.com.mfr.service.htmlreader.HtmlReaderService;
 import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import br.com.mfr.service.statusinvest.StatusInvestURL;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static br.com.mfr.service.datasource.DataSourceType.*;
 import static org.assertj.core.util.Strings.concat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -52,10 +54,10 @@ class MarketRatioControllerTest {
 	@Test
 	void getAllAvailable() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).build(),
-				buildCompany("2", "FUNDO FII", "FIIS","FII11", 130.0).build(),
-		 		buildCompany("3", "COMPANY STOCK", "STOCKS", "STK", 40.0).build(),
-				buildCompany("4", "REIT REIT", "REITS","RIT", 172.0).build());
+				buildCompany("1", "EMPRESA ACAO", BRL_STOCK, "ACAO3", 40.0).build(),
+				buildCompany("2", "FUNDO FII", BRL_FII,"FII11", 130.0).build(),
+		 		buildCompany("3", "COMPANY STOCK", USA_STOCK, "STK", 40.0).build(),
+				buildCompany("4", "REIT REIT", USA_REIT,"RIT", 172.0).build());
 
 		performRequest(ApiEndpoints.MARKET_RATIO_ALL)
 				.andExpect(status().isOk())
@@ -77,10 +79,10 @@ class MarketRatioControllerTest {
 	@Test
 	void getByTicker() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).build(),
-				buildCompany("2", "FUNDO FII", "FIIS","FII11", 130.0).build(),
-				buildCompany("3", "COMPANY STOCK", "STOCKS", "STK", 40.0).build(),
-				buildCompany("4", "REIT REIT", "REITS","RIT", 172.0).build());
+				buildCompany("1", "EMPRESA ACAO", BRL_STOCK, "ACAO3", 40.0).build(),
+				buildCompany("2", "FUNDO FII", BRL_FII,"FII11", 130.0).build(),
+				buildCompany("3", "COMPANY STOCK", USA_STOCK, "STK", 40.0).build(),
+				buildCompany("4", "REIT REIT", USA_REIT,"RIT", 172.0).build());
 
 		performRequest(ApiEndpoints.MARKET_RATIO,
 				new Parameter("tickers", "FII11"))
@@ -94,10 +96,10 @@ class MarketRatioControllerTest {
 	@Test
 	void getByTickerAndRatios() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).withPl(11.0).withLpa(3.0).withVpa(4.0).withRoe(12.0).build(),
-				buildCompany("2", "FUNDO FII", "FIIS", "FII11", 130.0).withDy(5.0).withPvp(1.10).build(),
-				buildCompany("3", "COMPANY STOCK", "STOCKS", "STK", 40.).build(),
-				buildCompany("4", "REIT REIT", "REITS", "RIT", 172.0).build());
+				buildCompany("1", "EMPRESA ACAO", BRL_STOCK, "ACAO3", 40.0).withPl(11.0).withLpa(3.0).withVpa(4.0).withRoe(12.0).build(),
+				buildCompany("2", "FUNDO FII", BRL_FII, "FII11", 130.0).withDy(5.0).withPvp(1.10).build(),
+				buildCompany("3", "COMPANY STOCK", USA_STOCK, "STK", 40.).build(),
+				buildCompany("4", "REIT REIT", USA_REIT, "RIT", 172.0).build());
 
 		performRequest(ApiEndpoints.MARKET_RATIO,
 				new Parameter("tickers", "ACAO3"),
@@ -133,10 +135,10 @@ class MarketRatioControllerTest {
 	@Test
 	void getByType() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).build(),
-				buildCompany("2", "FUNDO FII", "FIIS","FII11", 130.0).build(),
-				buildCompany("3", "COMPANY STOCK", "STOCKS", "STK", 40.0).build(),
-				buildCompany("4", "REIT REIT", "REITS","RIT", 172.0).build());
+				buildCompany("1", "EMPRESA ACAO", BRL_STOCK, "ACAO3", 40.0).build(),
+				buildCompany("2", "FUNDO FII", BRL_FII,"FII11", 130.0).build(),
+				buildCompany("3", "COMPANY STOCK", USA_STOCK, "STK", 40.0).build(),
+				buildCompany("4", "REIT REIT", USA_REIT,"RIT", 172.0).build());
 
 		performRequest(ApiEndpoints.MARKET_RATIO,
 				new Parameter("types", "ACOES"))
@@ -157,8 +159,8 @@ class MarketRatioControllerTest {
 	@Test
 	void getByTypeAndRatios() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).withPl(11.0).withLpa(3.0).withVpa(4.0).withRoe(12.0).build(),
-				buildCompany("2", "FUNDO FII", "FIIS","FII11", 130.0).build());
+				buildCompany("1", "EMPRESA ACAO", BRL_STOCK, "ACAO3", 40.0).withPl(11.0).withLpa(3.0).withVpa(4.0).withRoe(12.0).build(),
+				buildCompany("2", "FUNDO FII", BRL_FII,"FII11", 130.0).build());
 
 
 		performRequest(ApiEndpoints.MARKET_RATIO,
@@ -196,9 +198,9 @@ class MarketRatioControllerTest {
 			repo.insert(c);
 	}
 
-	private static Company.CompanyBuilder buildCompany(String id, String name, String type, String ticker, Double price) {
+	private static Company.CompanyBuilder buildCompany(String id, String name, DataSourceType source, String ticker, Double price) {
 		return Company.builder()
-				.withId(id).withName(name).withType(type).withTicker(ticker).withPrice(price);
+				.withId(id).withName(name).withSource(source).withTicker(ticker).withPrice(price);
 	}
 
 	private ResultActions performRequest(String endPoint, Parameter... parameters) throws Exception {

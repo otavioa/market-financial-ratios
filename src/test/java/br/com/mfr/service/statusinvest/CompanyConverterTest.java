@@ -1,6 +1,7 @@
 package br.com.mfr.service.statusinvest;
 
 import br.com.mfr.entity.Company;
+import br.com.mfr.service.datasource.DataSourceType;
 import br.com.mfr.service.statusinvest.dto.CompanyConverter;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
 import org.assertj.core.api.Assertions;
@@ -13,7 +14,7 @@ class CompanyConverterTest {
         CompanyResponse response = new CompanyResponse(1L, "test", "TST11", 100.00);
         Company company = CompanyConverter.convert(StatusInvestResources.ACOES, response);
 
-        Assertions.assertThat(company.type()).isEqualTo("ACOES");
+        Assertions.assertThat(company.source()).isEqualTo(DataSourceType.BRL_STOCK);
         Assertions.assertThat(company).isNotNull();
     }
 }

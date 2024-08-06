@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+//TODO fix assertions
 @ExtendWith(MockitoExtension.class)
 class ExternalURLClientTest {
 
@@ -28,7 +29,7 @@ class ExternalURLClientTest {
 
 	@BeforeEach
 	public void setUp() {
-		subject = new ExternalURLClient(client);
+		subject = ExternalURLClient.getInstance(client);
 	}
 
 	@Test
