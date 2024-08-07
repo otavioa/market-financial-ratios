@@ -1,6 +1,8 @@
 package br.com.mfr.external.url;
 
 
+import br.com.mfr.test.support.WebClientMockSupport;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,22 +11,24 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static br.com.mfr.test.support.WebClientMockSupport.answerForAnyRequest;
+import static br.com.mfr.test.support.WebClientMockSupport.answerForAnyRetrieve;
+import static org.junit.jupiter.api.Assertions.*;
 
 //TODO fix assertions
 @ExtendWith(MockitoExtension.class)
 class ExternalURLClientTest {
 
 	private static final String URL = "http://url-test:8090/api";
-	
+
 	@Mock private WebClient client;
 	@Mock private RequestBody request;
-	@Mock private Mono<ResponseBody> response;
-	
+	@Mock private ResponseBody response;
+
 	private ExternalURLClient subject;
 
 	@BeforeEach
@@ -33,116 +37,94 @@ class ExternalURLClientTest {
 	}
 
 	@Test
+	void addHeaders() {
+		subject.addToHeader("key", "value2");
+		subject.addToHeader("Content-Type", "application/json");
+		subject.addToHeader("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36");
+		subject.addToHeader("Accept", "*/*");
+
+		HttpHeaders headers = subject.getHeaders();
+		Assertions.assertEquals(4, headers.size());
+	}
+
+	@Test
 	void getFromURL() throws ExternalURLException {
-		mockCall();
-		
+		WebClientMockSupport.MockVerifier verifier = answerForAnyRetrieve(client, r -> response);
+
 		subject.get(URL, FakeResponse.class);
 
-		Mockito.verify(client).method(HttpMethod.GET);
-
-//		Mockito.verify(client).call(URL), eq(HttpMethod.GET), any(HttpHeaders.class), eq(FakeResponse.class));
+		verifier.verifyMethod(Mockito.times(1), HttpMethod.GET);
+		verifier.verifyUrl(Mockito.times(1), URL);
+		verifier.verifyHeader(Mockito.times(1));
+		verifier.verifyResponse(FakeResponse.class);
 	}
-	
+
+	@Test
+	void getStringFromURL() throws ExternalURLException {
+		WebClientMockSupport.MockVerifier verifier = answerForAnyRetrieve(client, r -> "response");
+
+		subject.get(URL);
+
+		verifier.verifyMethod(Mockito.times(1), HttpMethod.GET);
+		verifier.verifyUrl(Mockito.times(1), URL);
+		verifier.verifyHeader(Mockito.times(1));
+		verifier.verifyResponse(String.class);
+	}
+
 	@Test
 	void patchToURL() throws ExternalURLException {
-		mockRequestCall();
-		
+		WebClientMockSupport.MockVerifier verifier = answerForAnyRequest(client, request, r -> response);
+
 		subject.patch(URL, request, FakeResponse.class);
 
-//		Mockito.verify(client).call(eq(URL), eq(HttpMethod.PATCH), any(HttpHeaders.class), eq(request), eq(FakeResponse.class));
+		verifier.verifyMethod(Mockito.times(1), HttpMethod.PATCH);
+		verifier.verifyUrl(Mockito.times(1), URL);
+		verifier.verifyHeader(Mockito.times(1));
+		verifier.verifyRequestBody(Mockito.times(1), RequestBody.class);
+		verifier.verifyResponse(FakeResponse.class);
 	}
-	
+
 	@Test
 	void postToURL() throws ExternalURLException {
-		mockRequestCall();
-		
+		WebClientMockSupport.MockVerifier verifier = answerForAnyRequest(client, request, r -> response);
+
 		subject.post(URL, request, FakeResponse.class);
 
-//		Mockito.verify(client).call(eq(URL), eq(HttpMethod.POST), any(HttpHeaders.class), eq(request), eq(FakeResponse.class));
+		verifier.verifyMethod(Mockito.times(1), HttpMethod.POST);
+		verifier.verifyUrl(Mockito.times(1), URL);
+		verifier.verifyHeader(Mockito.times(1));
+		verifier.verifyRequestBody(Mockito.times(1), RequestBody.class);
+		verifier.verifyResponse(FakeResponse.class);
 	}
-	
+
 	@Test
-	void getFromURL_withHeaders() throws ExternalURLException {
-		mockCall();
-		
-		subject
-			.addToHeader("key", "value")
-			.get(URL, FakeResponse.class);
-
-		HttpHeaders header = new HttpHeaders();
-		header.add("key", "value");
-		header.add("Content-Type", "application/json");
-		header.add("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36");
-		header.add("Accept", "*/*");
-
-//		Mockito.verify(client).call(eq(URL), eq(HttpMethod.GET), eq(header), eq(FakeResponse.class));
-	}
-	
-	@Test
-	void getFromURL_withDuplicatedHeaders() throws ExternalURLException {
-		mockCall();
-		
-		subject
-			.addToHeader("key", "value")
-			.addToHeader("key", "value")
-			.get(URL, FakeResponse.class);
-
-		HttpHeaders header = new HttpHeaders();
-		header.add("key", "value");
-		header.add("Content-Type", "application/json");
-		header.add("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36");
-		header.add("Accept", "*/*");
-
-//		Mockito.verify(client).call(eq(URL), eq(HttpMethod.GET), eq(header), eq(FakeResponse.class));
-	}
-	
-	@Test
-	void getFromURL_changeHeaders() throws ExternalURLException {
-		mockCall();
-		
-		subject
-			.addToHeader("key", "value")
-			.addToHeader("key", "value2")
-			.get(URL, FakeResponse.class);
-
-		HttpHeaders header = new HttpHeaders();
-		header.add("key", "value2");
-		header.add("Content-Type", "application/json");
-		header.add("User-Agent", "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36");
-		header.add("Accept", "*/*");
-
-//		Mockito.verify(client).call(eq(URL), eq(HttpMethod.GET), eq(header), eq(FakeResponse.class));
-	}
-	
-	@Test
-	void getURL_withError() throws ExternalURLException {
-		mockWithException("404 - not found");
+	void getURL_withClientError() {
+		answerForAnyRetrieve(client,
+				r -> {throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Bad request");});
 
 		try {
 			subject.get(URL, FakeResponse.class);
 			fail("Test should've broken");
 		} catch (Exception e) {
-			assertEquals("404 - not found", e.getMessage());
+			assertInstanceOf(ExternalURLException.class, e);
+			assertEquals("400 Bad request", e.getMessage());
 		}
 	}
-	
-	private void mockRequestCall() throws ExternalURLException {
-//		Mockito.when(client.call(eq(URL), any(HttpMethod.class), any(HttpHeaders.class), any(RequestBody.class), any()))
-//				.thenReturn(response);
+
+	@Test
+	void getURL_withMonoError() {
+		answerForAnyRetrieve(client,
+				r -> {throw new RuntimeException("Bad attempt to generate Entity");});
+
+		try {
+			subject.get(URL, FakeResponse.class);
+			fail("Test should've broken");
+		} catch (Exception e) {
+			assertInstanceOf(ExternalURLException.class, e);
+			assertEquals("Bad attempt to generate Entity", e.getMessage());
+		}
 	}
 
-	private void mockCall() throws ExternalURLException {
-//		Mockito.when(client.call(eq(URL), any(HttpMethod.class), any(HttpHeaders.class), any())).thenReturn(response);
-	}
-
-	private void mockWithException(String errorMessage) throws ExternalURLException {
-//		ExternalURLException clientException = new ExternalURLException(errorMessage);
-//		Mockito.when(client.call(eq(URL), any(HttpMethod.class), any(HttpHeaders.class), any())).thenThrow(clientException);
-	}
-	
-	
-	static class FakeResponse implements ResponseBody {
-		
-	}
+	static class FakeResponse implements ResponseBody {	}
 
 }

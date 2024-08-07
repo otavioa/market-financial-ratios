@@ -26,6 +26,10 @@ public class ExternalURLClient {
 		return this;
 	}
 
+	public HttpHeaders getHeaders() {
+		return headers;
+	}
+
 	public <R extends ResponseBody> ResponseEntity<R> post(
 			String url, RequestBody request, Class<R> responseClass) throws ExternalURLException {
 
@@ -46,6 +50,7 @@ public class ExternalURLClient {
 				.method(HttpMethod.PATCH)
 				.uri(UrilUtils.getURI(url))
 				.headers(h -> h.addAll(headers))
+				.bodyValue(request)
 				.retrieve()
 				.toEntity(responseClass)
 				.block());

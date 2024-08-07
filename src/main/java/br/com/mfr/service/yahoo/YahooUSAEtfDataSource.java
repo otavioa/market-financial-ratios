@@ -52,7 +52,8 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
 
             updateDataBase(yahooEtfCompanies);
         } catch (ExternalURLException e) {
-            throw new RuntimeException(e);
+            throw new GenericException(
+                    format("An error occurred during USA ETF database update. Message: %s", e.getMessageWithBody()), e);
         }
 
         LOGGER.info("Completed.");
@@ -90,7 +91,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
     private List<Company> retrieveUSAEtfs(String crumb, String stringCookies) {
         LOGGER.info("Retrieving ETF's from source.");
 
-        String url = String.format("https://query1.finance.yahoo.com/v1/finance/screener?crumb=%s&lang=en-US&region=US&formatted=true", crumb);
+        String url = format("https://query1.finance.yahoo.com/v1/finance/screener?crumb=%s&lang=en-US&region=US&formatted=true", crumb);
 
         int totalRecords = getAmountOfEtfs(stringCookies, url);
         int numberOfRequests = (totalRecords / LIMIT_PER_REQUEST) + 1;
@@ -111,7 +112,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
 
     private int getAmountOfEtfs(String stringCookies, String url) {
         int totalOfEtfs = fetchEtfData(url, 0, 0, stringCookies).finance().result().getFirst().total();
-        LOGGER.info(String.format("%s ETF's found.", totalOfEtfs));
+        LOGGER.info(format("%s ETF's found.", totalOfEtfs));
         return totalOfEtfs;
     }
 
@@ -122,7 +123,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
     }
 
     private YahooEtfScreenerResponse fetchEtfData(String url, int size, int offset, String stringCookies) {
-        LOGGER.debug(String.format("Retrieving ETF's between %s and %s", offset, offset + size));
+        LOGGER.debug(format("Retrieving ETF's between %s and %s", offset, offset + size));
 
         try {
             return ExternalURLClient
