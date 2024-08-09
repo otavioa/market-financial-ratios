@@ -21,7 +21,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static br.com.mfr.service.datasource.DataSourceType.*;
 import static java.lang.String.format;
+import static java.util.List.of;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -45,7 +47,11 @@ public class StatusInvestMultiSource implements
     @Override
     public void populate() {
         UUID id = UUID.randomUUID();
-
+        try {
+            Thread.sleep(25000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         publisher.publishEvent(new PopulateDataEvent(id, PopulateDataEvent.START_PROCESSING));
 
         removeData(id);
@@ -58,7 +64,8 @@ public class StatusInvestMultiSource implements
 
     private void removeData(UUID id) {
         long count = repo.count();
-        repo.deleteAll();
+        repo.deleteAllBySourceIn(
+                of(BRL_STOCK, BRL_FII, BRL_ETF, USA_STOCK, USA_REIT));
 
         publisher.publishEvent(
                 new PopulateDataEvent(id, PopulateDataEvent.REMOVED, format("%s records removed...", count)));

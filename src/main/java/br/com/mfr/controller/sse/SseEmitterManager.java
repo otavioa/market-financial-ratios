@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 public class SseEmitterManager {
 
-    private static final long SSE_TIMEOUT = 30_000L; //TODO - Future property
+    private static final long SSE_TIMEOUT = 0L; //TODO - Future property
 
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 

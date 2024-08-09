@@ -19,5 +19,7 @@ public interface CompanyRepository extends MongoRepository<Company, String> {
 
     void deleteAllBySource(DataSourceType source);
 
+    void deleteAllBySourceIn(List<DataSourceType> sources);
+
     public long count();
 }
