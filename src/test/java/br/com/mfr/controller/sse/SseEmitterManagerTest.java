@@ -8,7 +8,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -36,8 +35,7 @@ class SseEmitterManagerTest {
     @Test
     void newEmitter() {
         SseEmitter emitter1 = subject.newEmitter();
-
-        assertEquals(30000L, emitter1.getTimeout());
+        assertEquals(0L, emitter1.getTimeout());
     }
 
     @Test
@@ -68,15 +66,15 @@ class SseEmitterManagerTest {
     @Test
     void notifyEmitters() throws IOException {
         UUID uuid = UUID.fromString("937fbde7-00b9-48d0-8442-0fb506ec5ceb");
-        PopulateDataEvent event = new PopulateDataEvent(uuid, PopulateDataEvent.START_PROCESSING);
+        PopulateDataEvent event = new PopulateDataEvent(uuid, PopulateDataEvent.INITIALIZED);
 
         subject.addEmitter(emitter);
         subject.addEmitter(emitter2);
 
         subject.notifyEmitters(event);
 
-        Mockito.verify(emitter, Mockito.times(1)).send(event, MediaType.APPLICATION_JSON);
-        Mockito.verify(emitter2, Mockito.times(1)).send(event, MediaType.APPLICATION_JSON);
+        Mockito.verify(emitter, Mockito.times(1)).send(ArgumentMatchers.any(SseEmitter.SseEventBuilder.class));
+        Mockito.verify(emitter2, Mockito.times(1)).send(ArgumentMatchers.any(SseEmitter.SseEventBuilder.class));
 
         Mockito.verify(emitter, Mockito.never()).complete();
         Mockito.verify(emitter2, Mockito.never()).complete();
@@ -97,8 +95,8 @@ class SseEmitterManagerTest {
 
         subject.notifyEmitters(event);
 
-        Mockito.verify(emitter, Mockito.times(1)).send(event, MediaType.APPLICATION_JSON);
-        Mockito.verify(emitter2, Mockito.times(1)).send(event, MediaType.APPLICATION_JSON);
+        Mockito.verify(emitter, Mockito.times(1)).send(ArgumentMatchers.any(SseEmitter.SseEventBuilder.class));
+        Mockito.verify(emitter2, Mockito.times(1)).send(ArgumentMatchers.any(SseEmitter.SseEventBuilder.class));
 
         Mockito.verify(emitter, Mockito.times(1)).complete();
         Mockito.verify(emitter2, Mockito.times(1)).complete();
@@ -112,7 +110,7 @@ class SseEmitterManagerTest {
         PopulateDataEvent event = new PopulateDataEvent(uuid, PopulateDataEvent.COMPLETED);
 
         IOException exception = new IOException("Mock failure");
-        Mockito.doThrow(exception).when(emitter).send(event, MediaType.APPLICATION_JSON);
+        Mockito.doThrow(exception).when(emitter).send(ArgumentMatchers.any(SseEmitter.SseEventBuilder.class));
 
         subject.addEmitter(emitter);
 

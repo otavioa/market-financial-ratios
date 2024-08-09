@@ -4,11 +4,12 @@ import br.com.mfr.controller.sse.SseEmitterEventNotification;
 
 import java.util.UUID;
 
-public record PopulateDataEvent(UUID id, String name, String description) implements SseEmitterEventNotification {
+public record PopulateDataEvent(UUID id, String name, Object data) implements SseEmitterEventNotification {
 
     public static final String COMPLETED = "COMPLETED";
-    public static final String START_PROCESSING = "START_PROCESSING";
-    public static final String REMOVED = "REMOVED";
+    public static final String EXECUTED = "EXECUTED";
+    public static final String ERROR = "ERROR";
+    public static final String INITIALIZED = "INITIALIZED";
 
     public PopulateDataEvent(UUID id, String name){
         this(id, name, "");
@@ -16,7 +17,7 @@ public record PopulateDataEvent(UUID id, String name, String description) implem
 
     @Override
     public String toString() {
-        return String.format("Event: %s - %s", id, name);
+        return String.format("Event: %s - %s. Data: %s", id, name, data);
     }
 
     @Override

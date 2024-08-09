@@ -6,83 +6,56 @@ import br.com.mfr.exception.GenericException;
 import br.com.mfr.external.url.ExternalURLClient;
 import br.com.mfr.external.url.ExternalURLException;
 import br.com.mfr.external.url.ResponseBody;
-import br.com.mfr.service.PopulateDataEvent;
 import br.com.mfr.service.datasource.*;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyConverter;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
-import static br.com.mfr.service.datasource.DataSourceType.*;
 import static java.lang.String.format;
-import static java.util.List.of;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Component
-public class StatusInvestMultiSource implements
-        BrazilStockSource, BrazilFiiSource, BrazilEtfSource, UsaStockSource, UsaReitSource, MultiLocationSource {
+public class StatusInvestSource implements BrazilStockSource, BrazilFiiSource, BrazilEtfSource, UsaStockSource, UsaReitSource {
 
     private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36";
     public static final String DEFAULT_ACCEPT = "*/*";
 
-    private final CompanyRepository repo;
-    private final ApplicationEventPublisher publisher;
     private final WebClient client;
+    private final CompanyRepository repo;
+    private final DataSourceType sourceType;
 
-    public StatusInvestMultiSource(CompanyRepository repo, ApplicationEventPublisher publisher, WebClient client) {
+    public StatusInvestSource(CompanyRepository repo, WebClient client, DataSourceType sourceType) {
         this.repo = repo;
         this.client = client;
-        this.publisher = publisher;
+        this.sourceType = sourceType;
     }
 
     @Override
-    public void populate() {
-        UUID id = UUID.randomUUID();
-        try {
-            Thread.sleep(25000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        publisher.publishEvent(new PopulateDataEvent(id, PopulateDataEvent.START_PROCESSING));
-
-        removeData(id);
-        insertDataBy(id, StatusInvestResources.values());
-
-        publisher.publishEvent(
-                new PopulateDataEvent(id, PopulateDataEvent.COMPLETED));
+    public DataSourceType type() {
+        return null;
     }
 
+    @Override
+    public DataSourceResult populate() {
+        removeData();
+        List<Company> companies = insertData();
 
-    private void removeData(UUID id) {
-        long count = repo.count();
-        repo.deleteAllBySourceIn(
-                of(BRL_STOCK, BRL_FII, BRL_ETF, USA_STOCK, USA_REIT));
-
-        publisher.publishEvent(
-                new PopulateDataEvent(id, PopulateDataEvent.REMOVED, format("%s records removed...", count)));
+        return new DataSourceResult(sourceType, format("%s records", companies.size()));
     }
 
-    private void insertDataBy(UUID id, StatusInvestResources[] resources) {
-        Arrays.stream(resources)
-                .parallel()
-                .forEach(resource -> {
-                    List<Company> companies = getCompaniesFrom(resource);
-                    repo.insert(companies);
-                    publisher.publishEvent(
-                            new PopulateDataEvent(
-                                    id,
-                                    resource.name(),
-                                    format("%s new records...", companies.size())));
-                });
+    private void removeData() {
+        repo.deleteAllBySource(sourceType);
+    }
+
+    private List<Company> insertData() {
+        StatusInvestResources resource = StatusInvestResources.valueOf(sourceType);
+        List<Company> companies = getCompaniesFrom(resource);
+        return repo.insert(companies);
     }
 
     private List<Company> getCompaniesFrom(StatusInvestResources resource) {
@@ -111,7 +84,7 @@ public class StatusInvestMultiSource implements
         }
     }
 
-    private <R extends ResponseBody>  ResponseEntity<R> fetch(String url, Class<R> responseClass) throws ExternalURLException {
+    private <R extends ResponseBody> ResponseEntity<R> fetch(String url, Class<R> responseClass) throws ExternalURLException {
         return ExternalURLClient.getInstance(client)
                 .addToHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT)

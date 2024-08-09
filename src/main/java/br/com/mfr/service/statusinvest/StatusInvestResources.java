@@ -3,6 +3,8 @@ package br.com.mfr.service.statusinvest;
 import br.com.mfr.service.datasource.DataSourceType;
 import br.com.mfr.service.statusinvest.dto.AdvancedFilterRequest;
 
+import java.util.Arrays;
+
 //TODO - kill this somehow
 public enum StatusInvestResources {
 	
@@ -19,6 +21,13 @@ public enum StatusInvestResources {
 		this.sourceType = sourceType;
 		this.categoryType = categoryType;
 		this.statusInvestRange = statusInvestRange;
+	}
+
+	public static StatusInvestResources valueOf(DataSourceType type) {
+		return Arrays.stream(values())
+				.filter(v -> v.sourceType.equals(type))
+				.findFirst()
+				.orElseThrow();
 	}
 
 	public Integer getCategoryType() {

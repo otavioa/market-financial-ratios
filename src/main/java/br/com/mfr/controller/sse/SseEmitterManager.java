@@ -1,6 +1,5 @@
 package br.com.mfr.controller.sse;
 
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -25,7 +24,10 @@ public class SseEmitterManager {
     public void notifyEmitters(SseEmitterEventNotification eventNotification) {
         emitters.forEach(emitter -> {
             try {
-                emitter.send(eventNotification, MediaType.APPLICATION_JSON);
+                emitter.send(emitter.event()
+                        .id(eventNotification.id().toString())
+                        .name(eventNotification.name())
+                        .data(eventNotification.data()));
 
                 if(eventNotification.isComplete()){
                     emitter.complete();
