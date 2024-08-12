@@ -15,8 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import static br.com.mfr.test.support.WebClientMockSupport.answerForAnyRequest;
-import static br.com.mfr.test.support.WebClientMockSupport.answerForAnyRetrieve;
+import static br.com.mfr.test.support.WebClientMockSupport.answerForRequest;
 import static org.junit.jupiter.api.Assertions.*;
 
 //TODO fix assertions
@@ -49,7 +48,7 @@ class ExternalURLClientTest {
 
 	@Test
 	void getFromURL() throws ExternalURLException {
-		WebClientMockSupport.MockVerifier verifier = answerForAnyRetrieve(client, r -> response);
+		WebClientMockSupport.MockVerifier verifier = WebClientMockSupport.answerForAny(client, r -> response);
 
 		subject.get(URL, FakeResponse.class);
 
@@ -61,7 +60,7 @@ class ExternalURLClientTest {
 
 	@Test
 	void getStringFromURL() throws ExternalURLException {
-		WebClientMockSupport.MockVerifier verifier = answerForAnyRetrieve(client, r -> "response");
+		WebClientMockSupport.MockVerifier verifier = WebClientMockSupport.answerForAny(client, r -> "response");
 
 		subject.get(URL);
 
@@ -73,8 +72,7 @@ class ExternalURLClientTest {
 
 	@Test
 	void patchToURL() throws ExternalURLException {
-		WebClientMockSupport.MockVerifier verifier = answerForAnyRequest(client, request, r -> response);
-
+		WebClientMockSupport.MockVerifier verifier = WebClientMockSupport.answerForRequest(client, request, r -> response);
 		subject.patch(URL, request, FakeResponse.class);
 
 		verifier.verifyMethod(Mockito.times(1), HttpMethod.PATCH);
@@ -86,7 +84,7 @@ class ExternalURLClientTest {
 
 	@Test
 	void postToURL() throws ExternalURLException {
-		WebClientMockSupport.MockVerifier verifier = answerForAnyRequest(client, request, r -> response);
+		WebClientMockSupport.MockVerifier verifier = answerForRequest(client, request, r -> response);
 
 		subject.post(URL, request, FakeResponse.class);
 
@@ -99,7 +97,7 @@ class ExternalURLClientTest {
 
 	@Test
 	void getURL_withClientError() {
-		answerForAnyRetrieve(client,
+		WebClientMockSupport.answerForAny(client,
 				r -> {throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Bad request");});
 
 		try {
@@ -113,7 +111,7 @@ class ExternalURLClientTest {
 
 	@Test
 	void getURL_withMonoError() {
-		answerForAnyRetrieve(client,
+		WebClientMockSupport.answerForAny(client,
 				r -> {throw new RuntimeException("Bad attempt to generate Entity");});
 
 		try {
