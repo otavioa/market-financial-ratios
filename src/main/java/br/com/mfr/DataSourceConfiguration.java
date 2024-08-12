@@ -1,4 +1,4 @@
-package br.com.mfr.controller;
+package br.com.mfr;
 
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.service.datasource.*;
