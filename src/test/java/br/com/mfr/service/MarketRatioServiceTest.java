@@ -90,12 +90,12 @@ class MarketRatioServiceTest {
 	}
 
 	@Test
-	void tryToRetrieveCompaniesWithoutTickersAndTypes(){
+	void tryToRetrieveCompaniesWithoutTickersAndSources(){
 		try {
 			subject.getAllCompaniesBy(null);
 			fail();
 		} catch (Exception e) {
-			assertEquals("'tickers' or 'types' must be informed.", e.getMessage());
+			assertEquals("'tickers' or 'sources' must be informed.", e.getMessage());
 		}
 	}
 

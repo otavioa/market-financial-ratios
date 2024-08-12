@@ -63,16 +63,16 @@ class MarketRatioControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", Matchers.hasSize(4)))
 				.andExpect(jsonPath("$[0].name", Matchers.is("EMPRESA ACAO")))
-				.andExpect(jsonPath("$[0].type", Matchers.is("ACOES")))
+				.andExpect(jsonPath("$[0].source", Matchers.is("BRL_STOCK")))
 				.andExpect(jsonPath("$[0].ticker", Matchers.is("ACAO3")))
 				.andExpect(jsonPath("$[1].name", Matchers.is("FUNDO FII")))
-				.andExpect(jsonPath("$[1].type", Matchers.is("FIIS")))
+				.andExpect(jsonPath("$[1].source", Matchers.is("BRL_FII")))
 				.andExpect(jsonPath("$[1].ticker", Matchers.is("FII11")))
 				.andExpect(jsonPath("$[2].name", Matchers.is("COMPANY STOCK")))
-				.andExpect(jsonPath("$[2].type", Matchers.is("STOCKS")))
+				.andExpect(jsonPath("$[2].source", Matchers.is("USA_STOCK")))
 				.andExpect(jsonPath("$[2].ticker", Matchers.is("STK")))
 				.andExpect(jsonPath("$[3].name", Matchers.is("REIT REIT")))
-				.andExpect(jsonPath("$[3].type", Matchers.is("REITS")))
+				.andExpect(jsonPath("$[3].source", Matchers.is("USA_REIT")))
 				.andExpect(jsonPath("$[3].ticker", Matchers.is("RIT")));
 	}
 
@@ -133,7 +133,7 @@ class MarketRatioControllerTest {
 	}
 
 	@Test
-	void getByType() throws Exception {
+	void getBySource() throws Exception {
 		mockResponseTo(
 				buildCompany("1", "EMPRESA ACAO", BRL_STOCK, "ACAO3", 40.0).build(),
 				buildCompany("2", "FUNDO FII", BRL_FII,"FII11", 130.0).build(),
@@ -141,7 +141,7 @@ class MarketRatioControllerTest {
 				buildCompany("4", "REIT REIT", USA_REIT,"RIT", 172.0).build());
 
 		performRequest(ApiEndpoints.MARKET_RATIO,
-				new Parameter("types", "ACOES"))
+				new Parameter("sources", "BRL_STOCK"))
 
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isArray())
@@ -164,7 +164,7 @@ class MarketRatioControllerTest {
 
 
 		performRequest(ApiEndpoints.MARKET_RATIO,
-				new Parameter("types", "ACOES"),
+				new Parameter("sources", "BRL_STOCK"),
 				new Parameter("ratios", "PL"),
 				new Parameter("ratios", "LPA"),
 				new Parameter("ratios", "VPA"),

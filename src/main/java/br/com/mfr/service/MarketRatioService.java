@@ -21,19 +21,19 @@ public class MarketRatioService {
 		return repo.findAll();
 	}
 
-	public List<Company> getAllCompaniesBy(String[] tickers, String... types) {
-		checkFields(tickers, types);
+	public List<Company> getAllCompaniesBy(String[] tickers, String... sources) {
+		checkFields(tickers, sources);
 
-		if(!isEmpty(tickers) && !isEmpty(types))
-			return repo.findByTickerInAndSourceIn(List.of(tickers), List.of(types));
+		if(!isEmpty(tickers) && !isEmpty(sources))
+			return repo.findByTickerInAndSourceIn(List.of(tickers), List.of(sources));
 
 		return isEmpty(tickers)?
-				repo.findBySourceIn(List.of(types)) :
+				repo.findBySourceIn(List.of(sources)) :
 				repo.findByTickerIn(List.of(tickers));
 	}
 
-	private void checkFields(String[] tickers, String[] types) {
-		if(isEmpty(tickers) && isEmpty(types))
-			throw new IllegalArgumentException("'tickers' or 'types' must be informed.");
+	private void checkFields(String[] tickers, String[] sources) {
+		if(isEmpty(tickers) && isEmpty(sources))
+			throw new IllegalArgumentException("'tickers' or 'sources' must be informed.");
 	}
 }

@@ -11,9 +11,9 @@ public interface CompanyRepository extends MongoRepository<Company, String> {
 
     Company findByName(String name);
 
-    List<Company> findByTickerInAndSourceIn(List<String> tickers, List<String> types);
+    List<Company> findByTickerInAndSourceIn(List<String> tickers, List<String> sources);
 
-    List<Company> findBySourceIn(List<String> types);
+    List<Company> findBySourceIn(List<String> sources);
 
     List<Company> findByTickerIn(List<String> tickers);
 

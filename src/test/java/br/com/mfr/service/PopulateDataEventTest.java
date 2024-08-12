@@ -11,9 +11,9 @@ class PopulateDataEventTest {
     @Test
     void testToString() {
         UUID uuid = UUID.fromString("937fbde7-00b9-48d0-8442-0fb506ec5ceb");
-        PopulateDataEvent event = new PopulateDataEvent(uuid, PopulateDataEvent.INITIALIZED);
+        PopulateDataEvent event = new PopulateDataEvent(uuid, PopulateDataEvent.INITIALIZED, "{test: \"test\"}");
 
-        assertEquals("Event: 937fbde7-00b9-48d0-8442-0fb506ec5ceb - INITIALIZED", event.toString());
+        assertEquals("Event: 937fbde7-00b9-48d0-8442-0fb506ec5ceb - INITIALIZED. Data: {test: \"test\"}", event.toString());
     }
 
     @Test
