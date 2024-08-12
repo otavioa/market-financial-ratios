@@ -12,12 +12,10 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.time.Duration;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-public class Configurations {
+public class WebClientConfiguration {
 
     public static final int CODEC_MAX_SIZE = 10 * 1024 * 1024; //10mb
     public static final int MAX_TIMEOUT = 5000;
@@ -42,13 +40,5 @@ public class Configurations {
                 .doOnConnected(conn ->
                         conn.addHandlerLast(new ReadTimeoutHandler(MAX_TIMEOUT, TimeUnit.MILLISECONDS))
                                 .addHandlerLast(new WriteTimeoutHandler(MAX_TIMEOUT, TimeUnit.MILLISECONDS)));
-    }
-
-    @Bean
-    ExecutorService dataPopulateThread() {
-        return Executors.newSingleThreadExecutor(
-                Thread.ofVirtual()
-                        .name("data-populate")
-                        .factory());
     }
 }
