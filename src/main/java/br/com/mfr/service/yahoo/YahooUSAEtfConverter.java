@@ -10,6 +10,9 @@ import java.util.Objects;
 import static br.com.mfr.util.NumberUtils.DOUBLE_ZERO;
 
 public class YahooUSAEtfConverter {
+
+    private YahooUSAEtfConverter(){}
+
     public static List<Company> convert(YahooEtfScreenerResponse response) {
         List<Quote> quotes = response.finance().result().getFirst().quotes();
 

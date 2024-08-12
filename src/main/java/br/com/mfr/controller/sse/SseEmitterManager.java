@@ -24,7 +24,7 @@ public class SseEmitterManager {
     public void notifyEmitters(SseEmitterEventNotification eventNotification) {
         emitters.forEach(emitter -> {
             try {
-                emitter.send(emitter.event()
+                emitter.send(SseEmitter.event()
                         .id(eventNotification.id().toString())
                         .name(eventNotification.name())
                         .data(eventNotification.data()));

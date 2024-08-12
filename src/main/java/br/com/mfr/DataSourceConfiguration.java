@@ -4,7 +4,6 @@ import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.service.datasource.*;
 import br.com.mfr.service.statusinvest.StatusInvestSource;
 import br.com.mfr.service.yahoo.YahooUSAEtfDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,11 +11,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class DataSourceConfiguration {
 
-    @Autowired
-    private CompanyRepository repo;
+    private final CompanyRepository repo;
+    private final WebClient client;
 
-    @Autowired
-    private WebClient client;
+    public DataSourceConfiguration(WebClient client, CompanyRepository repo) {
+        this.client = client;
+        this.repo = repo;
+    }
 
     @Bean
     public BrazilStockSource brlStockSource(){

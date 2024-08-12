@@ -14,18 +14,3 @@ record YahooEtfScreenerRequest(int size, int offset, String sortField, String so
 record Query(String operator, List<String> operands) {
 
 }
-
-//{
-//        "size": 25,
-//        "offset": 0,
-//        "sortField": "fundnetassets",
-//        "sortType": "DESC",
-//        "quoteType": "ETF",
-//        "query": {
-    //        "operator": "EQ",
-    //        "operands": [
-        //        "region",
-        //        "us"
-//        ]
-//        }
-//        }

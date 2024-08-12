@@ -17,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.List;
 
 import static java.lang.String.format;
+import static java.util.Objects.isNull;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -76,12 +77,15 @@ public class StatusInvestSource implements BrazilStockSource, BrazilFiiSource, B
 
     private List<CompanyResponse> tryToRetrieve(String preparedURL) {
         try {
-            return fetch(preparedURL, AdvanceSearchResponse.class)
-                    .getBody()
-                    .getList();
+            ResponseEntity<AdvanceSearchResponse> entity = fetch(preparedURL, AdvanceSearchResponse.class);
+            return hasBody(entity) ? entity.getBody().getList() : List.of();
         } catch (ExternalURLException e) {
             throw new GenericException(format("Attempt to retrieve data from url: %s failed.", preparedURL), e);
         }
+    }
+
+    private static boolean hasBody(ResponseEntity<AdvanceSearchResponse> entity) {
+        return entity.hasBody() && !isNull(entity.getBody());
     }
 
     private <R extends ResponseBody> ResponseEntity<R> fetch(String url, Class<R> responseClass) throws ExternalURLException {

@@ -5,6 +5,9 @@ import org.springframework.context.ApplicationEventPublisher;
 import java.util.UUID;
 
 public class PopulateDataEventHelper {
+
+    private PopulateDataEventHelper(){}
+
     public static void sendInitialized(ApplicationEventPublisher publisher) {
         publisher.publishEvent(new PopulateDataEvent(UUID.randomUUID(), PopulateDataEvent.INITIALIZED));
     }

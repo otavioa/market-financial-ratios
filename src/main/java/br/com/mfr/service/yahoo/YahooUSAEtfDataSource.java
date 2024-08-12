@@ -9,17 +9,21 @@ import br.com.mfr.service.datasource.DataSourceResult;
 import br.com.mfr.service.datasource.DataSourceType;
 import br.com.mfr.service.datasource.UsaEtfSource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static br.com.mfr.util.CollectionUtils.isEmpty;
 import static java.lang.String.format;
+import static java.util.Objects.isNull;
 
 public class YahooUSAEtfDataSource implements UsaEtfSource {
 
@@ -41,6 +45,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
         return DataSourceType.USA_ETF;
     }
 
+    @Transactional
     @Override
     public DataSourceResult populate() {
         try {
@@ -70,6 +75,13 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
 
         List<String> cookies = responseHeaders.get(HttpHeaders.SET_COOKIE);
 
+        if(isEmpty(cookies))
+            throw new GenericException("Attempt to retrieve Cookies from Yahoo Finance failed!");
+
+        return normalizeCookies(cookies);
+    }
+
+    private String normalizeCookies(List<String> cookies) {
         return cookies.stream()
                 .map(a -> Arrays.stream(a.split(";")).filter(validCookieHeaders()).findFirst())
                 .filter(a -> a.isPresent())
@@ -78,12 +90,17 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
     }
 
     private String retrieveCrumb(String stringCookies) throws ExternalURLException {
-        return ExternalURLClient
+        ResponseEntity<String> responseEntity = ExternalURLClient
                 .getInstance(client)
                 .addToHeader(HttpHeaders.COOKIE, stringCookies)
                 .addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT)
                 .addToHeader(HttpHeaders.ACCEPT, DEFAULT_ACCEPT)
-                .get("https://query2.finance.yahoo.com/v1/test/getcrumb").getBody().toString();
+                .get("https://query2.finance.yahoo.com/v1/test/getcrumb");
+
+        if(!hasBody(responseEntity))
+            throw new GenericException("Attempt to retrieve CRUMB ID from Yahoo Finance failed!");
+
+        return responseEntity.getBody().toString();
     }
 
     private List<Company> retrieveUSAEtfs(String crumb, String stringCookies) {
@@ -95,7 +112,9 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
         List<Supplier<YahooEtfScreenerResponse>> retrievers = new ArrayList<>();
         for (int i = 0; i < numberOfRequests; i++){
             int offset = i * LIMIT_PER_REQUEST;
-            retrievers.add(() -> fetchEtfData(url, LIMIT_PER_REQUEST, offset, stringCookies));
+            Optional<YahooEtfScreenerResponse> maybeResponse = fetchEtfData(url, LIMIT_PER_REQUEST, offset, stringCookies);
+            if(maybeResponse.isPresent())
+                retrievers.add(() -> maybeResponse.get());
         }
 
         List<Company> companies = new ArrayList<>();
@@ -107,24 +126,26 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
     }
 
     private int getAmountOfEtfs(String stringCookies, String url) {
-        int totalOfEtfs = fetchEtfData(url, 0, 0, stringCookies).finance().result().getFirst().total();
-        return totalOfEtfs;
+        Optional<YahooEtfScreenerResponse> maybeResponse = fetchEtfData(url, 0, 0, stringCookies);
+        return !maybeResponse.isPresent() ? 0 :
+                maybeResponse.get().finance().result().getFirst().total();
     }
 
-    @Transactional
     private List<Company> updateDataBase(List<Company> etfCompanies) {
         repo.deleteAllBySource(DataSourceType.USA_ETF);
         return repo.insert(etfCompanies);
     }
 
-    private YahooEtfScreenerResponse fetchEtfData(String url, int size, int offset, String stringCookies) {
+    private Optional<YahooEtfScreenerResponse> fetchEtfData(String url, int size, int offset, String stringCookies) {
         try {
-            return ExternalURLClient
+            ResponseEntity<YahooEtfScreenerResponse> responseEntity = ExternalURLClient
                     .getInstance(client)
                     .addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT)
                     .addToHeader(HttpHeaders.ACCEPT, DEFAULT_ACCEPT)
                     .addToHeader(HttpHeaders.COOKIE, stringCookies)
-                    .post(url, new YahooEtfScreenerRequest(size, offset), YahooEtfScreenerResponse.class).getBody();
+                    .post(url, new YahooEtfScreenerRequest(size, offset), YahooEtfScreenerResponse.class);
+
+            return Optional.ofNullable(responseEntity.getBody());
         } catch (ExternalURLException e) {
             throw new GenericException(format("Attempt to retrieve data from url: %s failed.", url), e);
         }
@@ -132,5 +153,9 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
 
     private static Predicate<String> validCookieHeaders() {
         return ai -> ai.startsWith("A1") || ai.startsWith("A3") || ai.startsWith("A1S");
+    }
+
+    private static boolean hasBody(ResponseEntity entity) {
+        return entity.hasBody() && !isNull(entity.getBody());
     }
 }
