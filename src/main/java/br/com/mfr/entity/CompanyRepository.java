@@ -9,8 +9,6 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends MongoRepository<Company, String> {
 
-    Company findByName(String name);
-
     List<Company> findByTickerInAndSourceIn(List<String> tickers, List<String> sources);
 
     List<Company> findBySourceIn(List<String> sources);
@@ -19,7 +17,5 @@ public interface CompanyRepository extends MongoRepository<Company, String> {
 
     void deleteAllBySource(DataSourceType source);
 
-    void deleteAllBySourceIn(List<DataSourceType> sources);
-
-    public long count();
+    long count();
 }

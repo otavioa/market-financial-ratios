@@ -70,7 +70,7 @@ class DataControllerTest {
                 )));
 
         Mockito.verify(repository, times(4)).deleteAllBySource(any(DataSourceType.class));
-        Mockito.verify(repository, times(4)).insert(anyList());;
+        Mockito.verify(repository, times(4)).insert(anyList());
     }
 
     private static String getUrl(StatusInvestResources resource) {
