@@ -3,12 +3,10 @@ package br.com.mfr.controller;
 import br.com.mfr.MockMvcApp;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.service.datasource.DataSourceType;
-import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -37,11 +35,6 @@ class DataControllerTest {
     @Autowired
     private CompanyRepository repository;
 
-    @BeforeAll
-    public static void setUpEnvironment() {
-        StatusInvestAdvancedSearchURL.setUrl("http://url?CategoryType={categoryType}");
-    }
-
     @BeforeEach
     public void setUpTests(){
         Mockito.when(repository.insert(Mockito.anyList())).thenAnswer(a -> a.getArgument(0));
@@ -53,6 +46,7 @@ class DataControllerTest {
                 call(getUrl(ACOES), a -> newResponse(1L, "EMPRESA AÇÃO", "AAA3", 100.00)),
                 call(getUrl(FIIS), a -> newResponse(2L, "EMPRESA FII", "FFF11", 101.00)),
                 call(getUrl(STOCKS), a -> newResponse(3L, "EMPRESA STOCKS", "SSS", 102.00)),
+                call(getUrl(REITS), a -> newResponse(4L, "EMPRESA REITS", "RRR", 103.00)),
                 call(getUrl(REITS), a -> newResponse(4L, "EMPRESA REITS", "RRR", 103.00)));
 
         performRequest(ApiEndpoints.DATA_POPULATE)
@@ -74,7 +68,7 @@ class DataControllerTest {
     }
 
     private static String getUrl(StatusInvestResources resource) {
-        return "http://url?CategoryType=" + resource.getCategoryType();
+        return "http://localhost:5050?search=%7B%7D&CategoryType=" + resource.getCategoryType();
     }
 
     private AdvanceSearchResponse newResponse(

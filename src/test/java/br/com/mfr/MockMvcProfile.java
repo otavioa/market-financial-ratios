@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class MockMvcProfile {
 
 	public static final String MOCK_MVC_PROFILE = "mock-mvc-profile";
+	public static final int WIRE_MOCK_PORT = 5050;
 
 	@MockBean private WebClient client;
 	@MockBean private CompanyRepository repository;

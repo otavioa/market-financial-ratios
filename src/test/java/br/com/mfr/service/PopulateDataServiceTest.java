@@ -3,11 +3,9 @@ package br.com.mfr.service;
 import br.com.mfr.MockMvcApp;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.service.datasource.DataSourceType;
-import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +28,6 @@ class PopulateDataServiceTest {
     @Autowired
     private PopulateDataService subject;
 
-    @BeforeAll
-    public static void setUpEnvironment() {
-        StatusInvestAdvancedSearchURL.setUrl("http://url?CategoryType={categoryType}");
-    }
-
     @Test
     void processPopulateData() {
         mockCalls(client,
@@ -50,7 +43,7 @@ class PopulateDataServiceTest {
     }
 
     private static String getUrl(StatusInvestResources resource) {
-        return "http://url?CategoryType=" + resource.getCategoryType();
+        return "http://localhost:5050?search=%7B%7D&CategoryType=" + resource.getCategoryType();
     }
 
     private AdvanceSearchResponse newResponse(

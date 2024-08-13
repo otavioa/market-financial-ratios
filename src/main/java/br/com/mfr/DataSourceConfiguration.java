@@ -3,6 +3,7 @@ package br.com.mfr;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.service.datasource.*;
 import br.com.mfr.service.statusinvest.StatusInvestSource;
+import br.com.mfr.service.statusinvest.StatusInvestURLProperties;
 import br.com.mfr.service.yahoo.YahooUSAEtfDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,20 +14,22 @@ public class DataSourceConfiguration {
 
     private final CompanyRepository repo;
     private final WebClient client;
+    private final StatusInvestURLProperties statusInvestProperties;
 
-    public DataSourceConfiguration(WebClient client, CompanyRepository repo) {
+    public DataSourceConfiguration(WebClient client, CompanyRepository repo, StatusInvestURLProperties statusInvestProperties) {
+        this.statusInvestProperties = statusInvestProperties;
         this.client = client;
         this.repo = repo;
     }
 
     @Bean
     public BrazilStockSource brlStockSource(){
-        return new StatusInvestSource(repo, client, DataSourceType.BRL_STOCK);
+        return new StatusInvestSource(repo, client, statusInvestProperties, DataSourceType.BRL_STOCK);
     }
 
     @Bean
     public BrazilFiiSource brlFiiSource(){
-        return new StatusInvestSource(repo, client, DataSourceType.BRL_FII);
+        return new StatusInvestSource(repo, client, statusInvestProperties, DataSourceType.BRL_FII);
     }
 
     @Bean
@@ -36,12 +39,12 @@ public class DataSourceConfiguration {
 
     @Bean
     public UsaStockSource usaStockSource(){
-        return new StatusInvestSource(repo, client, DataSourceType.USA_STOCK);
+        return new StatusInvestSource(repo, client, statusInvestProperties, DataSourceType.USA_STOCK);
     }
 
     @Bean
     public UsaReitSource usaReitSource(){
-        return new StatusInvestSource(repo, client, DataSourceType.USA_REIT);
+        return new StatusInvestSource(repo, client, statusInvestProperties, DataSourceType.USA_REIT);
     }
 
     @Bean

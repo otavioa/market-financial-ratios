@@ -3,10 +3,8 @@ package br.com.mfr.service;
 import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.service.datasource.DataSourceType;
-import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,17 +23,10 @@ import static org.mockito.ArgumentMatchers.anyList;
 @ExtendWith(MockitoExtension.class)
 class MarketRatioServiceTest {
 
-	private static final String URL_TEST = "http://url?search={search}&CategoryType={categoryType}";
-
 	@Mock private CompanyRepository repository;
 	
 	@InjectMocks
 	private MarketRatioService subject;
-	
-	@BeforeAll
-	public static void setUpEnvironment() {
-		StatusInvestAdvancedSearchURL.setUrl(URL_TEST);
-	}
 	
 	@Test
 	void getAllAvailable() {

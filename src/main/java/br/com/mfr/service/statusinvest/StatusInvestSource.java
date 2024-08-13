@@ -29,10 +29,13 @@ public class StatusInvestSource implements BrazilStockSource, BrazilFiiSource, B
     private final WebClient client;
     private final CompanyRepository repo;
     private final DataSourceType sourceType;
+    private final StatusInvestURLProperties urlProps;
 
-    public StatusInvestSource(CompanyRepository repo, WebClient client, DataSourceType sourceType) {
+    public StatusInvestSource(CompanyRepository repo, WebClient client,
+                              StatusInvestURLProperties urlProps, DataSourceType sourceType) {
         this.repo = repo;
         this.client = client;
+        this.urlProps = urlProps;
         this.sourceType = sourceType;
     }
 
@@ -68,7 +71,7 @@ public class StatusInvestSource implements BrazilStockSource, BrazilFiiSource, B
     }
 
     private List<CompanyResponse> retrieveCompaniesFromResource(StatusInvestResources resource) {
-        String preparedURL = getStatusInvestUrl()
+        String preparedURL = urlProps.advanced()
                 .replace("{categoryType}", resource.getCategoryType().toString())
                 .replace("{search}", resource.getFilter().asQueryParameter());
 
@@ -94,9 +97,5 @@ public class StatusInvestSource implements BrazilStockSource, BrazilFiiSource, B
                 .addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT)
                 .addToHeader(HttpHeaders.ACCEPT, DEFAULT_ACCEPT)
                 .get(url, responseClass);
-    }
-
-    private String getStatusInvestUrl() {
-        return StatusInvestAdvancedSearchURL.getUrl();
     }
 }

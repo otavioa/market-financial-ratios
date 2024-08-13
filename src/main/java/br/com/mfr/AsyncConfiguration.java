@@ -8,9 +8,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static br.com.mfr.ConfigProperties.APP_PREFIX;
+
 @EnableAsync
 @Configuration
-@ConditionalOnProperty(name = "mfr.async.enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = APP_PREFIX, name = "async.enabled", havingValue = "true")
 public class AsyncConfiguration {
 
     @Bean
