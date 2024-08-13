@@ -33,11 +33,13 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
 
     private final WebClient client;
     private final CompanyRepository repo;
+    private final YahooURLProperties yahooUrls;
 
 
-    public YahooUSAEtfDataSource(CompanyRepository repo, WebClient client) {
-        this.client = client;
+    public YahooUSAEtfDataSource(CompanyRepository repo, WebClient client, YahooURLProperties yahooUrls) {
         this.repo = repo;
+        this.client = client;
+        this.yahooUrls = yahooUrls;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
                 .getInstance(client)
                 .addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT)
                 .addToHeader(HttpHeaders.ACCEPT, DEFAULT_ACCEPT)
-                .get("https://news.yahoo.com/").getHeaders();
+                .get(yahooUrls.cookies()).getHeaders();
 
         List<String> cookies = responseHeaders.get(HttpHeaders.SET_COOKIE);
 
@@ -95,7 +97,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
                 .addToHeader(HttpHeaders.COOKIE, stringCookies)
                 .addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT)
                 .addToHeader(HttpHeaders.ACCEPT, DEFAULT_ACCEPT)
-                .get("https://query2.finance.yahoo.com/v1/test/getcrumb");
+                .get(yahooUrls.crumb());
 
         if(!hasBody(responseEntity))
             throw new GenericException("Attempt to retrieve CRUMB ID from Yahoo Finance failed!");
@@ -104,7 +106,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
     }
 
     private List<Company> retrieveUSAEtfs(String crumb, String stringCookies) {
-        String url = format("https://query1.finance.yahoo.com/v1/finance/screener?crumb=%s&lang=en-US&region=US&formatted=true", crumb);
+        String url = format(yahooUrls.etfScreener(), crumb);
 
         int totalRecords = getAmountOfEtfs(stringCookies, url);
         int numberOfRequests = (totalRecords / LIMIT_PER_REQUEST) + 1;
