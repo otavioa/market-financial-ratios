@@ -12,44 +12,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static java.util.Objects.isNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class WebClientMockSupport {
-
-    public static void mockCalls(WebClient client, MockCall... calls) {
-        var bodyUriSpecMock = mock(WebClient.RequestBodyUriSpec.class);
-        when(client.method(HttpMethod.GET)).thenReturn(bodyUriSpecMock);
-
-        Arrays.stream(calls).forEach(c -> {
-            var bodySpecMock = mock(WebClient.RequestBodySpec.class);
-            var headersSpecMock = mock(WebClient.RequestHeadersSpec.class);
-            var responseSpecMock = mock(WebClient.ResponseSpec.class);
-            var mono = mock(Mono.class);
-
-            when(bodyUriSpecMock.uri(eq(c.url))).thenReturn(bodySpecMock);
-            when(bodySpecMock.headers(any())).thenReturn(bodySpecMock);
-
-            if (!isNull(c.request)) {
-                when(bodySpecMock.bodyValue(c.request)).thenReturn(headersSpecMock);
-                when(headersSpecMock.retrieve()).thenReturn(responseSpecMock);
-            } else
-                when(bodySpecMock.retrieve()).thenReturn(responseSpecMock);
-
-            Class<ResponseBody> any = any();
-            when(responseSpecMock.toEntity(any)).thenAnswer(a -> {
-                Object response = c.answer.answer(a);
-                when(mono.block()).thenReturn(ResponseEntity.ofNullable(response));
-
-                return mono;
-            });
-        });
-    }
 
     public static MockVerifier answerForAny(WebClient client, Answer<?> answer) {
         return answer(client, null, answer);

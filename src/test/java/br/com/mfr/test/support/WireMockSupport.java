@@ -1,0 +1,101 @@
+package br.com.mfr.test.support;
+
+import br.com.mfr.service.yahoo.YahooEtfScreenerResponse;
+import com.github.tomakehurst.wiremock.matching.StringValuePattern;
+
+import java.util.Arrays;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+
+public class WireMockSupport {
+
+    public static final String COOKIE =
+            "A1=d=AQABBFaTsWYCEGLJa8bCLgfqiChBGv-ElhUFEgEBCAGzvGboZh4Ab2UB_eMBAAcIVpOxZv-ElhU&S=AQAAAhrhVkxSFqiWbl0Y6b8h2CM; " +
+            "A1S=d=AQABBFaTsWYCEGLJa8bCLgfqiChBGv-ElhUFEgEBCAGzvGboZh4Ab2UB_eMBAAcIVpOxZv-ElhU&S=AQAAAhrhVkxSFqiWbl0Y6b8h2CM; " +
+            "A3=d=AQABBFaTsWYCEGLJa8bCLgfqiChBGv-ElhUFEgEBCAGzvGboZh4Ab2UB_eMBAAcIVpOxZv-ElhU&S=AQAAAhrhVkxSFqiWbl0Y6b8h2CM; " +
+            "GUC=AQEBCAFmvLNm6EIdZARj&s=AQAAAPxQ5Zag&g=ZrtmXg; GUCS=AVnh4MvB";
+
+    public static final String CRUMB_ID = "GOr5OwCWrz2";
+
+    public static final String URL_COOKIE = "/yahoo/cookies";
+    public static final String URL_CRUMB = "/yahoo/getcrumb";
+    public static final String URL_ETF = "/yahoo/screener?crumb=" + CRUMB_ID + "&lang=en-US&region=US&formatted=true";
+
+    public static void mockYahooRequests(YahooEtfScreenerResponse.YahooEtfScreenerResponseBuilder builder) {
+        mockRequestCookie();
+        mockRequestCrumbID();
+        mockTotalCount(builder);
+        mockEtfResponse(builder);
+    }
+
+    private static void mockRequestCookie() {
+        stubFor(get(urlEqualTo(URL_COOKIE))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/html")
+                        .withHeader("Set-Cookie", COOKIE)
+                        .withBody("</html>")));
+    }
+
+    private static void mockRequestCrumbID() {
+        stubFor(get(urlEqualTo(URL_CRUMB))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/html")
+                        .withBody(CRUMB_ID)));
+    }
+
+    private static void mockTotalCount(YahooEtfScreenerResponse.YahooEtfScreenerResponseBuilder builder) {
+        String totalResponse = YahooEtfScreenerResponse.builder()
+                .withPaginator(0, 0, builder.getQuotes().size())
+                .buildToText();
+
+        stubFor(post(urlEqualTo(URL_ETF))
+                .withHeader("Content-Type", equalTo("application/json"))
+                .withRequestBody(prepareRequest(0, 0))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(totalResponse)));
+    }
+
+    private static void mockEtfResponse(YahooEtfScreenerResponse.YahooEtfScreenerResponseBuilder builder) {
+        stubFor(post(urlEqualTo(URL_ETF))
+                .withHeader("Content-Type", equalTo("application/json"))
+                .withRequestBody(prepareRequest(200, 0))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(builder.buildToText())));
+    }
+
+    private static StringValuePattern prepareRequest(int size, int offset) {
+        return equalToJson(String.format("""
+                {
+                    "size": %s,
+                    "offset": %s,
+                    "sortField": "fundnetassets",
+                    "sortType": "DESC",
+                    "quoteType": "ETF",
+                    "query": {
+                        "operator": "EQ",
+                        "operands": [
+                            "region",
+                            "us"
+                        ]
+                    }
+                }
+                """, size, offset), true, true);
+    }
+
+    public static void mockStatusInvestRequests(StatusInvestRequest... requests) {
+        Arrays.stream(requests).forEach(r -> {
+            stubFor(get(urlEqualTo(r.url))
+                    .willReturn(aResponse()
+                            .withHeader("Content-Type", "application/json")
+                            .withBody(r.responseBody)));
+        });
+    }
+
+    public static StatusInvestRequest request(String url, String responseBody) {
+        return new StatusInvestRequest(url, responseBody);
+    }
+
+    public record StatusInvestRequest(String url, String responseBody) { }
+}
