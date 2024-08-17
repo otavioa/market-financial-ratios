@@ -22,14 +22,14 @@ public class SseEmitterManager {
     }
 
     public void notifyEmitters(SseEmitterEventNotification eventNotification) {
-        emitters.forEach(emitter -> {
+        for (SseEmitter emitter : emitters) {
             try {
                 emitter.send(SseEmitter.event()
                         .id(eventNotification.id().toString())
                         .name(eventNotification.name())
                         .data(eventNotification.data()));
 
-                if(eventNotification.isComplete()){
+                if (eventNotification.isComplete()) {
                     emitter.complete();
                     emitters.remove(emitter);
                 }
@@ -37,7 +37,7 @@ public class SseEmitterManager {
                 emitter.completeWithError(e);
                 emitters.remove(emitter);
             }
-        });
+        }
     }
 
     public SseEmitter newEmitter() {

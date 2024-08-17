@@ -16,3 +16,4 @@ public class MockMvcProfile {
 	@MockBean private CompanyRepository repository;
 
 }
+

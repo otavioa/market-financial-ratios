@@ -41,9 +41,10 @@ public class StatusInvestSource implements BrazilStockSource, BrazilFiiSource, B
 
     @Override
     public DataSourceType type() {
-        return null;
+        return DataSourceType.USA_STOCK;
     }
 
+    //TODO - Remove only after retrieving the data
     @Override
     public DataSourceResult populate() {
         removeData();
@@ -83,7 +84,7 @@ public class StatusInvestSource implements BrazilStockSource, BrazilFiiSource, B
             ResponseEntity<AdvanceSearchResponse> entity = fetch(preparedURL, AdvanceSearchResponse.class);
             return hasBody(entity) ? entity.getBody().getList() : List.of();
         } catch (ExternalURLException e) {
-            throw new GenericException(format("Attempt to retrieve data from url: %s failed.", preparedURL), e);
+            throw new GenericException(format("An error occurred during %s database update. Message: %s", type(), e.getMessageWithBody()), e);
         }
     }
 

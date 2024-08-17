@@ -10,4 +10,5 @@ public enum DataSourceType {
     DataSourceType(Class<? extends DataSource> dataSource) {
         this.dataSource = dataSource;
     }
+
 }

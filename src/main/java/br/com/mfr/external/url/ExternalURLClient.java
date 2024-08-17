@@ -3,8 +3,8 @@ package br.com.mfr.external.url;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.function.Supplier;
 
@@ -83,7 +83,7 @@ public class ExternalURLClient {
 
 		try {
 			return consumer.get();
-		} catch (HttpClientErrorException e) {
+		} catch (WebClientResponseException e) {
 			throw new ExternalURLException(e);
 		} catch (RuntimeException e) {
 			throw new ExternalURLException(e.getMessage());

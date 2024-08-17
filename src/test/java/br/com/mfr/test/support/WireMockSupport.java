@@ -1,9 +1,9 @@
 package br.com.mfr.test.support;
 
 import br.com.mfr.service.yahoo.YahooEtfScreenerResponse;
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.StringValuePattern;
-
-import java.util.Arrays;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
@@ -85,17 +85,28 @@ public class WireMockSupport {
     }
 
     public static void mockStatusInvestRequests(StatusInvestRequest... requests) {
-        Arrays.stream(requests).forEach(r -> {
+        for (StatusInvestRequest r : requests) {
             stubFor(get(urlEqualTo(r.url))
-                    .willReturn(aResponse()
-                            .withHeader("Content-Type", "application/json")
-                            .withBody(r.responseBody)));
-        });
+                    .willReturn(r.responseDefinition));
+        }
     }
 
     public static StatusInvestRequest request(String url, String responseBody) {
-        return new StatusInvestRequest(url, responseBody);
+        ResponseDefinitionBuilder definition = aResponse()
+                .withHeader("Content-Type", "application/json")
+                .withBody(responseBody);
+
+        return new StatusInvestRequest(url, definition);
     }
 
-    public record StatusInvestRequest(String url, String responseBody) { }
+    public static StatusInvestRequest throwBadRequest(String url, String messageError) {
+        ResponseDefinitionBuilder definition = WireMock.badRequest()
+                .withHeader("Content-Type", "application/json")
+                .withBody("{ \"error\": \"" + messageError +"\"}");
+
+        return new StatusInvestRequest(url, definition);
+
+    }
+
+    public record StatusInvestRequest(String url, ResponseDefinitionBuilder responseDefinition) { }
 }

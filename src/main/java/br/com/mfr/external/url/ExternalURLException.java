@@ -2,7 +2,7 @@ package br.com.mfr.external.url;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.io.Serial;
 import java.util.Optional;
@@ -14,17 +14,17 @@ public class ExternalURLException extends Exception {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final HttpClientErrorException ex;
+    private final WebClientResponseException ex;
 
     public ExternalURLException(String message) {
         this(message, null);
     }
 
-    public ExternalURLException(HttpClientErrorException ex) {
+    public ExternalURLException(WebClientResponseException ex) {
         this(ex.getMessage(), ex);
     }
 
-    public ExternalURLException(String message, HttpClientErrorException ex) {
+    public ExternalURLException(String message, WebClientResponseException ex) {
         super(message);
         this.ex = ex;
     }

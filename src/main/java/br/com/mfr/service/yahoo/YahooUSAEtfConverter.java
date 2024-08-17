@@ -17,7 +17,7 @@ public class YahooUSAEtfConverter {
         List<Quote> quotes = response.finance().result().getFirst().quotes();
 
         List<Company> companies = new ArrayList<>();
-        quotes.forEach(q -> {
+        for (Quote q : quotes) {
             companies.add(Company.builder()
                     .withSource(DataSourceType.USA_ETF)
                     .withName(q.shortName())
@@ -27,7 +27,7 @@ public class YahooUSAEtfConverter {
                     .withPAtivo(normalize(q.netAssets()))
                     .withValorMercado(normalize(q.marketCap()))
                     .build());
-        });
+        }
 
         return companies;
     }
