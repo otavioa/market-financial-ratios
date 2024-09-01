@@ -23,7 +23,7 @@ public class DataController {
     }
 
     @GetMapping("/populate")
-        public SseEmitter populateData() {
+    public SseEmitter populateData() {
         SseEmitter emitter = sseManager.newEmitter();
         sseManager.addEmitter(emitter);
 

@@ -35,7 +35,7 @@ public class ExternalURLClient {
 
 		return executeClientRequest(() -> client
 				.method(HttpMethod.POST)
-				.uri(UrilUtils.getURI(url))
+				.uri(UrlUtils.getURI(url))
 				.headers(h -> h.addAll(headers))
 				.bodyValue(request)
 				.retrieve()
@@ -48,7 +48,7 @@ public class ExternalURLClient {
 
 		return executeClientRequest(() -> client
 				.method(HttpMethod.PATCH)
-				.uri(UrilUtils.getURI(url))
+				.uri(UrlUtils.getURI(url))
 				.headers(h -> h.addAll(headers))
 				.bodyValue(request)
 				.retrieve()
@@ -59,7 +59,7 @@ public class ExternalURLClient {
 	public ResponseEntity<String> get(String url) throws ExternalURLException {
 		return executeClientRequest(() -> client
 				.method(HttpMethod.GET)
-				.uri(UrilUtils.getURI(url))
+				.uri(UrlUtils.getURI(url))
 				.headers(h -> h.addAll(headers))
 				.retrieve()
 				.toEntity(String.class)
@@ -71,7 +71,7 @@ public class ExternalURLClient {
 
 		return executeClientRequest(() -> client
 				.method(HttpMethod.GET)
-				.uri(UrilUtils.getURI(url))
+				.uri(UrlUtils.getURI(url))
 				.headers(h -> h.addAll(headers))
 				.retrieve()
 				.toEntity(responseClass)

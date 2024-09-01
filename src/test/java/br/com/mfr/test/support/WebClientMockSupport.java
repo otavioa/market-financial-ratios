@@ -2,7 +2,7 @@ package br.com.mfr.test.support;
 
 import br.com.mfr.external.url.RequestBody;
 import br.com.mfr.external.url.ResponseBody;
-import br.com.mfr.external.url.UrilUtils;
+import br.com.mfr.external.url.UrlUtils;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.mockito.verification.VerificationMode;
@@ -62,7 +62,7 @@ public class WebClientMockSupport {
     }
 
     public static MockCall call(String url, RequestBody request, Answer<?> answer) {
-        return new MockCall(UrilUtils.getURI(url), request, answer);
+        return new MockCall(UrlUtils.getURI(url), request, answer);
     }
 
     public static class MockCall {
@@ -104,7 +104,7 @@ public class WebClientMockSupport {
         }
 
         public void verifyUrl(VerificationMode mode, String url) {
-            Mockito.verify(bodyUriSpecMock, mode).uri(UrilUtils.getURI(url));
+            Mockito.verify(bodyUriSpecMock, mode).uri(UrlUtils.getURI(url));
         }
 
         public void verifyHeader(VerificationMode times) {

@@ -7,9 +7,9 @@ import java.net.URISyntaxException;
 
 import static java.lang.String.format;
 
-public class UrilUtils {
+public class UrlUtils {
 
-	private UrilUtils() {}
+	private UrlUtils() {}
 	
 	public static URI getURI(String url) {
 		try {
