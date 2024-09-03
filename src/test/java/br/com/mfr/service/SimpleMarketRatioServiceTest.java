@@ -2,14 +2,15 @@ package br.com.mfr.service;
 
 import br.com.mfr.exception.GenericException;
 import br.com.mfr.service.htmlreader.HtmlReaderService;
-import br.com.mfr.service.statusinvest.StatusInvestURL;
+import br.com.mfr.service.statusinvest.StatusInvestURLProperties;
 import br.com.mfr.service.ticket.TickerResponse;
 import br.com.mfr.test.support.URLMockServiceSupport;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
@@ -20,19 +21,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 class SimpleMarketRatioServiceTest {
 
-	private static final String URL_TEST = "https://teste.com.br/{type}/{ticket}";
-
 	@Mock private HtmlReaderService readerService;
+	@Mock private StatusInvestURLProperties urlProps;
 	@InjectMocks private SimpleMarketRatioService subject;
 
-	@BeforeAll
-	public static void setUpEnvironment() {
-		StatusInvestURL.setUrl(URL_TEST);
+	@BeforeEach
+	public void setUpTests(){
+		Mockito.when(urlProps.ticker()).thenReturn("http://localhost:5050/{type}/{ticket}");
 	}
-	
+
 	@Test
 	void getEtfInfo() throws Exception {
-		mockReaderService("https://teste.com.br/etfs/IVVB11", "testdata/ivvb11_page.html");
+		mockReaderService("http://localhost:5050/etfs/IVVB11", "testdata/ivvb11_page.html");
 
 		TickerResponse response = subject.getEtfInfo("IVVB11");
 
@@ -41,7 +41,7 @@ class SimpleMarketRatioServiceTest {
 
 	@Test
 	void getInvalidEtf() throws Exception {
-		mockReaderService("https://teste.com.br/etfs/HEHE14", "testdata/invalid_ticker.html");
+		mockReaderService("http://localhost:5050/etfs/HEHE14", "testdata/invalid_ticker.html");
 
 		TickerResponse response = subject.getEtfInfo("HEHE14");
 
@@ -51,12 +51,12 @@ class SimpleMarketRatioServiceTest {
 	@Test
 	void throwErrorWhenRetrying() throws Exception {
 		URLMockServiceSupport.mockReaderServiceWithError(
-				readerService, "https://teste.com.br/etfs/IVVB11", new IOException("Connection failed!"));
+				readerService, "http://localhost:5050/etfs/IVVB11", new IOException("Connection failed!"));
 
 		Exception exception = assertThrows(
 				GenericException.class, () -> subject.getEtfInfo("IVVB11"));
 
-		assertEquals("Attempt to reach document from URL fail https://teste.com.br/etfs/IVVB11", exception.getMessage());
+		assertEquals("Attempt to reach document from URL fail http://localhost:5050/etfs/IVVB11", exception.getMessage());
 	}
 
 	private void mockReaderService(String url, String fileName) throws Exception {

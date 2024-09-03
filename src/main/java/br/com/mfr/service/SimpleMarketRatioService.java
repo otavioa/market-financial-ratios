@@ -2,7 +2,7 @@ package br.com.mfr.service;
 
 import br.com.mfr.exception.GenericException;
 import br.com.mfr.service.htmlreader.HtmlReaderService;
-import br.com.mfr.service.statusinvest.StatusInvestURL;
+import br.com.mfr.service.statusinvest.StatusInvestURLProperties;
 import br.com.mfr.service.ticket.TickerResponse;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
@@ -15,9 +15,11 @@ import static java.lang.String.format;
 public class SimpleMarketRatioService {
 
 	private final HtmlReaderService readerService;
+	private final StatusInvestURLProperties urlProps;
 
-    public SimpleMarketRatioService(HtmlReaderService readerService) {
-        this.readerService = readerService;
+    public SimpleMarketRatioService(HtmlReaderService readerService, StatusInvestURLProperties urlProps) {
+		this.urlProps = urlProps;
+		this.readerService = readerService;
     }
 
     public TickerResponse getEtfInfo(String ticker) {
@@ -40,7 +42,7 @@ public class SimpleMarketRatioService {
 	}
 
 	private String getFinalURL(String ticket) {
-		return StatusInvestURL.getUrl()
+		return urlProps.ticker()
 				.replace("{type}", "etfs")
 				.replace("{ticket}", ticket);
 	}

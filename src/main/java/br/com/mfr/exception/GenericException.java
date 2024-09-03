@@ -7,4 +7,8 @@ public class GenericException extends RuntimeException {
 	public GenericException(String msg, Throwable e) {
 		super(msg, e);
 	}
+
+	public GenericException(String msg) {
+		super(msg);
+	}
 }

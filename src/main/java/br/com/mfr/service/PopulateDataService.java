@@ -1,112 +1,71 @@
 package br.com.mfr.service;
 
-import br.com.mfr.entity.Company;
-import br.com.mfr.entity.CompanyRepository;
-import br.com.mfr.exception.GenericException;
-import br.com.mfr.external.url.ExternalURL;
-import br.com.mfr.external.url.ExternalURLException;
-import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
-import br.com.mfr.service.statusinvest.StatusInvestResources;
-import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
-import br.com.mfr.service.statusinvest.dto.CompanyConverter;
-import br.com.mfr.service.statusinvest.dto.CompanyResponse;
+import br.com.mfr.service.datasource.*;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.Semaphore;
+import java.util.stream.Stream;
 
-import static java.lang.String.format;
+import static br.com.mfr.service.PopulateDataEventHelper.*;
 
 @Service
 @Transactional(readOnly = true)
 public class PopulateDataService {
 
-    private final ExternalURL externalUrl;
-    private final CompanyRepository repo;
     private final ApplicationEventPublisher publisher;
+
+    private final BrazilStockSource brlStockSource;
+    private final BrazilFiiSource brlFiiSource;
+    private final BrazilEtfSource brlEtfSource;
+    private final UsaStockSource usaStockSource;
+    private final UsaReitSource usaReitSource;
+    private final UsaEtfSource usaEtfSource;
 
     private final Semaphore semaphore = new Semaphore(1);
 
-    public PopulateDataService(ExternalURL externalUrl,
-                               CompanyRepository repo, ApplicationEventPublisher publisher) {
+    public PopulateDataService(
+            ApplicationEventPublisher publisher, BrazilStockSource brlStockSource, BrazilFiiSource brlFiiSource,
+            BrazilEtfSource brlEtfSource, UsaStockSource usaStockSource, UsaReitSource usaReitSource,
+            UsaEtfSource usaEtfSource) {
 
-        this.externalUrl = externalUrl;
         this.publisher = publisher;
-        this.repo = repo;
+        this.brlStockSource = brlStockSource;
+        this.brlFiiSource = brlFiiSource;
+        this.brlEtfSource = brlEtfSource;
+        this.usaStockSource = usaStockSource;
+        this.usaReitSource = usaReitSource;
+        this.usaEtfSource = usaEtfSource;
     }
 
     @Transactional
     @Async("dataPopulateThread")
     public void populateData() {
         if (semaphore.tryAcquire()) {
-            UUID id = UUID.randomUUID();
+            sendInitialized(publisher);
 
-            publisher.publishEvent(new PopulateDataEvent(id, PopulateDataEvent.START_PROCESSING));
+            getDataSources()
+                    .parallel()
+                    .forEach(this::populateDataSource);
 
-            removeData(id);
-            insertDataBy(id, StatusInvestResources.values());
-
-            publisher.publishEvent(
-                    new PopulateDataEvent(id, PopulateDataEvent.COMPLETED));
-
+            sendCompleted(publisher);
             semaphore.release();
         }
     }
 
-    private void insertDataBy(UUID id, StatusInvestResources[] resources) {
-        Arrays.stream(resources)
-                .parallel()
-                .forEach(resource -> {
-                    List<Company> companies = getCompaniesFrom(resource);
-                    repo.insert(companies);
-                    publisher.publishEvent(
-                            new PopulateDataEvent(
-                                    id,
-                                    resource.name(),
-                                    format("%s new records...", companies.size())));
-                });
-    }
-
-    private List<Company> getCompaniesFrom(StatusInvestResources resource) {
-        List<CompanyResponse> listResponse = retrieveCompaniesFromResource(resource);
-
-        return listResponse.stream()
-                .map(r -> CompanyConverter.convert(resource, r))
-                .toList();
-    }
-
-    private void removeData(UUID id) {
-        long count = repo.count();
-        repo.deleteAll();
-
-        publisher.publishEvent(
-                new PopulateDataEvent(id, PopulateDataEvent.REMOVED, format("%s records removed...", count)));
-    }
-
-    private List<CompanyResponse> retrieveCompaniesFromResource(StatusInvestResources resource) {
-        String preparedURL = getStatusInvestUrl()
-                .replace("{categoryType}", resource.getCategoryType().toString())
-                .replace("{search}", resource.getFilter().asQueryParameter());
-
-        return tryToRetrieve(preparedURL);
-    }
-
-    private List<CompanyResponse> tryToRetrieve(String preparedURL) {
+    private void populateDataSource(DataSource e) {
         try {
-            return externalUrl.doGet(preparedURL, AdvanceSearchResponse.class)
-                    .getList();
-        } catch (ExternalURLException e) {
-            throw new GenericException(format("Attempt to retrieve data from url: %s failed.", preparedURL), e);
+            var result = e.populate();
+            sendExecuted(publisher, result);
+        } catch (Exception ex) {
+            sendError(publisher, new DataSourceResult(e.type(), ex.getMessage()));
         }
     }
 
-    private String getStatusInvestUrl() {
-        return StatusInvestAdvancedSearchURL.getUrl();
+    private Stream<DataSource> getDataSources() {
+        return Stream.of(brlStockSource, brlFiiSource, brlEtfSource,
+                usaStockSource, usaReitSource, usaEtfSource);
     }
-
 }

@@ -53,9 +53,9 @@
                     </tr>
                     <tr>
                         <td>/market-ratio?&#60;params&#62;</td>
-                        <td>Retrieve tickers by setting 'types', 'tickers' and 'ratios' parameters.</td>
+                        <td>Retrieve tickers by setting 'sources', 'tickers' and 'ratios' parameters.</td>
                         <td class="text-center">
-                            <a href="/market-ratio?types=STOCKS&tickers=AMZN&ratios=PL" target="_blank"
+                            <a href="/market-ratio?sources=USA_STOCK&tickers=AMZN&ratios=PL" target="_blank"
                                class="btn btn-primary">Test</a>
                         </td>
                     </tr>
@@ -71,36 +71,41 @@
                     </tbody>
                 </table>
                 <br>
-                <h3>Available Types</h3>
-                <p>Types that you can use as a parameter for 'types' on /market-ratio?types=X endpoint.</p>
+                <h3>Available Sources</h3>
+                <p>Sources that you can use as a parameter for 'sources' on /market-ratio?sources=X endpoint.</p>
                 <table class="table table-bordered table-hover">
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">Key</th>
-                        <th scope="col">Type</th>
+                        <th scope="col">Source</th>
                         <th scope="col">Description</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <th scope="row">1</th>
-                        <td>ACOES</td>
+                        <td>BRL_STOCK</td>
                         <td>Retrieve tickers by filtering Brazilian stocks.</td>
                     </tr>
                     <tr>
                         <th scope="row">1</th>
-                        <td>FIIS</td>
+                        <td>BRL_FII</td>
                         <td>Retrieve tickers by filtering Brazilian reits.</td>
                     </tr>
                     <tr>
                         <th scope="row">1</th>
-                        <td>STOCKS</td>
+                        <td>USA_STOCK</td>
                         <td>Retrieve tickers by filtering American stocks.</td>
                     </tr>
                     <tr>
                         <th scope="row">1</th>
-                        <td>REITS</td>
+                        <td>USA_REIT</td>
                         <td>Retrieve tickers by filtering American reits.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>USA_ETF</td>
+                        <td>Retrieve tickers by filtering American ETF's.</td>
                     </tr>
                     </tbody>
                 </table>
@@ -153,11 +158,12 @@
                 <ul>
                     <li>The application will return '-' for unavailable values.</li>
                     <li>The application might return 400* or 500* in case of error.</li>
-                    <li>It's possible to match values with its origin (StatusInvest), all data come from there. Just
-                        access <a target="_blank" href="https://statusinvest.com.br">Status Invest</a>.
+                    <li>It's possible to match values with its origin (<a target="_blank" href="https://statusinvest.com.br">Status Invest</a> or
+                        <a target="_blank" href="https://finance.yahoo.com">Yahoo! Finance</a>), all data come
+                        from there.
                     </li>
                     <li>For endpoint /market-ratio?&#60;params&#62; you'll need to specify at least one parameter of
-                        'types' or 'tickers'.
+                        'sources' or 'tickers'.
                     </li>
                 </ul>
                 <br>
@@ -194,13 +200,13 @@
                     <div class="col-auto mb-3">
                         <div class="card h-100" style="width: 26rem;">
                             <div class="card-header font-weight-bold">
-                                /market-ratio?types=STOCKS
+                                /market-ratio?sources=USA_STOCK
                             </div>
                             <div class="card-body">
                                 <p class="card-text">Return all stocks.</p>
                             </div>
                             <div class="card-footer">
-                                <a href="/market-ratio?types=STOCKS" target="_blank"
+                                <a href="/market-ratio?sources=USA_STOCK" target="_blank"
                                    class="btn btn-primary">Test it!</a>
                             </div>
                         </div>
@@ -238,13 +244,13 @@
                     <div class="col-auto mb-3">
                         <div class="card h-100" style="width: 26rem;">
                             <div class="card-header font-weight-bold">
-                                /market-ratio?types=FIIS&ratios=DY
+                                /market-ratio?sources=BRL_FII&ratios=DY
                             </div>
                             <div class="card-body">
                                 <p class="card-text">Return only de DY from all Brazilian FIIS.</p>
                             </div>
                             <div class="card-footer">
-                                <a href="/market-ratio?types=FIIS&ratios=DY" target="_blank"
+                                <a href="/market-ratio?sources=BRL_FII&ratios=DY" target="_blank"
                                    class="btn btn-primary">Test it!</a>
                             </div>
                         </div>
@@ -283,13 +289,13 @@
                     <div class="col-auto mb-3">
                         <div class="card h-100" style="width: 26rem;">
                             <div class="card-header font-weight-bold">
-                                /market-ratio?types=STOCKS&types=REITS&ratios=LPA&ratios=DY
+                                /market-ratio?sources=USA_STOCK&sources=USA_REIT&ratios=LPA&ratios=DY
                             </div>
                             <div class="card-body">
                                 <p class="card-text">Return LPA and DY from all Stocks and Reits.</p>
                             </div>
                             <div class="card-footer">
-                                <a href="/market-ratio?types=STOCKS&types=REITS&ratios=LPA&ratios=DY"
+                                <a href="/market-ratio?sources=USA_STOCK&sources=USA_REIT&ratios=LPA&ratios=DY"
                                    target="_blank" class="btn btn-primary">Test it!</a>
                             </div>
                         </div>

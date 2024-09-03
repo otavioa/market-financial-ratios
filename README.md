@@ -2,11 +2,11 @@
 
 # Market Financial Ratios (MFR) API
 
-**Market Financial Ratios (MFR)** is a straightforward API designed to retrieve market financial ratios from Brazillian Companies and the United States. The data is sourced from [StatusInvest](https://statusinvest.com.br/).
+**Market Financial Ratios (MFR)** is a straightforward API designed to retrieve market financial ratios from Brazilian and United States companies. The data is provided by [StatusInvest](https://statusinvest.com.br/) and [Yahoo! Finance](https://finance.yahoo.com/).
 
 ## How It Works
 
-The API retrieves essential data from [StatusInvest](https://statusinvest.com.br/) and saves it into a internal MongoDB database. Subsequently, users can access this information via the local API and retrieve the specific data they require.
+The API retrieves essential data from both [StatusInvest](https://statusinvest.com.br/) and [Yahoo! Finance](https://finance.yahoo.com/) and saves it into a internal MongoDB database. Subsequently, users can access this information via the local API and retrieve the specific data they require.
 
 ## Getting Started
 

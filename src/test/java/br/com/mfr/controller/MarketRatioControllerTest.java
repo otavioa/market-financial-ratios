@@ -1,14 +1,13 @@
 package br.com.mfr.controller;
 
+import br.com.mfr.MockMvcProfile;
 import br.com.mfr.MongoDbMvcApp;
 import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
+import br.com.mfr.service.datasource.DataSourceType;
 import br.com.mfr.service.htmlreader.HtmlReaderService;
-import br.com.mfr.service.statusinvest.StatusInvestAdvancedSearchURL;
-import br.com.mfr.service.statusinvest.StatusInvestURL;
 import br.com.mfr.test.support.URLMockServiceSupport;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,30 +18,19 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.assertj.core.util.Strings.concat;
+import static br.com.mfr.service.datasource.DataSourceType.*;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MongoDbMvcApp
-@AutoConfigureWireMock(port = MarketRatioControllerTest.URL_PORT)
+@AutoConfigureWireMock(port = MockMvcProfile.WIRE_MOCK_PORT)
 class MarketRatioControllerTest {
-
-	public static final int URL_PORT = 5050;
-	private static final String URL_DOMAIN = "http://localhost";
-	private static final String URL_ADVANCED_PATH = "/path?CategoryType={categoryType}";
-	private static final String URL_SIMPLE_PATH = "/{type}/{ticket}";
 
 	@Autowired private MockMvc mvc;
 	@Autowired CompanyRepository repo;
 
 	@MockBean private HtmlReaderService readerService;
-
-	@BeforeAll
-	public static void setUpEnvironment() {
-		StatusInvestAdvancedSearchURL.setUrl(concat(URL_DOMAIN, ":", URL_PORT, URL_ADVANCED_PATH));
-		StatusInvestURL.setUrl(concat(URL_DOMAIN, ":", URL_PORT, URL_SIMPLE_PATH));
-	}
 
 	@BeforeEach
 	public void cleanDB(){
@@ -52,35 +40,35 @@ class MarketRatioControllerTest {
 	@Test
 	void getAllAvailable() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).build(),
-				buildCompany("2", "FUNDO FII", "FIIS","FII11", 130.0).build(),
-		 		buildCompany("3", "COMPANY STOCK", "STOCKS", "STK", 40.0).build(),
-				buildCompany("4", "REIT REIT", "REITS","RIT", 172.0).build());
+				buildCompany("1", "EMPRESA ACAO", BRL_STOCK, "ACAO3", 40.0).build(),
+				buildCompany("2", "FUNDO FII", BRL_FII,"FII11", 130.0).build(),
+		 		buildCompany("3", "COMPANY STOCK", USA_STOCK, "STK", 40.0).build(),
+				buildCompany("4", "REIT REIT", USA_REIT,"RIT", 172.0).build());
 
 		performRequest(ApiEndpoints.MARKET_RATIO_ALL)
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", Matchers.hasSize(4)))
 				.andExpect(jsonPath("$[0].name", Matchers.is("EMPRESA ACAO")))
-				.andExpect(jsonPath("$[0].type", Matchers.is("ACOES")))
+				.andExpect(jsonPath("$[0].source", Matchers.is("BRL_STOCK")))
 				.andExpect(jsonPath("$[0].ticker", Matchers.is("ACAO3")))
 				.andExpect(jsonPath("$[1].name", Matchers.is("FUNDO FII")))
-				.andExpect(jsonPath("$[1].type", Matchers.is("FIIS")))
+				.andExpect(jsonPath("$[1].source", Matchers.is("BRL_FII")))
 				.andExpect(jsonPath("$[1].ticker", Matchers.is("FII11")))
 				.andExpect(jsonPath("$[2].name", Matchers.is("COMPANY STOCK")))
-				.andExpect(jsonPath("$[2].type", Matchers.is("STOCKS")))
+				.andExpect(jsonPath("$[2].source", Matchers.is("USA_STOCK")))
 				.andExpect(jsonPath("$[2].ticker", Matchers.is("STK")))
 				.andExpect(jsonPath("$[3].name", Matchers.is("REIT REIT")))
-				.andExpect(jsonPath("$[3].type", Matchers.is("REITS")))
+				.andExpect(jsonPath("$[3].source", Matchers.is("USA_REIT")))
 				.andExpect(jsonPath("$[3].ticker", Matchers.is("RIT")));
 	}
 
 	@Test
 	void getByTicker() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).build(),
-				buildCompany("2", "FUNDO FII", "FIIS","FII11", 130.0).build(),
-				buildCompany("3", "COMPANY STOCK", "STOCKS", "STK", 40.0).build(),
-				buildCompany("4", "REIT REIT", "REITS","RIT", 172.0).build());
+				buildCompany("1", "EMPRESA ACAO", BRL_STOCK, "ACAO3", 40.0).build(),
+				buildCompany("2", "FUNDO FII", BRL_FII,"FII11", 130.0).build(),
+				buildCompany("3", "COMPANY STOCK", USA_STOCK, "STK", 40.0).build(),
+				buildCompany("4", "REIT REIT", USA_REIT,"RIT", 172.0).build());
 
 		performRequest(ApiEndpoints.MARKET_RATIO,
 				new Parameter("tickers", "FII11"))
@@ -94,10 +82,10 @@ class MarketRatioControllerTest {
 	@Test
 	void getByTickerAndRatios() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).withPl(11.0).withLpa(3.0).withVpa(4.0).withRoe(12.0).build(),
-				buildCompany("2", "FUNDO FII", "FIIS", "FII11", 130.0).withDy(5.0).withPvp(1.10).build(),
-				buildCompany("3", "COMPANY STOCK", "STOCKS", "STK", 40.).build(),
-				buildCompany("4", "REIT REIT", "REITS", "RIT", 172.0).build());
+				buildCompany("1", "EMPRESA ACAO", BRL_STOCK, "ACAO3", 40.0).withPl(11.0).withLpa(3.0).withVpa(4.0).withRoe(12.0).build(),
+				buildCompany("2", "FUNDO FII", BRL_FII, "FII11", 130.0).withDy(5.0).withPvp(1.10).build(),
+				buildCompany("3", "COMPANY STOCK", USA_STOCK, "STK", 40.).build(),
+				buildCompany("4", "REIT REIT", USA_REIT, "RIT", 172.0).build());
 
 		performRequest(ApiEndpoints.MARKET_RATIO,
 				new Parameter("tickers", "ACAO3"),
@@ -131,15 +119,15 @@ class MarketRatioControllerTest {
 	}
 
 	@Test
-	void getByType() throws Exception {
+	void getBySource() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).build(),
-				buildCompany("2", "FUNDO FII", "FIIS","FII11", 130.0).build(),
-				buildCompany("3", "COMPANY STOCK", "STOCKS", "STK", 40.0).build(),
-				buildCompany("4", "REIT REIT", "REITS","RIT", 172.0).build());
+				buildCompany("1", "EMPRESA ACAO", BRL_STOCK, "ACAO3", 40.0).build(),
+				buildCompany("2", "FUNDO FII", BRL_FII,"FII11", 130.0).build(),
+				buildCompany("3", "COMPANY STOCK", USA_STOCK, "STK", 40.0).build(),
+				buildCompany("4", "REIT REIT", USA_REIT,"RIT", 172.0).build());
 
 		performRequest(ApiEndpoints.MARKET_RATIO,
-				new Parameter("types", "ACOES"))
+				new Parameter("sources", "BRL_STOCK"))
 
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isArray())
@@ -157,12 +145,12 @@ class MarketRatioControllerTest {
 	@Test
 	void getByTypeAndRatios() throws Exception {
 		mockResponseTo(
-				buildCompany("1", "EMPRESA ACAO", "ACOES", "ACAO3", 40.0).withPl(11.0).withLpa(3.0).withVpa(4.0).withRoe(12.0).build(),
-				buildCompany("2", "FUNDO FII", "FIIS","FII11", 130.0).build());
+				buildCompany("1", "EMPRESA ACAO", BRL_STOCK, "ACAO3", 40.0).withPl(11.0).withLpa(3.0).withVpa(4.0).withRoe(12.0).build(),
+				buildCompany("2", "FUNDO FII", BRL_FII,"FII11", 130.0).build());
 
 
 		performRequest(ApiEndpoints.MARKET_RATIO,
-				new Parameter("types", "ACOES"),
+				new Parameter("sources", "BRL_STOCK"),
 				new Parameter("ratios", "PL"),
 				new Parameter("ratios", "LPA"),
 				new Parameter("ratios", "VPA"),
@@ -179,7 +167,7 @@ class MarketRatioControllerTest {
 
 	@Test
 	void getEtfByTicker() throws Exception {
-		mockReaderService(concat(URL_DOMAIN, ":", URL_PORT, "/etfs/IVVB11"), "testdata/ivvb11_page.html");
+		mockReaderService("http://localhost:5050/etfs/IVVB11", "testdata/ivvb11_page.html");
 
 		performRequest(ApiEndpoints.MARKET_RATIO + "/etfs/IVVB11")
 				.andExpect(status().isOk())
@@ -196,9 +184,9 @@ class MarketRatioControllerTest {
 			repo.insert(c);
 	}
 
-	private static Company.CompanyBuilder buildCompany(String id, String name, String type, String ticker, Double price) {
+	private static Company.CompanyBuilder buildCompany(String id, String name, DataSourceType source, String ticker, Double price) {
 		return Company.builder()
-				.withId(id).withName(name).withType(type).withTicker(ticker).withPrice(price);
+				.withId(id).withName(name).withSource(source).withTicker(ticker).withPrice(price);
 	}
 
 	private ResultActions performRequest(String endPoint, Parameter... parameters) throws Exception {

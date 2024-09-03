@@ -15,7 +15,7 @@ public class CompanyConverter {
 
     public Company executeConversion(StatusInvestResources resource, CompanyResponse company) {
         Company dto = Company.builder()
-                .withType(resource.name())
+                .withSource(resource.getResourceType())
                 .withName(company.companyname())
                 .withTicker(company.ticker())
                 .withPrice(company.price())

@@ -1,4 +1,4 @@
-package br.com.mfr.external.url.client;
+package br.com.mfr.external.url;
 
 import br.com.mfr.exception.GenericException;
 
@@ -7,9 +7,9 @@ import java.net.URISyntaxException;
 
 import static java.lang.String.format;
 
-public class AccessUtil {
+public class UrlUtils {
 
-	private AccessUtil() {}
+	private UrlUtils() {}
 	
 	public static URI getURI(String url) {
 		try {

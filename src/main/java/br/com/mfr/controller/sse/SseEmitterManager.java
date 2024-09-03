@@ -1,6 +1,5 @@
 package br.com.mfr.controller.sse;
 
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -11,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 public class SseEmitterManager {
 
-    private static final long SSE_TIMEOUT = 30_000L; //TODO - Future property
+    private static final long SSE_TIMEOUT = 0L; //TODO - Future property
 
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
@@ -23,11 +22,14 @@ public class SseEmitterManager {
     }
 
     public void notifyEmitters(SseEmitterEventNotification eventNotification) {
-        emitters.forEach(emitter -> {
+        for (SseEmitter emitter : emitters) {
             try {
-                emitter.send(eventNotification, MediaType.APPLICATION_JSON);
+                emitter.send(SseEmitter.event()
+                        .id(eventNotification.id().toString())
+                        .name(eventNotification.name())
+                        .data(eventNotification.data()));
 
-                if(eventNotification.isComplete()){
+                if (eventNotification.isComplete()) {
                     emitter.complete();
                     emitters.remove(emitter);
                 }
@@ -35,7 +37,7 @@ public class SseEmitterManager {
                 emitter.completeWithError(e);
                 emitters.remove(emitter);
             }
-        });
+        }
     }
 
     public SseEmitter newEmitter() {

@@ -1,5 +1,6 @@
 package br.com.mfr.entity;
 
+import br.com.mfr.service.datasource.DataSourceType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -8,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @JsonInclude(Include.NON_NULL)
 @Document("company")
-public record Company(@Id @JsonIgnore String id, String type, String ticker, String name, String gestao, Double price, Double dy,
+public record Company(@Id @JsonIgnore String id, DataSourceType source, String ticker, String name, String gestao, Double price, Double dy,
 					   Double dividaLiquidaEbit, Double dividaliquidaPatrimonioLiquido, Double evEbit, Double giroAtivos, Double liquidezCorrente,
 					   Double liquidezMediaDiaria, Double lpa, Double margemBruta, Double margemEbit, Double margemLiquida, Double pAtivo,
 					   Double pAtivoCirculante, Double pCapitalGiro, Double pEbit, Double pl, Double psr, Double pvp, Double passivoAtivo,
@@ -23,7 +24,7 @@ public record Company(@Id @JsonIgnore String id, String type, String ticker, Str
 
 		private String id;
 		private String name;
-		private String type;
+		private DataSourceType source;
 		private String ticker;
 		private Double price;
 		private Double dy;
@@ -77,8 +78,8 @@ public record Company(@Id @JsonIgnore String id, String type, String ticker, Str
 			return this;
 		}
 
-		public CompanyBuilder withType(String type){
-			this.type = type;
+		public CompanyBuilder withSource(DataSourceType source){
+			this.source = source;
 			return this;
 		}
 		public CompanyBuilder withTicker(String ticker){
@@ -120,11 +121,6 @@ public record Company(@Id @JsonIgnore String id, String type, String ticker, Str
 			this.dy = dy;
 			return this;
 		}
-
-//Double lpa, Double margemBruta, Double margemEbit, Double margemLiquida, Double pAtivo,
-//		Double pAtivoCirculante, Double pCapitalGiro, Double pEbit, Double pl, Double psr, Double pvp, Double passivoAtivo,
-//		Double pegRatio, Double plAtivo, Double receitasCagr5, Double roa, Double roe, Double roic, Double valorMercado, Double vpa,
-//		Double cotaCagr, Double dividendCagr, Double numeroCotistas, Double patrimonio, Double percentualCaixa
 
 		public CompanyBuilder withDividaLiquidaEbit(Double dividaLiquidaEbit) {
 			this.dividaLiquidaEbit = dividaLiquidaEbit;
@@ -257,7 +253,7 @@ public record Company(@Id @JsonIgnore String id, String type, String ticker, Str
 		}
 
 		public Company build() {
-			return new Company(id, type, ticker, name, gestao, price, dy, dividaLiquidaEbit,
+			return new Company(id, source, ticker, name, gestao, price, dy, dividaLiquidaEbit,
 					dividaliquidaPatrimonioLiquido, evEbit, giroAtivos, liquidezCorrente, liquidezMediaDiaria, lpa,
 					margemBruta, margemEbit, margemLiquida, pAtivo, pAtivoCirculante, pCapitalGiro, pEbit, pl, psr,
 					pvp, passivoAtivo, pegRatio, plAtivo, receitasCagr5, roa, roe, roic, valorMercado, vpa, cotaCagr,

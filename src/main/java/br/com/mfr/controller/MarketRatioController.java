@@ -35,11 +35,11 @@ public class MarketRatioController {
 	@GetMapping
 	public ResponseEntity<CompaniesResponse> getAllAvailableBy(
 			@RequestParam(value = "tickers", required = false) String[] tickers,
-			@RequestParam(value = "types", required = false) String[] types,
+			@RequestParam(value = "sources", required = false) String[] sources,
 			@RequestParam(value = "ratios", required = false) String[] ratios) {
 
 		//TODO - Extract filter directly from DB
-		List<Company> companies = service.getAllCompaniesBy(tickers, types);
+		List<Company> companies = service.getAllCompaniesBy(tickers, sources);
 
 		return ResponseEntity.ok(convert(companies, ratios));
 	}
