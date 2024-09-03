@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static java.util.Objects.isNull;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -88,10 +87,6 @@ public class StatusInvestSource implements BrazilStockSource, BrazilFiiSource, B
         } catch (ExternalURLException e) {
             throw new GenericException(format("An error occurred during %s database update. Message: %s", type(), e.getMessageWithBody()), e);
         }
-    }
-
-    private static boolean hasBody(ResponseEntity<AdvanceSearchResponse> entity) {
-        return entity.hasBody() && !isNull(entity.getBody());
     }
 
     private <R extends ResponseBody> Optional<R> fetch(String url, Class<R> responseClass) throws ExternalURLException {
