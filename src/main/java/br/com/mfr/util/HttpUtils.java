@@ -4,6 +4,8 @@ import br.com.mfr.exception.GenericException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -51,4 +53,8 @@ public class HttpUtils {
         return responseEntity.getBody();
     }
 
+    public static String safeLog(String value) {
+        String sanitized = value.replaceAll("[\\n\\r<>&\"\']", "_");
+        return URLEncoder.encode(sanitized, StandardCharsets.UTF_8);
+    }
 }

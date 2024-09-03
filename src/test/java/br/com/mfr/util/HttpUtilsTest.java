@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static br.com.mfr.test.support.CookiesSupport.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HttpUtilsTest {
 
@@ -19,7 +20,7 @@ class HttpUtilsTest {
 
         String cookies = HttpUtils.retrieveCookies(httpHeaders, HttpHeaders.SET_COOKIE);
 
-        Assertions.assertEquals("A1=d=AQABBOCU1mYCEB9m7bXSyJAOGlF78FC11PkFEgEBAQHm12bgZh6bxyMA_eMAAA&S=AQAAApVvWUrtqmqMrxItHIRoDtA; " +
+        assertEquals("A1=d=AQABBOCU1mYCEB9m7bXSyJAOGlF78FC11PkFEgEBAQHm12bgZh6bxyMA_eMAAA&S=AQAAApVvWUrtqmqMrxItHIRoDtA; " +
                                 "A1S=d=AQABBOCU1mYCEB9m7bXSyJAOGlF78FC11PkFEgEBAQHm12bgZh6bxyMA_eMAAA&S=AQAAApVvWUrtqmqMrxItHIRoDtA; " +
                                 "A3=d=AQABBOCU1mYCEB9m7bXSyJAOGlF78FC11PkFEgEBAQHm12bgZh6bxyMA_eMAAA&S=AQAAApVvWUrtqmqMrxItHIRoDtA", cookies);
     }
@@ -30,7 +31,7 @@ class HttpUtilsTest {
             HttpUtils.retrieveCookies(new HttpHeaders(), HttpHeaders.SET_COOKIE);
             Assertions.fail();
         } catch (Exception e) {
-            Assertions.assertEquals("Attempt to retrieve Cookies has failed. Empty Cookie!", e.getMessage());
+            assertEquals("Attempt to retrieve Cookies has failed. Empty Cookie!", e.getMessage());
         }
     }
 
@@ -40,7 +41,7 @@ class HttpUtilsTest {
             HttpUtils.retrieveCookies(null, HttpHeaders.SET_COOKIE);
             Assertions.fail();
         } catch (Exception e) {
-            Assertions.assertEquals("Attempt to retrieve Cookies has failed. Empty header!", e.getMessage());
+            assertEquals("Attempt to retrieve Cookies has failed. Empty header!", e.getMessage());
         }
     }
 
@@ -59,7 +60,7 @@ class HttpUtilsTest {
     @Test
     void getBody() {
         String body = HttpUtils.getBody(ResponseEntity.ok("string-body"));
-        Assertions.assertEquals("string-body", body);
+        assertEquals("string-body", body);
     }
 
     @Test
@@ -68,7 +69,15 @@ class HttpUtilsTest {
             HttpUtils.getBody(ResponseEntity.ok(null));
             Assertions.fail();
         } catch (Exception e) {
-            Assertions.assertEquals("Attempt to retrieve Body has failed. Empty body!", e.getMessage());
+            assertEquals("Attempt to retrieve Body has failed. Empty body!", e.getMessage());
         }
+    }
+
+    @Test
+    void safeLog_withSpecialCharacters() {
+        String input = "This is a string with special characters: <>&\"\'";
+        String expected = "This+is+a+string+with+special+characters%3A+_____";
+        String actual = HttpUtils.safeLog(input);
+        assertEquals(expected, actual);
     }
 }

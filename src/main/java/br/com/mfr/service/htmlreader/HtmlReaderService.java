@@ -1,5 +1,6 @@
 package br.com.mfr.service.htmlreader;
 
+import br.com.mfr.util.HttpUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.HttpStatusException;
@@ -51,7 +52,7 @@ public class HtmlReaderService {
 	private Response executeForUrl(String url) throws IOException {
 		Connection connect = jsoupService.getConnection(url);
 		
-		LOGGER.info("Searching for data from URL: {}", url);
+		LOGGER.info("Searching for data from URL: {}", HttpUtils.safeLog(url));
 		
 		return connect.execute();
 	}
