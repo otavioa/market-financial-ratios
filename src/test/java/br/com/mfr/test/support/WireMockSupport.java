@@ -23,6 +23,12 @@ public class WireMockSupport {
         mockEtfResponse(builder);
     }
 
+    public static void mockYahooError() {
+        stubFor(get(urlEqualTo(URL_COOKIE))
+                .willReturn(WireMock.serverError()
+                        .withHeader("Content-Type", "text/html")));
+    }
+
     private static void mockRequestCookie() {
         stubFor(get(urlEqualTo(URL_COOKIE))
                 .willReturn(aResponse()

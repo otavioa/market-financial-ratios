@@ -52,6 +52,7 @@ class PopulateDataServiceTest {
 
     @BeforeEach
     public void setUpTests() {
+        Mockito.reset(publisher);
         Mockito.when(repository.insert(Mockito.anyList())).thenAnswer(a -> a.getArgument(0));
     }
 
@@ -86,6 +87,36 @@ class PopulateDataServiceTest {
                                                                "Code: 400 BAD_REQUEST Message: 400 Bad Request from GET http://localhost:5050 " +
                                                                "Response: { \"error\": \"Please check the spelling and format of the website address.\"}"));
         assertEvent(events, EXECUTED, newResult(USA_ETF, "2 records"));
+        assertEvent(events, COMPLETED, "");
+    }
+
+    @Test
+    void processPopulateData_withYahooError() {
+        WireMockSupport.mockYahooError();
+
+        WireMockSupport.mockStatusInvestRequests(
+                request(getUrl(ACOES), response(1L, "EMPRESA AÇÃO", "AAA3", 100.00)),
+                request(getUrl(FIIS), response(2L, "EMPRESA FII", "FFF11", 101.00)),
+                request(getUrl(STOCKS), response(2L, "EMPRESA STOCK", "AMZN", 102.00)),
+                request(getUrl(REITS), response(4L, "EMPRESA REITS", "RRR", 103.00)));
+
+        subject.populateData();
+
+        Mockito.verify(repository, times(4)).deleteAllBySource(any(DataSourceType.class));
+        Mockito.verify(repository, times(4)).insert(anyList());
+        Mockito.verify(publisher, Mockito.times(8)).publishEvent(eventCaptor.capture());
+
+        List<PopulateDataEvent> events = eventCaptor.getAllValues();
+
+        assertEvent(events, INITIALIZED, "");
+        assertEvent(events, EXECUTED, newResult(BRL_ETF, "Not implemented"));
+        assertEvent(events, EXECUTED, newResult(BRL_STOCK, "1 records"));
+        assertEvent(events, EXECUTED, newResult(BRL_FII, "1 records"));
+        assertEvent(events, EXECUTED, newResult(USA_REIT, "1 records"));
+        assertEvent(events, EXECUTED, newResult(USA_STOCK, "1 records"));
+        assertEvent(events, ERROR, newResult(USA_ETF, "An error occurred during USA ETF database update. " +
+                                                      "Message: Code: 500 INTERNAL_SERVER_ERROR Message: 500 Internal Server Error " +
+                                                      "from GET http://localhost:5050/yahoo/cookies Response: "));
         assertEvent(events, COMPLETED, "");
     }
 
