@@ -22,7 +22,7 @@ public class TicketResponseBuilder {
 
 
 
-	public TicketResponseBuilder() {
+	TicketResponseBuilder() {
 		documentDiscovery = new DocumentDiscovery();
 	}
 	
@@ -36,8 +36,8 @@ public class TicketResponseBuilder {
 		return this;
 	}
 	
-	public TicketResponseBuilder setUseZero(boolean useZero) {
-		this.useZero = useZero;
+	public TicketResponseBuilder setUseZero() {
+		this.useZero = true;
 		return this;
 	}
 
