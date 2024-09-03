@@ -8,22 +8,18 @@ import br.com.mfr.external.url.ExternalURLException;
 import br.com.mfr.service.datasource.DataSourceResult;
 import br.com.mfr.service.datasource.DataSourceType;
 import br.com.mfr.service.datasource.UsaEtfSource;
+import br.com.mfr.util.HttpUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
-import static br.com.mfr.util.CollectionUtils.isEmpty;
 import static java.lang.String.format;
-import static java.util.Objects.isNull;
 
 public class YahooUSAEtfDataSource implements UsaEtfSource {
 
@@ -75,20 +71,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
                 .addToHeader(HttpHeaders.ACCEPT, DEFAULT_ACCEPT)
                 .get(yahooUrls.cookies()).getHeaders();
 
-        List<String> cookies = responseHeaders.get(HttpHeaders.SET_COOKIE);
-
-        if(isEmpty(cookies))
-            throw new GenericException("Attempt to retrieve Cookies from Yahoo Finance failed!");
-
-        return normalizeCookies(cookies);
-    }
-
-    private String normalizeCookies(List<String> cookies) {
-        return cookies.stream()
-                .map(a -> Arrays.stream(a.split(";")).filter(validCookieHeaders()).findFirst())
-                .filter(a -> a.isPresent())
-                .map(a -> a.get())
-                .collect(Collectors.joining("; "));
+        return HttpUtils.retrieveCookies(responseHeaders, HttpHeaders.SET_COOKIE);
     }
 
     private String retrieveCrumb(String stringCookies) throws ExternalURLException {
@@ -99,23 +82,20 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
                 .addToHeader(HttpHeaders.ACCEPT, DEFAULT_ACCEPT)
                 .get(yahooUrls.crumb());
 
-        if(!hasBody(responseEntity))
-            throw new GenericException("Attempt to retrieve CRUMB ID from Yahoo Finance failed!");
-
-        return responseEntity.getBody().toString();
+        return HttpUtils.getBody(responseEntity);
     }
 
-    private List<Company> retrieveUSAEtfs(String crumb, String stringCookies) {
+    private List<Company> retrieveUSAEtfs(String crumb, String stringCookies) throws ExternalURLException {
         String url = format(yahooUrls.etfScreener(), crumb);
 
         int totalRecords = getAmountOfEtfs(stringCookies, url);
         int numberOfRequests = (totalRecords / LIMIT_PER_REQUEST) + 1;
 
         List<Supplier<YahooEtfScreenerResponse>> retrievers = new ArrayList<>();
-        for (int i = 0; i < numberOfRequests; i++){
+        for (int i = 0; i < numberOfRequests; i++) {
             int offset = i * LIMIT_PER_REQUEST;
             Optional<YahooEtfScreenerResponse> maybeResponse = fetchEtfData(url, LIMIT_PER_REQUEST, offset, stringCookies);
-            if(maybeResponse.isPresent())
+            if (maybeResponse.isPresent())
                 retrievers.add(() -> maybeResponse.get());
         }
 
@@ -127,7 +107,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
         return companies;
     }
 
-    private int getAmountOfEtfs(String stringCookies, String url) {
+    private int getAmountOfEtfs(String stringCookies, String url) throws ExternalURLException {
         Optional<YahooEtfScreenerResponse> maybeResponse = fetchEtfData(url, 0, 0, stringCookies);
         return !maybeResponse.isPresent() ? 0 :
                 maybeResponse.get().finance().result().getFirst().total();
@@ -138,26 +118,14 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
         return repo.insert(etfCompanies);
     }
 
-    private Optional<YahooEtfScreenerResponse> fetchEtfData(String url, int size, int offset, String stringCookies) {
-        try {
-            ResponseEntity<YahooEtfScreenerResponse> responseEntity = ExternalURLClient
-                    .getInstance(client)
-                    .addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT)
-                    .addToHeader(HttpHeaders.ACCEPT, DEFAULT_ACCEPT)
-                    .addToHeader(HttpHeaders.COOKIE, stringCookies)
-                    .post(url, new YahooEtfScreenerRequest(size, offset), YahooEtfScreenerResponse.class);
+    private Optional<YahooEtfScreenerResponse> fetchEtfData(String url, int size, int offset, String stringCookies) throws ExternalURLException {
+        ResponseEntity<YahooEtfScreenerResponse> responseEntity = ExternalURLClient
+                .getInstance(client)
+                .addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT)
+                .addToHeader(HttpHeaders.ACCEPT, DEFAULT_ACCEPT)
+                .addToHeader(HttpHeaders.COOKIE, stringCookies)
+                .post(url, new YahooEtfScreenerRequest(size, offset), YahooEtfScreenerResponse.class);
 
-            return Optional.ofNullable(responseEntity.getBody());
-        } catch (ExternalURLException e) {
-            throw new GenericException(format("Attempt to retrieve data from url: %s failed.", url), e);
-        }
-    }
-
-    private static Predicate<String> validCookieHeaders() {
-        return ai -> ai.startsWith("A1") || ai.startsWith("A3") || ai.startsWith("A1S");
-    }
-
-    private static boolean hasBody(ResponseEntity entity) {
-        return entity.hasBody() && !isNull(entity.getBody());
+        return HttpUtils.getOptionalBody(responseEntity);
     }
 }

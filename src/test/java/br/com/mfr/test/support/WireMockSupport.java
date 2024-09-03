@@ -5,15 +5,10 @@ import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.StringValuePattern;
 
+import static br.com.mfr.test.support.CookiesSupport.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class WireMockSupport {
-
-    public static final String COOKIE =
-            "A1=d=AQABBFaTsWYCEGLJa8bCLgfqiChBGv-ElhUFEgEBCAGzvGboZh4Ab2UB_eMBAAcIVpOxZv-ElhU&S=AQAAAhrhVkxSFqiWbl0Y6b8h2CM; " +
-            "A1S=d=AQABBFaTsWYCEGLJa8bCLgfqiChBGv-ElhUFEgEBCAGzvGboZh4Ab2UB_eMBAAcIVpOxZv-ElhU&S=AQAAAhrhVkxSFqiWbl0Y6b8h2CM; " +
-            "A3=d=AQABBFaTsWYCEGLJa8bCLgfqiChBGv-ElhUFEgEBCAGzvGboZh4Ab2UB_eMBAAcIVpOxZv-ElhU&S=AQAAAhrhVkxSFqiWbl0Y6b8h2CM; " +
-            "GUC=AQEBCAFmvLNm6EIdZARj&s=AQAAAPxQ5Zag&g=ZrtmXg; GUCS=AVnh4MvB";
 
     public static final String CRUMB_ID = "GOr5OwCWrz2";
 
@@ -32,7 +27,7 @@ public class WireMockSupport {
         stubFor(get(urlEqualTo(URL_COOKIE))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "text/html")
-                        .withHeader("Set-Cookie", COOKIE)
+                        .withHeader("Set-Cookie", COOKIE_A1, COOKIE_A1S, COOKIE_A3)
                         .withBody("</html>")));
     }
 
