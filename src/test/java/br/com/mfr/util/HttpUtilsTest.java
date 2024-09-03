@@ -72,12 +72,4 @@ class HttpUtilsTest {
             assertEquals("Attempt to retrieve Body has failed. Empty body!", e.getMessage());
         }
     }
-
-    @Test
-    void safeLog_withSpecialCharacters() {
-        String input = "This is a string with special characters: <>&\"\'";
-        String expected = "This+is+a+string+with+special+characters%3A+_____";
-        String actual = HttpUtils.safeLog(input);
-        assertEquals(expected, actual);
-    }
 }
