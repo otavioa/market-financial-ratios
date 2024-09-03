@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static br.com.mfr.ConfigProperties.APP_PREFIX;
+import static br.com.mfr.PropertiesConfiguration.APP_PREFIX;
 
 @EnableAsync
 @Configuration
