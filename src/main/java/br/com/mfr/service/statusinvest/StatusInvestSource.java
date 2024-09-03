@@ -10,11 +10,13 @@ import br.com.mfr.service.datasource.*;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyConverter;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
+import br.com.mfr.util.HttpUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
@@ -81,8 +83,8 @@ public class StatusInvestSource implements BrazilStockSource, BrazilFiiSource, B
 
     private List<CompanyResponse> tryToRetrieve(String preparedURL) {
         try {
-            ResponseEntity<AdvanceSearchResponse> entity = fetch(preparedURL, AdvanceSearchResponse.class);
-            return hasBody(entity) ? entity.getBody().getList() : List.of();
+            Optional<AdvanceSearchResponse> response = fetch(preparedURL, AdvanceSearchResponse.class);
+            return response.isPresent() ? response.get().getList() : List.of();
         } catch (ExternalURLException e) {
             throw new GenericException(format("An error occurred during %s database update. Message: %s", type(), e.getMessageWithBody()), e);
         }
@@ -92,11 +94,13 @@ public class StatusInvestSource implements BrazilStockSource, BrazilFiiSource, B
         return entity.hasBody() && !isNull(entity.getBody());
     }
 
-    private <R extends ResponseBody> ResponseEntity<R> fetch(String url, Class<R> responseClass) throws ExternalURLException {
-        return ExternalURLClient.getInstance(client)
+    private <R extends ResponseBody> Optional<R> fetch(String url, Class<R> responseClass) throws ExternalURLException {
+        ResponseEntity<R> responseEntity = ExternalURLClient.getInstance(client)
                 .addToHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .addToHeader(HttpHeaders.USER_AGENT, DEFAULT_USER_AGENT)
                 .addToHeader(HttpHeaders.ACCEPT, DEFAULT_ACCEPT)
                 .get(url, responseClass);
+
+        return HttpUtils.getOptionalBody(responseEntity);
     }
 }

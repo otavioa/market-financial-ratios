@@ -53,29 +53,7 @@ public class WebClientMockSupport {
             return mono;
         });
 
-        return new MockVerifier(client, bodyUriSpecMock,
-                bodySpecMock, headersSpecMock, responseSpecMock, mono);
-    }
-
-    public static MockCall call(String url, Answer<?> answer) {
-        return call(url, null, answer);
-    }
-
-    public static MockCall call(String url, RequestBody request, Answer<?> answer) {
-        return new MockCall(UrlUtils.getURI(url), request, answer);
-    }
-
-    public static class MockCall {
-
-        private final URI url;
-        private final RequestBody request;
-        private final Answer<?> answer;
-
-        private MockCall(URI url, RequestBody request, Answer<?> answer) {
-            this.url = url;
-            this.request = request;
-            this.answer = answer;
-        }
+        return new MockVerifier(client, bodyUriSpecMock, bodySpecMock, responseSpecMock, mono);
     }
 
     public static class MockVerifier {
@@ -83,19 +61,17 @@ public class WebClientMockSupport {
         private final WebClient client;
         private final WebClient.RequestBodyUriSpec bodyUriSpecMock;
         private final WebClient.RequestBodySpec bodySpecMock;
-        private final WebClient.RequestHeadersSpec headersSpecMock;
         private final WebClient.ResponseSpec responseSpecMock;
         private final Mono mono;
 
-        private MockVerifier(WebClient client, WebClient.RequestBodyUriSpec bodyUriSpecMock,
-                             WebClient.RequestBodySpec bodySpecMock, WebClient.RequestHeadersSpec headersSpecMock,
-                             WebClient.ResponseSpec responseSpecMock, Mono mono) {
+        private MockVerifier(
+                WebClient client, WebClient.RequestBodyUriSpec bodyUriSpecMock, WebClient.RequestBodySpec bodySpecMock,
+                WebClient.ResponseSpec responseSpecMock, Mono mono) {
 
             this.mono = mono;
             this.client = client;
             this.bodyUriSpecMock = bodyUriSpecMock;
             this.bodySpecMock = bodySpecMock;
-            this.headersSpecMock = headersSpecMock;
             this.responseSpecMock = responseSpecMock;
         }
 
@@ -109,7 +85,6 @@ public class WebClientMockSupport {
 
         public void verifyHeader(VerificationMode times) {
             Mockito.verify(bodySpecMock, times).headers(any(Consumer.class));
-
         }
 
         public void verifyResponse(Class<?> responseClass) {
@@ -118,7 +93,7 @@ public class WebClientMockSupport {
         }
 
         public void verifyRequestBody(VerificationMode times, Class<RequestBody> bodyClass) {
-            Mockito.verify(bodySpecMock, Mockito.times(1)).bodyValue(Mockito.any(bodyClass));
+            Mockito.verify(bodySpecMock, times).bodyValue(Mockito.any(bodyClass));
         }
     }
 }

@@ -96,7 +96,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
             int offset = i * LIMIT_PER_REQUEST;
             Optional<YahooEtfScreenerResponse> maybeResponse = fetchEtfData(url, LIMIT_PER_REQUEST, offset, stringCookies);
             if (maybeResponse.isPresent())
-                retrievers.add(() -> maybeResponse.get());
+                retrievers.add(maybeResponse::get);
         }
 
         List<Company> companies = new ArrayList<>();

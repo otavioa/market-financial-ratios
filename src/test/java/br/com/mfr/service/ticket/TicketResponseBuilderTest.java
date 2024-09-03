@@ -25,7 +25,7 @@ class TicketResponseBuilderTest {
     }
 
     @Test
-    public void simpleResponse() throws IOException {
+    void simpleResponse() throws IOException {
         TickerResponse response = TickerResponse.builder()
                 .setDocument(document)
                 .setTicker("WEGE3")
@@ -41,7 +41,7 @@ class TicketResponseBuilderTest {
     }
 
     @Test
-    public void simpleResponse_withZeros() throws IOException {
+    void simpleResponse_withZeros() throws IOException {
         TickerResponse response = TickerResponse.builder()
                 .setDocument(document)
                 .setTicker("WEGE3")
@@ -64,7 +64,7 @@ class TicketResponseBuilderTest {
     }
 
     @Test
-    public void response_withAllIndicators() throws IOException {
+    void response_withAllIndicators() throws IOException {
         TickerResponse response = TickerResponse.builder()
                 .setDocument(document)
                 .setTicker("WEGE3")
@@ -93,7 +93,7 @@ class TicketResponseBuilderTest {
     }
 
     @Test
-    public void response_withSpecificRatio() throws IOException {
+    void response_withSpecificRatio() throws IOException {
         TickerResponse response = TickerResponse.builder()
                 .setDocument(document)
                 .setTicker("WEGE3")

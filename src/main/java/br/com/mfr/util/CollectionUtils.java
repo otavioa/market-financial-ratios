@@ -6,7 +6,7 @@ public class CollectionUtils {
 
     private CollectionUtils() { }
 
-    public static boolean isEmpty(Collection collection) {
+    public static boolean isEmpty(Collection<?> collection) {
         return (collection == null || collection.isEmpty());
     }
 }

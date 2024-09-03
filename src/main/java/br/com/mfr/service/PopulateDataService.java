@@ -48,7 +48,7 @@ public class PopulateDataService {
 
             getDataSources()
                     .parallel()
-                    .forEach(e -> populateDataSource(e));
+                    .forEach(this::populateDataSource);
 
             sendCompleted(publisher);
             semaphore.release();

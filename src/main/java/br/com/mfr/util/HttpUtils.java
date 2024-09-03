@@ -11,14 +11,17 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static br.com.mfr.util.CollectionUtils.isEmpty;
+import static java.util.Objects.isNull;
 
 public class HttpUtils {
 
     private HttpUtils(){ }
 
     public static String retrieveCookies(HttpHeaders headers, String key) {
-        List<String> cookies = headers.get(key);
+        if(isNull(headers))
+            throw new GenericException("Attempt to retrieve Cookies has failed. Empty header!");
 
+        List<String> cookies = headers.get(key);
         if(isEmpty(cookies))
             throw new GenericException("Attempt to retrieve Cookies has failed. Empty Cookie!");
 
@@ -26,7 +29,7 @@ public class HttpUtils {
     }
 
     private static String normalizeCookies(List<String> cookies) {
-        return cookies.stream()
+        return isNull(cookies) ? "" : cookies.stream()
                 .map(a -> Arrays.stream(a.split(";")).filter(validCookieHeaders()).findFirst())
                 .filter(a -> a.isPresent())
                 .map(a -> a.get())

@@ -30,7 +30,7 @@ public record YahooEtfScreenerResponse(Finance finance) implements ResponseBody 
             return this;
         }
 
-        public YahooEtfScreenerResponseBuilder withQuote(String ticker, String name, double price, double yield) {
+        public YahooEtfScreenerResponseBuilder withQuote(String ticker, String name, double price, double dy) {
             String format = String.format("""
                     {
                         "symbol": "%s",
@@ -54,7 +54,7 @@ public record YahooEtfScreenerResponse(Finance finance) implements ResponseBody 
                             "longFmt": "5"
                         }
                     }
-                    """, ticker, name, price, price, yield, yield);
+                    """, ticker, name, price, price, dy, dy);
 
             this.quotes.add(format);
             return this;

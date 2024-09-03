@@ -35,6 +35,16 @@ class HttpUtilsTest {
     }
 
     @Test
+    void retrieveCookies_nullHeader() {
+        try {
+            HttpUtils.retrieveCookies(null, HttpHeaders.SET_COOKIE);
+            Assertions.fail();
+        } catch (Exception e) {
+            Assertions.assertEquals("Attempt to retrieve Cookies has failed. Empty header!", e.getMessage());
+        }
+    }
+
+    @Test
     void getOptionalBody() {
         Optional<String> optionalBody = HttpUtils.getOptionalBody(ResponseEntity.ok("string-body"));
         Assertions.assertTrue(optionalBody.isPresent());
