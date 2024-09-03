@@ -21,9 +21,7 @@
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-		<sonar.exclusions>**/Application.java,**/*Configuration.java</sonar.exclusions>
 		<sonar.language>java</sonar.language>
-
 		<java.version>22</java.version>
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
 	</properties>
@@ -107,23 +105,9 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven-surefire-plugin.version}</version>
-				<configuration>
-					<argLine>-XX:+EnableDynamicAgentLoading -Xshare:off</argLine>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>${jacoco-maven-plugin.version}</version>
-				<configuration>
-					<excludes>
-						<exclude>**/Application.*</exclude>
-					</excludes>
-				</configuration>
 				<executions>
 					<execution>
 						<id>jacoco-initialize</id>
@@ -139,6 +123,12 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<exclude>**/Application.class</exclude>
+						<exclude>**/*Configuration.class</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
