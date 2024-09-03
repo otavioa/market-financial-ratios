@@ -50,5 +50,4 @@ public class HttpUtils {
 
         return responseEntity.getBody();
     }
-
 }
