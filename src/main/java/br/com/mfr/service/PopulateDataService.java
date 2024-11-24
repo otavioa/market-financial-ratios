@@ -19,6 +19,8 @@ public class PopulateDataService {
 
     private final BrazilStockSource brlStockSource;
     private final BrazilFiiSource brlFiiSource;
+    private final BrazilFiiInfraSource brlFiiInfraSource;
+    private final BrazilFiiAgroSource brlFiiAgroSource;
     private final BrazilEtfSource brlEtfSource;
     private final UsaStockSource usaStockSource;
     private final UsaReitSource usaReitSource;
@@ -28,12 +30,14 @@ public class PopulateDataService {
 
     public PopulateDataService(
             ApplicationEventPublisher publisher, BrazilStockSource brlStockSource, BrazilFiiSource brlFiiSource,
-            BrazilEtfSource brlEtfSource, UsaStockSource usaStockSource, UsaReitSource usaReitSource,
-            UsaEtfSource usaEtfSource) {
+            BrazilFiiInfraSource brlFiiInfraSource, BrazilFiiAgroSource brlFiiAgroSource, BrazilEtfSource brlEtfSource, UsaStockSource usaStockSource,
+            UsaReitSource usaReitSource, UsaEtfSource usaEtfSource) {
 
         this.publisher = publisher;
         this.brlStockSource = brlStockSource;
         this.brlFiiSource = brlFiiSource;
+        this.brlFiiInfraSource = brlFiiInfraSource;
+        this.brlFiiAgroSource = brlFiiAgroSource;
         this.brlEtfSource = brlEtfSource;
         this.usaStockSource = usaStockSource;
         this.usaReitSource = usaReitSource;
@@ -65,7 +69,7 @@ public class PopulateDataService {
     }
 
     private Stream<DataSource> getDataSources() {
-        return Stream.of(brlStockSource, brlFiiSource, brlEtfSource,
+        return Stream.of(brlStockSource, brlFiiSource, brlFiiInfraSource, brlFiiAgroSource, brlEtfSource,
                 usaStockSource, usaReitSource, usaEtfSource);
     }
 }

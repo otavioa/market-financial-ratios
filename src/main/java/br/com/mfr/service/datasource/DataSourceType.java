@@ -2,8 +2,15 @@ package br.com.mfr.service.datasource;
 
 public enum DataSourceType {
 
-    BRL_STOCK(BrazilStockSource.class), BRL_FII(BrazilFiiSource.class), BRL_ETF(BrazilEtfSource.class),
-    USA_STOCK(UsaStockSource.class), USA_REIT(UsaReitSource.class), USA_ETF(UsaEtfSource.class);
+    BRL_STOCK(BrazilStockSource.class),
+    BRL_FII(BrazilFiiSource.class),
+    BRL_FII_INFRA(BrazilFiiInfraSource.class),
+    BRL_FII_AGRO(BrazilFiiAgroSource.class),
+    BRL_ETF(BrazilEtfSource.class),
+
+    USA_STOCK(UsaStockSource.class),
+    USA_REIT(UsaReitSource.class),
+    USA_ETF(UsaEtfSource.class);
 
     private final Class<? extends DataSource> dataSource;
 

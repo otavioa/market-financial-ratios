@@ -1,6 +1,8 @@
 package br.com.mfr;
 
 import br.com.mfr.entity.CompanyRepository;
+import br.com.mfr.service.clubefii.ClubeFiiSource;
+import br.com.mfr.service.clubefii.ClubeFiiURLProperties;
 import br.com.mfr.service.datasource.*;
 import br.com.mfr.service.statusinvest.StatusInvestSource;
 import br.com.mfr.service.statusinvest.StatusInvestURLProperties;
@@ -17,14 +19,16 @@ public class DataSourceConfiguration {
     private final WebClient client;
     private final StatusInvestURLProperties statusInvestUrls;
     private final YahooURLProperties yahooUrls;
+    private final ClubeFiiURLProperties clubeFiiUrls;
 
     public DataSourceConfiguration(WebClient client,
                                    CompanyRepository repo, StatusInvestURLProperties statusInvestUrls,
-                                   YahooURLProperties yahooUrls) {
+                                   YahooURLProperties yahooUrls, ClubeFiiURLProperties clubeFiiUrls) {
 
         this.repo = repo;
         this.client = client;
         this.yahooUrls = yahooUrls;
+        this.clubeFiiUrls = clubeFiiUrls;
         this.statusInvestUrls = statusInvestUrls;
     }
 
@@ -36,6 +40,16 @@ public class DataSourceConfiguration {
     @Bean
     public BrazilFiiSource brlFiiSource(){
         return new StatusInvestSource(repo, client, statusInvestUrls, DataSourceType.BRL_FII);
+    }
+
+    @Bean
+    public BrazilFiiInfraSource brlFiiInfraSource(){
+        return new ClubeFiiSource(repo, client, clubeFiiUrls, DataSourceType.BRL_FII_INFRA);
+    }
+
+    @Bean
+    public BrazilFiiAgroSource brlFiiAgroSource(){
+        return new ClubeFiiSource(repo, client, clubeFiiUrls, DataSourceType.BRL_FII_AGRO);
     }
 
     @Bean

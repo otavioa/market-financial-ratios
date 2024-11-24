@@ -51,7 +51,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
             var crumb = retrieveCrumb(cookies);
             var yahooEtfCompanies = retrieveUSAEtfs(crumb, cookies);
 
-            List<Company> companies = updateDataBase(yahooEtfCompanies);
+            var companies = updateDataBase(yahooEtfCompanies);
 
             return getResult(companies);
         } catch (ExternalURLException e) {
