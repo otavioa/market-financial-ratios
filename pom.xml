@@ -25,6 +25,7 @@
 		<sonar.language>java</sonar.language>
 		<java.version>22</java.version>
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
+		<sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -104,7 +105,11 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>${sonar-maven-plugin.version}</version>
+			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
