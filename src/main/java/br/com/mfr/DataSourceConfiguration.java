@@ -7,7 +7,7 @@ import br.com.mfr.service.datasource.*;
 import br.com.mfr.service.statusinvest.StatusInvestSource;
 import br.com.mfr.service.statusinvest.StatusInvestURLProperties;
 import br.com.mfr.service.yahoo.YahooURLProperties;
-import br.com.mfr.service.yahoo.YahooUSAEtfDataSource;
+import br.com.mfr.service.yahoo.YahooUSAEtfSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -44,12 +44,12 @@ public class DataSourceConfiguration {
 
     @Bean
     public BrazilFiiInfraSource brlFiiInfraSource(){
-        return new ClubeFiiSource(repo, client, clubeFiiUrls, DataSourceType.BRL_FII_INFRA);
+        return new ClubeFiiSource(repo, clubeFiiUrls, DataSourceType.BRL_FII_INFRA);
     }
 
     @Bean
     public BrazilFiiAgroSource brlFiiAgroSource(){
-        return new ClubeFiiSource(repo, client, clubeFiiUrls, DataSourceType.BRL_FII_AGRO);
+        return new ClubeFiiSource(repo, clubeFiiUrls, DataSourceType.BRL_FII_AGRO);
     }
 
     @Bean
@@ -69,7 +69,7 @@ public class DataSourceConfiguration {
 
     @Bean
     public UsaEtfSource usaEtfSource(){
-        return new YahooUSAEtfDataSource(repo, client, yahooUrls);
+        return new YahooUSAEtfSource(repo, client, yahooUrls);
     }
 
     private static BrazilEtfSource getBrazilEtfSource() {

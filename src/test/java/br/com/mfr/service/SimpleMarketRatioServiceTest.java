@@ -4,7 +4,7 @@ import br.com.mfr.exception.GenericException;
 import br.com.mfr.service.htmlreader.HtmlReaderService;
 import br.com.mfr.service.statusinvest.StatusInvestURLProperties;
 import br.com.mfr.service.ticket.TickerResponse;
-import br.com.mfr.test.support.URLMockServiceSupport;
+import br.com.mfr.test.support.ReaderServiceMockSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,7 +50,7 @@ class SimpleMarketRatioServiceTest {
 
 	@Test
 	void throwErrorWhenRetrying() throws Exception {
-		URLMockServiceSupport.mockReaderServiceWithError(
+		ReaderServiceMockSupport.mockReaderServiceWithError(
 				readerService, "http://localhost:5050/etfs/IVVB11", new IOException("Connection failed!"));
 
 		Exception exception = assertThrows(
@@ -60,7 +60,7 @@ class SimpleMarketRatioServiceTest {
 	}
 
 	private void mockReaderService(String url, String fileName) throws Exception {
-		URLMockServiceSupport.mockReaderService(readerService, url, fileName);
+		ReaderServiceMockSupport.mockReaderService(readerService, url, fileName);
 	}
 
 }

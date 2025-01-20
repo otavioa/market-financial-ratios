@@ -1,6 +1,6 @@
 package br.com.mfr.service.ticket;
 
-import br.com.mfr.test.support.URLMockServiceSupport;
+import br.com.mfr.test.support.ReaderServiceMockSupport;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +21,7 @@ class TicketResponseBuilderTest {
 
     @BeforeAll
     static void setEnvironment() throws IOException {
-        document = URLMockServiceSupport.getDocumentFrom("testdata/wege3_page.html", "https://teste.com.br/acoes/WEGE3");
+        document = ReaderServiceMockSupport.getDocumentFrom("testdata/wege3_page.html", "https://teste.com.br/acoes/WEGE3");
     }
 
     @Test

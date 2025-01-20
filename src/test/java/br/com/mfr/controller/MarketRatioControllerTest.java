@@ -6,7 +6,7 @@ import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.service.datasource.DataSourceType;
 import br.com.mfr.service.htmlreader.HtmlReaderService;
-import br.com.mfr.test.support.URLMockServiceSupport;
+import br.com.mfr.test.support.ReaderServiceMockSupport;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -176,7 +176,7 @@ class MarketRatioControllerTest {
 	}
 
 	private void mockReaderService(String url, String fileName) throws Exception {
-		URLMockServiceSupport.mockReaderService(readerService, url, fileName);
+		ReaderServiceMockSupport.mockReaderService(readerService, url, fileName);
 	}
 
 	private void mockResponseTo(Company... companies) {

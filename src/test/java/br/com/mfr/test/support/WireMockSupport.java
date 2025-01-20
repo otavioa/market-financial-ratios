@@ -85,29 +85,29 @@ public class WireMockSupport {
                 """, size, offset), true, true);
     }
 
-    public static void mockStatusInvestRequests(StatusInvestRequest... requests) {
-        for (StatusInvestRequest r : requests) {
+    public static void mockRequestsWith(MockResponse... response) {
+        for (MockResponse r : response) {
             stubFor(get(urlEqualTo(r.url))
                     .willReturn(r.responseDefinition));
         }
     }
 
-    public static StatusInvestRequest request(String url, String responseBody) {
+    public static MockResponse newResponse(String url, String responseBody) {
         ResponseDefinitionBuilder definition = aResponse()
                 .withHeader("Content-Type", "application/json")
                 .withBody(responseBody);
 
-        return new StatusInvestRequest(url, definition);
+        return new MockResponse(url, definition);
     }
 
-    public static StatusInvestRequest throwBadRequest(String url, String messageError) {
+    public static MockResponse throwBadRequest(String url, String messageError) {
         ResponseDefinitionBuilder definition = WireMock.badRequest()
                 .withHeader("Content-Type", "application/json")
                 .withBody("{ \"error\": \"" + messageError +"\"}");
 
-        return new StatusInvestRequest(url, definition);
+        return new MockResponse(url, definition);
 
     }
 
-    public record StatusInvestRequest(String url, ResponseDefinitionBuilder responseDefinition) { }
+    public record MockResponse(String url, ResponseDefinitionBuilder responseDefinition) { }
 }

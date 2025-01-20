@@ -12,7 +12,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +20,6 @@ import static java.lang.String.format;
 
 public class ClubeFiiSource implements BrazilFiiInfraSource, BrazilFiiAgroSource {
 
-    private final WebClient client;
     private final CompanyRepository repo;
     private final DataSourceType sourceType;
     private final ClubeFiiURLProperties urlProps;
@@ -29,10 +27,8 @@ public class ClubeFiiSource implements BrazilFiiInfraSource, BrazilFiiAgroSource
     @Autowired
     private HtmlReaderService readerService;
 
-    public ClubeFiiSource(CompanyRepository repo, WebClient client, ClubeFiiURLProperties urlProps, DataSourceType sourceType) {
-
+    public ClubeFiiSource(CompanyRepository repo, ClubeFiiURLProperties urlProps, DataSourceType sourceType) {
         this.repo = repo;
-        this.client = client;
         this.urlProps = urlProps;
         this.sourceType = sourceType;
     }
@@ -54,15 +50,14 @@ public class ClubeFiiSource implements BrazilFiiInfraSource, BrazilFiiAgroSource
     private List<Company> retrieveCompaniesFromWebSite() {
         var url = ClubeFiiSourceType.valueOf(sourceType).getURL(urlProps);
 
-        var rows = retrieveRowsTable(url);
-        var companies = rows.stream()
-                .map(r -> ClubeFiiConverter.convert(r, sourceType))
-                .toList();
+        var rows = retrieveTableRows(url);
 
-        return companies;
+        return rows.stream()
+                .map(row -> ClubeFiiConverter.convert(row, sourceType))
+                .toList();
     }
 
-    private Elements retrieveRowsTable(String url) {
+    private Elements retrieveTableRows(String url) {
         var document = getDocument(url);
         var table = document.getElementById("tabela_profile");
         return table.child(0).getElementsByClass("tabela_principal");

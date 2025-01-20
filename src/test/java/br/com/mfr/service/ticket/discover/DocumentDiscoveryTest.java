@@ -1,6 +1,6 @@
 package br.com.mfr.service.ticket.discover;
 
-import br.com.mfr.test.support.URLMockServiceSupport;
+import br.com.mfr.test.support.ReaderServiceMockSupport;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ class DocumentDiscoveryTest {
 	
 	@Test
 	void testWithValidDocument() throws IOException {
-		Document document = URLMockServiceSupport.getDocumentFrom("testdata/wege3_page.html", "https://teste.com.br/acoes/WEGE3");
+		Document document = ReaderServiceMockSupport.getDocumentFrom("testdata/wege3_page.html", "https://teste.com.br/acoes/WEGE3");
 		
 		String result = subject.find(document, new WithValue());
 

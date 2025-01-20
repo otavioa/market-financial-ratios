@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static br.com.mfr.service.statusinvest.StatusInvestResources.*;
-import static br.com.mfr.test.support.WireMockSupport.request;
+import static br.com.mfr.test.support.WireMockSupport.newResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
@@ -50,12 +50,12 @@ class DataControllerTest {
                     .withQuote("VTI", "Vanguard Total Stock Market ETF", 266.65, 1.34)
                     .withQuote("IVV", "iShares Core S&P 500 ETF", 545.03, 1.3));
 
-        WireMockSupport.mockStatusInvestRequests(
-                request(getUrl(ACOES), response(1L, "EMPRESA AÇÃO", "AAA3", 100.00)),
-                request(getUrl(FIIS), response(2L, "EMPRESA FII", "FFF11", 101.00)),
-                request(getUrl(STOCKS), response(3L, "EMPRESA STOCKS", "SSS", 102.00)),
-                request(getUrl(REITS), response(4L, "EMPRESA REITS", "RRR", 103.00)),
-                request(getUrl(REITS), response(4L, "EMPRESA REITS", "RRR", 103.00)));
+        WireMockSupport.mockRequestsWith(
+                newResponse(getUrl(ACOES), response(1L, "EMPRESA AÇÃO", "AAA3", 100.00)),
+                newResponse(getUrl(FIIS), response(2L, "EMPRESA FII", "FFF11", 101.00)),
+                newResponse(getUrl(STOCKS), response(3L, "EMPRESA STOCKS", "SSS", 102.00)),
+                newResponse(getUrl(REITS), response(4L, "EMPRESA REITS", "RRR", 103.00)),
+                newResponse(getUrl(REITS), response(4L, "EMPRESA REITS", "RRR", 103.00)));
 
         performRequest(ApiEndpoints.DATA_POPULATE)
                 .andExpect(status().isOk())
