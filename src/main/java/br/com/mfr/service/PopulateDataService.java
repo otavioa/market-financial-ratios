@@ -1,13 +1,14 @@
 package br.com.mfr.service;
 
-import br.com.mfr.service.datasource.*;
+import br.com.mfr.service.datasource.DataSource;
+import br.com.mfr.service.datasource.DataSourceResult;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.concurrent.Semaphore;
-import java.util.stream.Stream;
 
 import static br.com.mfr.service.PopulateDataEventHelper.*;
 
@@ -16,28 +17,13 @@ import static br.com.mfr.service.PopulateDataEventHelper.*;
 public class PopulateDataService {
 
     private final ApplicationEventPublisher publisher;
-
-    private final BrazilStockSource brlStockSource;
-    private final BrazilFiiSource brlFiiSource;
-    private final BrazilEtfSource brlEtfSource;
-    private final UsaStockSource usaStockSource;
-    private final UsaReitSource usaReitSource;
-    private final UsaEtfSource usaEtfSource;
+    private final List<DataSource> dataSources;
 
     private final Semaphore semaphore = new Semaphore(1);
 
-    public PopulateDataService(
-            ApplicationEventPublisher publisher, BrazilStockSource brlStockSource, BrazilFiiSource brlFiiSource,
-            BrazilEtfSource brlEtfSource, UsaStockSource usaStockSource, UsaReitSource usaReitSource,
-            UsaEtfSource usaEtfSource) {
-
+    public PopulateDataService(ApplicationEventPublisher publisher, List<DataSource> dataSources) {
         this.publisher = publisher;
-        this.brlStockSource = brlStockSource;
-        this.brlFiiSource = brlFiiSource;
-        this.brlEtfSource = brlEtfSource;
-        this.usaStockSource = usaStockSource;
-        this.usaReitSource = usaReitSource;
-        this.usaEtfSource = usaEtfSource;
+        this.dataSources = dataSources;
     }
 
     @Transactional
@@ -46,7 +32,8 @@ public class PopulateDataService {
         if (semaphore.tryAcquire()) {
             sendInitialized(publisher);
 
-            getDataSources()
+            dataSources
+                    .stream()
                     .parallel()
                     .forEach(this::populateDataSource);
 
@@ -62,10 +49,5 @@ public class PopulateDataService {
         } catch (Exception ex) {
             sendError(publisher, new DataSourceResult(e.type(), ex.getMessage()));
         }
-    }
-
-    private Stream<DataSource> getDataSources() {
-        return Stream.of(brlStockSource, brlFiiSource, brlEtfSource,
-                usaStockSource, usaReitSource, usaEtfSource);
     }
 }

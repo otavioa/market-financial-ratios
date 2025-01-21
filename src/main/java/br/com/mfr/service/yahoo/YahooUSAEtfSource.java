@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 
 import static java.lang.String.format;
 
-public class YahooUSAEtfDataSource implements UsaEtfSource {
+public class YahooUSAEtfSource implements UsaEtfSource {
 
     private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 AppleWebKit/537.36 Chrome/100.0.4896.127 Safari/537.36";
     public static final String DEFAULT_ACCEPT = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7";
@@ -32,7 +32,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
     private final YahooURLProperties yahooUrls;
 
 
-    public YahooUSAEtfDataSource(CompanyRepository repo, WebClient client, YahooURLProperties yahooUrls) {
+    public YahooUSAEtfSource(CompanyRepository repo, WebClient client, YahooURLProperties yahooUrls) {
         this.repo = repo;
         this.client = client;
         this.yahooUrls = yahooUrls;
@@ -51,7 +51,7 @@ public class YahooUSAEtfDataSource implements UsaEtfSource {
             var crumb = retrieveCrumb(cookies);
             var yahooEtfCompanies = retrieveUSAEtfs(crumb, cookies);
 
-            List<Company> companies = updateDataBase(yahooEtfCompanies);
+            var companies = updateDataBase(yahooEtfCompanies);
 
             return getResult(companies);
         } catch (ExternalURLException e) {
