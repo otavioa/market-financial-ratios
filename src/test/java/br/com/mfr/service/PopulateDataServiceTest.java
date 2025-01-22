@@ -162,17 +162,6 @@ class PopulateDataServiceTest {
         return JSONUtils.toJSON(response);
     }
 
-    private void clubeFiiResponse(String url, String fileName) throws Exception {
-        ReaderServiceMockSupport.mockReaderService(readerService, url, fileName);
-    }
-
-    private String clubeFiiResponse(long companyId, String companyName, String ticker, Double price) {
-        AdvanceSearchResponse response = new AdvanceSearchResponse(
-                new CompanyResponse(companyId, companyName, ticker, price));
-
-        return JSONUtils.toJSON(response);
-    }
-
     @TestConfiguration
     static class MockitoPublisherConfiguration {
 
