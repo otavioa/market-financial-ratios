@@ -2,6 +2,8 @@ package br.com.mfr.service;
 
 import br.com.mfr.service.datasource.DataSource;
 import br.com.mfr.service.datasource.DataSourceResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import static br.com.mfr.service.PopulateDataEventHelper.*;
 @Service
 @Transactional(readOnly = true)
 public class PopulateDataService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PopulateDataService.class);
 
     private final ApplicationEventPublisher publisher;
     private final List<DataSource> dataSources;
@@ -46,6 +50,7 @@ public class PopulateDataService {
         try {
             var result = e.populate();
             sendExecuted(publisher, result);
+            LOGGER.info("DataSource executed: Source: {}, Result: {}", result.type(), result.result());
         } catch (Exception ex) {
             sendError(publisher, new DataSourceResult(e.type(), ex.getMessage()));
         }
