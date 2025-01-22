@@ -2,11 +2,11 @@
 
 # Market Financial Ratios (MFR) API
 
-**Market Financial Ratios (MFR)** is a straightforward API designed to retrieve market financial ratios from Brazilian and United States companies. The data is provided by [StatusInvest](https://statusinvest.com.br/) and [Yahoo! Finance](https://finance.yahoo.com/).
+**Market Financial Ratios (MFR)** is a straightforward API designed to retrieve market financial ratios from Brazilian and United States companies. The data is provided by [StatusInvest](https://statusinvest.com.br/), [Yahoo! Finance](https://finance.yahoo.com/) and [ClubeFII](https://www.clubefii.com.br/).
 
 ## How It Works
 
-The API retrieves essential data from both [StatusInvest](https://statusinvest.com.br/) and [Yahoo! Finance](https://finance.yahoo.com/) and saves it into a internal MongoDB database. Subsequently, users can access this information via the local API and retrieve the specific data they require.
+The API retrieves essential data from StatusInvest, Yahoo! Finance and ClubeFII and saves it into an internal MongoDB database. Subsequently, users can access this information via the local API and retrieve the specific data they require.
 
 ## Getting Started
 
@@ -32,11 +32,11 @@ To get started with the application, follow these steps:
 
 5. **Access the API:**
 - The application will be available on port 5000 (`localhost:5000/`).
-- The documentation is available at `/`.
+- The **documentation** is available at `/`.
 
 6. **Populate the Database:**
-- Call `http://localhost:5000/data/populate` to populate the database.
-- It is recommended that the data be refreshed whenever it's used, within a timeframe that does not affect the analysis of the API user. For example: Once a day.
+- Request `http://localhost:5000/data/populate` to populate the database.
+- It is recommended the data to be refreshed whenever it's used, within a timeframe that does not affect the analysis of the API user. For example: Once a day.
 
 ## Running Tests
 
