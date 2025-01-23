@@ -8,4 +8,8 @@ import static br.com.mfr.PropertiesConfiguration.APP_EXTERNAL_PREFIX;
 
 @Validated
 @ConfigurationProperties(APP_EXTERNAL_PREFIX + ".yahoo.url")
-public record YahooURLProperties(@NotBlank String cookies, @NotBlank String crumb, @NotBlank String etfScreener){ }
+public record YahooURLProperties(
+        @NotBlank String cookies,
+        @NotBlank String crumb,
+        @NotBlank String screener,
+        @NotBlank String quote){ }
