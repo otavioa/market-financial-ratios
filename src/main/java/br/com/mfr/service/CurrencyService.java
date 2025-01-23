@@ -15,7 +15,4 @@ public class CurrencyService {
         return currencyProvider.retrieve(symbol);
     }
 
-    private String generateYahooSymbol(String from, String to) {
-        return null;
-    }
 }
