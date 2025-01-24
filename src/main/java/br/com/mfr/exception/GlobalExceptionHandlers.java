@@ -36,4 +36,21 @@ public class GlobalExceptionHandlers {
 
 		return mav;
 	}
+
+	@ExceptionHandler(GenericException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public ModelAndView unexpectedError(HttpServletRequest req, GenericException e) {
+		LOGGER.error("IllegalArgumentException", e);
+
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("timestamp", LocalDateTime.now());
+		mav.addObject("path", req.getRequestURL());
+		mav.addObject("error", e.getMessage());
+		mav.addObject("status", HttpStatus.INTERNAL_SERVER_ERROR);
+		mav.addObject("trace", ExceptionUtils.getStackTrace(e));
+
+		mav.setViewName("error");
+
+		return mav;
+	}
 }

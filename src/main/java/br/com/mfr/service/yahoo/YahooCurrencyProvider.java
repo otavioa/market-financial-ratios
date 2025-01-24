@@ -6,21 +6,31 @@ import br.com.mfr.service.CurrencyProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
+import java.util.Objects;
+
 import static java.lang.String.format;
 
 @Service
-public class
-YahooCurrencyProvider implements CurrencyProvider {
+public class YahooCurrencyProvider implements CurrencyProvider {
 
     private static final String YAHOO_SYMBOL_MASK = "%s=X";
-    private final YahooHttpAgent yahooAgent;
+    private YahooHttpAgent yahooAgent;
+
+    public YahooCurrencyProvider(){}
 
     public YahooCurrencyProvider(WebClient client, YahooURLProperties props){
         this.yahooAgent = new YahooHttpAgent(client, props);
     }
 
+    YahooCurrencyProvider(YahooHttpAgent agent){
+        this.yahooAgent = agent;
+    }
+
     @Override
     public String retrieve(String symbol) {
+        Objects.requireNonNull(symbol, "symbol cannot be null");
+
         try {
             var cookies = yahooAgent.retrieveCookies();
             var crumb = yahooAgent.retrieveCrumb(cookies);
@@ -36,7 +46,8 @@ YahooCurrencyProvider implements CurrencyProvider {
     }
 
     private static String getMarketPrice(YahooQuoteResponse response) {
-        return response.quoteResponse().result().getFirst().regularMarketPrice().toString();
+        List<QuoteResult> r = response.quoteResponse().result();
+        return r.isEmpty() ? "0.0" : r.getFirst().regularMarketPrice().toString();
     }
 
     private String yahooSymbol(String symbol) {
