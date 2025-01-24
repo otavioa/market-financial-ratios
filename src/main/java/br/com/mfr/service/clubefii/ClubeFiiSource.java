@@ -9,13 +9,13 @@ import br.com.mfr.service.datasource.DataSourceResult;
 import br.com.mfr.service.datasource.DataSourceType;
 import br.com.mfr.service.htmlreader.HtmlReaderService;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
 
+import static br.com.mfr.service.clubefii.ClubeFiiCompanyExtractor.extractCompaniesFrom;
 import static java.lang.String.format;
 
 public class ClubeFiiSource implements BrazilFiiInfraSource, BrazilFiiAgroSource {
@@ -49,18 +49,9 @@ public class ClubeFiiSource implements BrazilFiiInfraSource, BrazilFiiAgroSource
 
     private List<Company> retrieveCompaniesFromWebSite() {
         var url = ClubeFiiSourceType.valueOf(sourceType).getURL(urlProps);
-
-        var rows = retrieveTableRows(url);
-
-        return rows.stream()
-                .map(row -> ClubeFiiConverter.convert(row, sourceType))
-                .toList();
-    }
-
-    private Elements retrieveTableRows(String url) {
         var document = getDocument(url);
-        var table = document.getElementById("tabela_profile");
-        return table.child(0).getElementsByClass("tabela_principal");
+
+        return extractCompaniesFrom(document, sourceType);
     }
 
     private Document getDocument(String url) {

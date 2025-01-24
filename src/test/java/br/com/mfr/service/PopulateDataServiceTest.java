@@ -65,7 +65,8 @@ class PopulateDataServiceTest {
 
     @Test
     void processPopulateData() throws Exception {
-        WireMockSupport.mockYahooRequests(
+        WireMockSupport.mockYahooAuthorization();
+        WireMockSupport.mockYahooEtfRequests(
                 YahooEtfScreenerResponse.builder()
                         .withPaginator(0, 0, 2)
                         .withQuote("VTI", "Vanguard Total Stock Market ETF", 266.65, 1.34)
@@ -156,17 +157,6 @@ class PopulateDataServiceTest {
     }
 
     private String statusInvestResponse(long companyId, String companyName, String ticker, Double price) {
-        AdvanceSearchResponse response = new AdvanceSearchResponse(
-                new CompanyResponse(companyId, companyName, ticker, price));
-
-        return JSONUtils.toJSON(response);
-    }
-
-    private void clubeFiiResponse(String url, String fileName) throws Exception {
-        ReaderServiceMockSupport.mockReaderService(readerService, url, fileName);
-    }
-
-    private String clubeFiiResponse(long companyId, String companyName, String ticker, Double price) {
         AdvanceSearchResponse response = new AdvanceSearchResponse(
                 new CompanyResponse(companyId, companyName, ticker, price));
 

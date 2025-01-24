@@ -44,7 +44,8 @@ class DataControllerTest {
 
     @Test
     void populateData() throws Exception {
-        WireMockSupport.mockYahooRequests(
+        WireMockSupport.mockYahooAuthorization();
+        WireMockSupport.mockYahooEtfRequests(
                 YahooEtfScreenerResponse.builder()
                     .withPaginator(0, 0, 2)
                     .withQuote("VTI", "Vanguard Total Stock Market ETF", 266.65, 1.34)

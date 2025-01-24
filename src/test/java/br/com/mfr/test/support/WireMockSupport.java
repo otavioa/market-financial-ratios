@@ -1,12 +1,15 @@
 package br.com.mfr.test.support;
 
 import br.com.mfr.service.yahoo.YahooEtfScreenerResponse;
+import br.com.mfr.service.yahoo.YahooQuoteResponse;
+import br.com.mfr.util.JSONUtils;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.StringValuePattern;
 
 import static br.com.mfr.test.support.CookiesSupport.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static java.lang.String.format;
 
 public class WireMockSupport {
 
@@ -14,11 +17,25 @@ public class WireMockSupport {
 
     public static final String URL_COOKIE = "/yahoo/cookies";
     public static final String URL_CRUMB = "/yahoo/getcrumb";
-    public static final String URL_ETF = "/yahoo/screener?crumb=" + CRUMB_ID + "&lang=en-US&region=US&formatted=true";
+    public static final String URL_SCREENER = format("/yahoo/screener?crumb=%s&lang=en-US&region=US&formatted=true", CRUMB_ID);
+    public static final String URL_CURRENCY = format("/yahoo/quote?fields=regularMarketPrice&crumb=%s&symbols=%s", CRUMB_ID, "%s");
 
-    public static void mockYahooRequests(YahooEtfScreenerResponse.YahooEtfScreenerResponseBuilder builder) {
+    public static void mockYahooAuthorization() {
         mockRequestCookie();
         mockRequestCrumbID();
+    }
+
+    public static void mockYahooCurrencyRequest(String symbol, double price) {
+        YahooQuoteResponse mockResponse =
+                new YahooQuoteResponse(symbol, "CURRENCY", "US", "CY", price, 15);
+
+        stubFor(get(urlEqualTo(format(URL_CURRENCY, symbol)))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(JSONUtils.toJSON(mockResponse))));
+    }
+
+    public static void mockYahooEtfRequests(YahooEtfScreenerResponse.YahooEtfScreenerResponseBuilder builder) {
         mockTotalCount(builder);
         mockEtfResponse(builder);
     }
@@ -49,7 +66,7 @@ public class WireMockSupport {
                 .withPaginator(0, 0, builder.getQuotes().size())
                 .buildToText();
 
-        stubFor(post(urlEqualTo(URL_ETF))
+        stubFor(post(urlEqualTo(URL_SCREENER))
                 .withHeader("Content-Type", equalTo("application/json"))
                 .withRequestBody(prepareRequest(0, 0))
                 .willReturn(aResponse()
@@ -58,7 +75,7 @@ public class WireMockSupport {
     }
 
     private static void mockEtfResponse(YahooEtfScreenerResponse.YahooEtfScreenerResponseBuilder builder) {
-        stubFor(post(urlEqualTo(URL_ETF))
+        stubFor(post(urlEqualTo(URL_SCREENER))
                 .withHeader("Content-Type", equalTo("application/json"))
                 .withRequestBody(prepareRequest(200, 0))
                 .willReturn(aResponse()
@@ -67,7 +84,7 @@ public class WireMockSupport {
     }
 
     private static StringValuePattern prepareRequest(int size, int offset) {
-        return equalToJson(String.format("""
+        return equalToJson(format("""
                 {
                     "size": %s,
                     "offset": %s,
