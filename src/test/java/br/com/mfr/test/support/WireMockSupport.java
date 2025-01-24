@@ -35,7 +35,7 @@ public class WireMockSupport {
                         .withBody(JSONUtils.toJSON(mockResponse))));
     }
 
-    public static void mockYahooEtfRequests(YahooEtfScreenerResponse.YahooEtfScreenerResponseBuilder builder) {;
+    public static void mockYahooEtfRequests(YahooEtfScreenerResponse.YahooEtfScreenerResponseBuilder builder) {
         mockTotalCount(builder);
         mockEtfResponse(builder);
     }
