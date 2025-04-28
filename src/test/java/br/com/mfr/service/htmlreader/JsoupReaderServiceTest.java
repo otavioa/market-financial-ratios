@@ -24,7 +24,7 @@ import static org.mockito.quality.Strictness.LENIENT;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = LENIENT)
-class HtmlReaderServiceTest {
+class JsoupReaderServiceTest {
 
 	private static final int HTTP_MANY_REQUESTS = 429;
 	private static final int HTTP_BAD_REQUEST = 400;
@@ -36,11 +36,11 @@ class HtmlReaderServiceTest {
 	@Mock private Response response;
 	@Mock private Document document;
 
-	private HtmlReaderService subject;
+	private JsoupReaderService subject;
 
 	@BeforeEach
 	public void setUp() throws IOException {
-		subject = new HtmlReaderService(jsoupService);
+		subject = new JsoupReaderService(jsoupService);
 
 		Mockito.when(response.statusCode()).thenReturn(HTTP_OK);
 		Mockito.when(response.parse()).thenReturn(document);
@@ -83,7 +83,7 @@ class HtmlReaderServiceTest {
 
 	@Test
 	void getHTMLDocumentWithDelayError() throws Exception {
-		subject = new HtmlReaderService(jsoupService);
+		subject = new JsoupReaderService(jsoupService);
 		subject.setRequestDelay(1);
 
 		Mockito.when(response.statusCode())

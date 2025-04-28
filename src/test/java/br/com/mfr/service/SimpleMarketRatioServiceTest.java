@@ -1,7 +1,7 @@
 package br.com.mfr.service;
 
 import br.com.mfr.exception.GenericException;
-import br.com.mfr.service.htmlreader.HtmlReaderService;
+import br.com.mfr.service.htmlreader.JsoupReaderService;
 import br.com.mfr.service.statusinvest.StatusInvestURLProperties;
 import br.com.mfr.service.ticket.TickerResponse;
 import br.com.mfr.test.support.ReaderServiceMockSupport;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 class SimpleMarketRatioServiceTest {
 
-	@Mock private HtmlReaderService readerService;
+	@Mock private JsoupReaderService readerService;
 	@Mock private StatusInvestURLProperties urlProps;
 	@InjectMocks private SimpleMarketRatioService subject;
 

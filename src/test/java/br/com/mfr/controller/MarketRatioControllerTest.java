@@ -5,7 +5,7 @@ import br.com.mfr.MongoDbMvcApp;
 import br.com.mfr.entity.Company;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.service.datasource.DataSourceType;
-import br.com.mfr.service.htmlreader.HtmlReaderService;
+import br.com.mfr.service.htmlreader.JsoupReaderService;
 import br.com.mfr.test.support.ReaderServiceMockSupport;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ class MarketRatioControllerTest {
 	@Autowired private MockMvc mvc;
 	@Autowired CompanyRepository repo;
 
-	@MockBean private HtmlReaderService readerService;
+	@MockBean private JsoupReaderService readerService;
 
 	@BeforeEach
 	public void cleanDB(){

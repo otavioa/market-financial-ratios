@@ -13,7 +13,7 @@ import java.io.IOException;
 import static java.lang.Integer.parseInt;
 
 @Service
-public class HtmlReaderService {
+public class JsoupReaderService implements ReaderService {
 
 	private static final int RETRY_DEFAULT_DELAY = 1000;
 	
@@ -21,15 +21,16 @@ public class HtmlReaderService {
 	private static final int HTTP_BAD_REQUEST = 400;
 	private static final int HTTP_OK = 200;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(HtmlReaderService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(JsoupReaderService.class);
 
 	private Integer requestDelay = RETRY_DEFAULT_DELAY;
 	private final JsoupServiceConnection jsoupService;
 
-	public HtmlReaderService(JsoupServiceConnection jsoupService) {
+	public JsoupReaderService(JsoupServiceConnection jsoupService) {
         this.jsoupService = jsoupService;
 	}
-	
+
+	@Override
 	public Document getHTMLDocument(String url) throws IOException {
 		Response response = executeForUrl(url);
 

@@ -14,7 +14,7 @@ public class ClubeFiiCompanyExtractor {
 
     public static List<Company> extractCompaniesFrom(Document document, DataSourceType sourceType) {
         var table = document.getElementById("tabela_profile");
-        Elements rows = table.child(0).getElementsByClass("tabela_principal");
+        Elements rows = table.child(1).getElementsByClass("tabela_principal");
 
         return rows.stream()
                 .map(row -> {

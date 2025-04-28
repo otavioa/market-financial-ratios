@@ -1,7 +1,7 @@
 package br.com.mfr.service;
 
 import br.com.mfr.exception.GenericException;
-import br.com.mfr.service.htmlreader.HtmlReaderService;
+import br.com.mfr.service.htmlreader.JsoupReaderService;
 import br.com.mfr.service.statusinvest.StatusInvestURLProperties;
 import br.com.mfr.service.ticket.TickerResponse;
 import org.jsoup.nodes.Document;
@@ -14,10 +14,10 @@ import static java.lang.String.format;
 @Service
 public class SimpleMarketRatioService {
 
-	private final HtmlReaderService readerService;
+	private final JsoupReaderService readerService;
 	private final StatusInvestURLProperties urlProps;
 
-    public SimpleMarketRatioService(HtmlReaderService readerService, StatusInvestURLProperties urlProps) {
+    public SimpleMarketRatioService(JsoupReaderService readerService, StatusInvestURLProperties urlProps) {
 		this.urlProps = urlProps;
 		this.readerService = readerService;
     }
