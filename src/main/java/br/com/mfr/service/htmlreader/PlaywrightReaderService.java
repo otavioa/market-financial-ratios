@@ -1,9 +1,12 @@
 package br.com.mfr.service.htmlreader;
 
-import com.microsoft.playwright.*;
+import br.com.mfr.PlaywrightConfiguration.PlaywrightProvider;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Response;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,25 +17,29 @@ public class PlaywrightReaderService implements ReaderService {
     private static final int HTTP_BAD_REQUEST = 400;
     private static final int HTTP_OK = 200;
 
+    private final ObjectProvider<PlaywrightProvider> pwObjectProvider;
+
+    PlaywrightReaderService(ObjectProvider<PlaywrightProvider> pwObjectProvider) {
+        this.pwObjectProvider = pwObjectProvider;
+    }
+
     @Override
     public Document getHTMLDocument(String url) throws IOException {
-        try (Playwright playwright = Playwright.create()) {
-            Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
-            BrowserContext browserContext = browser.newContext();
-            Page page = browserContext.newPage();
+        PlaywrightProvider pwProvider = pwObjectProvider.getObject();
+        
+        try {
+            Page page = pwProvider.newPage();
             Response response = navigateTo(page, url);
-
             int status = response.status();
 
             if (isResponseInError(status)) {
-                playwright.close();
                 throw new HttpStatusException("HTTP error fetching URL", status, url);
             }
 
-            String content = page.content();
-            playwright.close();
+            return Jsoup.parse(page.content());
 
-            return Jsoup.parse(content);
+        } finally {
+            pwProvider.close();
         }
     }
 
