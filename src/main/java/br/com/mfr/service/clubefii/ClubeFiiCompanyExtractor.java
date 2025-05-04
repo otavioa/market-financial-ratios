@@ -14,7 +14,7 @@ public class ClubeFiiCompanyExtractor {
 
     public static List<Company> extractCompaniesFrom(Document document, DataSourceType sourceType) {
         var table = document.getElementById("tabela_profile");
-        Elements rows = table.child(0).getElementsByClass("tabela_principal");
+        Elements rows = table.child(1).getElementsByClass("tabela_principal");
 
         return rows.stream()
                 .map(row -> {
@@ -42,7 +42,7 @@ public class ClubeFiiCompanyExtractor {
     private static Double getPrice(Elements cells) {
         try {
             return normalizeToDouble(cells.get(2).getElementById("valor_atual_cota").text());
-        } catch (IndexOutOfBoundsException | NullPointerException e) {
+        } catch (IndexOutOfBoundsException | NullPointerException _) {
             return NumberUtils.DOUBLE_ZERO;
         }
     }

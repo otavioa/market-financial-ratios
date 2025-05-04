@@ -7,7 +7,7 @@ import br.com.mfr.service.datasource.BrazilFiiAgroSource;
 import br.com.mfr.service.datasource.BrazilFiiInfraSource;
 import br.com.mfr.service.datasource.DataSourceResult;
 import br.com.mfr.service.datasource.DataSourceType;
-import br.com.mfr.service.htmlreader.HtmlReaderService;
+import br.com.mfr.service.htmlreader.PlaywrightReaderService;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +25,7 @@ public class ClubeFiiSource implements BrazilFiiInfraSource, BrazilFiiAgroSource
     private final ClubeFiiURLProperties urlProps;
 
     @Autowired
-    private HtmlReaderService readerService;
+    private PlaywrightReaderService readerService;
 
     public ClubeFiiSource(CompanyRepository repo, ClubeFiiURLProperties urlProps, DataSourceType sourceType) {
         this.repo = repo;

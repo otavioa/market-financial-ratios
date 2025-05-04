@@ -4,7 +4,7 @@ import br.com.mfr.MockMvcApp;
 import br.com.mfr.MockMvcProfile;
 import br.com.mfr.entity.CompanyRepository;
 import br.com.mfr.service.datasource.DataSourceType;
-import br.com.mfr.service.htmlreader.HtmlReaderService;
+import br.com.mfr.service.htmlreader.PlaywrightReaderService;
 import br.com.mfr.service.statusinvest.StatusInvestResources;
 import br.com.mfr.service.statusinvest.dto.AdvanceSearchResponse;
 import br.com.mfr.service.statusinvest.dto.CompanyResponse;
@@ -52,13 +52,13 @@ class PopulateDataServiceTest {
     private ApplicationEventPublisher publisher;
 
     @MockBean
-    private HtmlReaderService readerService;
+    private PlaywrightReaderService readerService;
 
     @Captor
     ArgumentCaptor<PopulateDataEvent> eventCaptor;
 
     @BeforeEach
-    public void setUpTests() {
+    void setUpTests() {
         Mockito.reset(publisher);
         Mockito.when(repository.insert(Mockito.anyList())).thenAnswer(a -> a.getArgument(0));
     }

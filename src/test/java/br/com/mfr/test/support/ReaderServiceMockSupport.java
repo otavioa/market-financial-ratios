@@ -1,6 +1,6 @@
 package br.com.mfr.test.support;
 
-import br.com.mfr.service.htmlreader.HtmlReaderService;
+import br.com.mfr.service.htmlreader.ReaderService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.mockito.Mockito;
@@ -11,13 +11,13 @@ import java.util.Map;
 
 public class ReaderServiceMockSupport {
 
-    public static void mockReaderService(HtmlReaderService readerService, String urlTested, String name) throws Exception {
+    public static void mockReaderService(ReaderService readerService, String urlTested, String name) throws Exception {
         Document parse = getDocumentFrom(name, urlTested);
         Mockito.when(readerService.getHTMLDocument(urlTested)).thenReturn(parse);
     }
 
     public static void mockReaderServiceWithError(
-            HtmlReaderService readerService, String urlTested, Exception exception) throws Exception {
+            ReaderService readerService, String urlTested, Exception exception) throws Exception {
         Mockito.doThrow(exception).when(readerService).getHTMLDocument(urlTested);
     }
 
@@ -37,9 +37,9 @@ public class ReaderServiceMockSupport {
     public static class ReaderServiceMockSupportBuilder {
 
         private final Map<String, String> responses = new HashMap<>();
-        private HtmlReaderService readerService;
+        private ReaderService readerService;
 
-        public ReaderServiceMockSupportBuilder readerService(HtmlReaderService readerService) {
+        public ReaderServiceMockSupportBuilder readerService(ReaderService readerService) {
             this.readerService = readerService;
             return this;
         }
