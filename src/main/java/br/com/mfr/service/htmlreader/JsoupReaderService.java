@@ -36,11 +36,12 @@ public class JsoupReaderService implements ReaderService {
 
         int status = response.statusCode();
 
-        if (isResponseInError(status))
+        if (isResponseInError(status)){
             if (isTooManyRequests(status)) {
                 response = waitAndRetry(response, url);
             } else {
                 throw new HttpStatusException("HTTP error fetching URL", status, url);
+            }
             }
 
         return response.parse();

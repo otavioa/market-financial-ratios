@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.quality.Strictness.LENIENT;
 
@@ -90,7 +89,7 @@ class JsoupReaderServiceTest {
 			.thenReturn(HTTP_MANY_REQUESTS)
 			.thenReturn(HTTP_OK);
 
-		Mockito.when(response.header(eq("Retry-After"))).thenReturn("1");
+		Mockito.when(response.header("Retry-After")).thenReturn("1");
 
 		Document expectedDocument = subject.getHTMLDocument("http://url");
 		

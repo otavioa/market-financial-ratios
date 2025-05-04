@@ -42,7 +42,7 @@ public class ClubeFiiCompanyExtractor {
     private static Double getPrice(Elements cells) {
         try {
             return normalizeToDouble(cells.get(2).getElementById("valor_atual_cota").text());
-        } catch (IndexOutOfBoundsException | NullPointerException exception) {
+        } catch (IndexOutOfBoundsException | NullPointerException _) {
             return NumberUtils.DOUBLE_ZERO;
         }
     }
