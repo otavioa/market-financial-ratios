@@ -26,7 +26,7 @@ class SimpleMarketRatioServiceTest {
 	@InjectMocks private SimpleMarketRatioService subject;
 
 	@BeforeEach
-	public void setUpTests(){
+	void setUpTests(){
 		Mockito.when(urlProps.ticker()).thenReturn("http://localhost:5050/{type}/{ticket}");
 	}
 

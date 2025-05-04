@@ -33,7 +33,7 @@ class MarketRatioControllerTest {
 	@MockBean private JsoupReaderService readerService;
 
 	@BeforeEach
-	public void cleanDB(){
+	void cleanDB(){
 		repo.deleteAll();
 	}
 

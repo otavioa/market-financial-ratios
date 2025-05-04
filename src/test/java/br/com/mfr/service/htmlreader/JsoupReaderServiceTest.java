@@ -39,7 +39,7 @@ class JsoupReaderServiceTest {
 	private JsoupReaderService subject;
 
 	@BeforeEach
-	public void setUp() throws IOException {
+	void setUp() throws IOException {
 		subject = new JsoupReaderService(jsoupService);
 
 		Mockito.when(response.statusCode()).thenReturn(HTTP_OK);

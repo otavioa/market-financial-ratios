@@ -58,7 +58,7 @@ class PopulateDataServiceTest {
     ArgumentCaptor<PopulateDataEvent> eventCaptor;
 
     @BeforeEach
-    public void setUpTests() {
+    void setUpTests() {
         Mockito.reset(publisher);
         Mockito.when(repository.insert(Mockito.anyList())).thenAnswer(a -> a.getArgument(0));
     }
